@@ -1,0 +1,386 @@
+<p-toast />
+<div>
+  <h3>Applications</h3>
+  <div class="card">
+    <form [formGroup]="applicationSearchForm">
+      <div class="flex gap-3">
+        <div class="field">
+          <label for="passportNumber" class="font-bold">
+            Passport Number or Application ID<span class="text-red-400">*</span>
+          </label>
+          <input
+            pInputText
+            id="query"
+            formControlName="query"
+            class="w-full"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+
+        <div class="field">
+          <label for="applicantName" class="font-bold">
+            Name<span class="text-red-400">*</span>
+          </label>
+          <input
+            pInputText
+            id="applicantName"
+            formControlName="applicantName"
+            class="w-full"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+      </div>
+
+      <div class="date-container">
+        <div class="field">
+          <label for="startDate" class="font-bold"
+            >Start Date<span class="text-red-400">*</span></label
+          >
+          <p-calendar
+            id="startDate"
+            formControlName="startDate"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            [style]="{ width: '100%' }"
+            placeholder="dd/mm/yyyy"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1930:2050"
+          ></p-calendar>
+        </div>
+
+        <div class="field">
+          <label for="endDate" class="font-bold"
+            >End Date<span class="text-red-400">*</span></label
+          >
+          <p-calendar
+            id="endDate"
+            formControlName="endDate"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            [style]="{ width: '100%' }"
+            placeholder="dd/mm/yyyy"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1930:2050"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <p-button (click)="onSearch()" label="Search" icon="pi pi-search" />
+      <!-- [disabled]="!applicationSearchForm.get('reportType').valid" -->
+    </form>
+  </div>
+
+  <div class="card">
+    <form [formGroup]="applicationFilterForm">
+      <div class="flex justify-content-between align-items-center mb-3">
+        <div class="flex gap-3">
+          <div style="width: 230px">
+            <!-- <label for="nationalityList" class="font-bold">Nationality</label> -->
+            <p-dropdown
+              id="nationalityList"
+              [options]="nationalityList"
+              optionLabel="label"
+              formControlName="nationality"
+              styleClass="p-button-raised"
+              [style]="{ borderRadius: '10rem', width: '100%' }"
+              [filter]="true"
+              filterBy="label"
+              (onChange)="onFilterChange()"
+            />
+          </div>
+
+          <div style="width: 135px">
+            <!-- <label for="status" class="font-bold"
+              >Status<span class="text-red-400">*</span></label
+            > -->
+            <p-dropdown
+              id="status"
+              [options]="statusList"
+              formControlName="status"
+              optionLabel="label"
+              [style]="{ borderRadius: '10rem', width: '100%' }"
+              (onChange)="onFilterChange()"
+            />
+          </div>
+
+          <div style="width: 190px">
+            <!-- <label for="categorization" class="font-bold"
+              >Categorization<span class="text-red-400">*</span></label
+            > -->
+            <p-dropdown
+              id="categorization"
+              [options]="categorization"
+              formControlName="categorization"
+              optionLabel="label"
+              [style]="{ borderRadius: '10rem', width: '100%' }"
+              (onChange)="onFilterChange()"
+            />
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <p-button
+            label="Approve"
+            styleClass="p-button-outlined p-button-secondary"
+            (click)="onApprov()"
+            [disabled]="selectedApplications.length === 0"
+          ></p-button>
+          <p-button
+            label="Reject"
+            (click)="onApprov()"
+            styleClass="p-button-outlined p-button-secondary"
+            [disabled]="selectedApplications.length === 0"
+          ></p-button>
+          <p-button
+            label="On-Hold"
+            (click)="onApprov()"
+            styleClass="p-button-outlined p-button-secondary"
+            [disabled]="selectedApplications.length === 0"
+          ></p-button>
+        </div>
+      </div>
+    </form>
+
+    <p-table
+      [value]="applicationsList"
+      [(selection)]="selectedApplications"
+      dataKey="applicationNumber"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+          <th>Application ID</th>
+          <th>Name</th>
+          <th>Passport</th>
+          <th>Nationality</th>
+          <th (click)="delete()">Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="product" />
+          </td>
+          <td>{{ product.applicationNumber }}</td>
+          <td>
+            <div
+              class="application-name"
+              (click)="handleApplicationOpen(product)"
+            >
+              {{ product.name }}
+            </div>
+          </td>
+          <td>{{ product.passportNumber }}</td>
+          <td>{{ product.nationality }}</td>
+          <td>
+            <p-tag
+              [severity]="getSeverity(product.status)"
+              [value]="product.status"
+              [rounded]="true"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>
+
+<p-dialog
+  [(visible)]="showApplicationDetailsDialog"
+  [modal]="true"
+  header="Applicant Details"
+>
+  <ng-template pTemplate="header">
+    <div class="flex gap-3 bg-white" style="border-radius: 14px">
+      <div class="text-2xl font-bold">Applicant Details</div>
+
+      <p-tag
+        [severity]="getSeverity(currentApplicationDetails.status)"
+        [value]="currentApplicationDetails.status"
+        [rounded]="true"
+      />
+    </div>
+  </ng-template>
+
+  <div class="flex flex-column gap-2" style="min-width: 55rem">
+    <div>
+      <div class="mt-3 mb-3 font-semibold text-xl">Personal Details</div>
+
+      <div>
+        <div class="applicant-individual-details">
+          <div class="flex flex-column">
+            <small>First Name</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.firstName }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Last Name</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.lastName }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Gender</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.gender }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Date of Birth</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.dateOfBirth }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Passport Number</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.passportNumber }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Passport Place of Issue</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.passportPlaceOfIssue }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Passport Expiry Date</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.passportExpiryDate }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Passport Date of Issue</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.passportDateOfIssue }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Contact Number</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.countryCode }}
+              {{ currentApplicationDetails?.contactNo }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Application ID</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.applicationId }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div class="flex flex-column gap-2">
+      <div class="mb-3 font-semibold text-xl">Documents</div>
+
+      <div class="flex justify-content-between">
+        1. Passport
+
+        <div class="flex gap-3">
+          <p-button
+            label="View"
+            icon="pi pi-eye"
+            styleClass="p-button-outlined p-button-secondary"
+          ></p-button>
+
+          <p-button
+            label="Download"
+            icon="pi pi-download"
+            styleClass="p-button-outlined p-button-secondary"
+          ></p-button>
+        </div>
+      </div>
+
+      <div class="flex justify-content-between">
+        2. Personal Photo
+
+        <div class="flex gap-3">
+          <p-button
+            label="View"
+            icon="pi pi-eye"
+            styleClass="p-button-outlined p-button-secondary"
+          ></p-button>
+
+          <p-button
+            label="Download"
+            icon="pi pi-download"
+            styleClass="p-button-outlined p-button-secondary"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+    <p-divider></p-divider>
+    <div class="mb-3 font-semibold text-xl">Payment Details</div>
+    <div class="" style="max-width: 15rem">
+      <div class="flex justify-content-between total-row">
+        <div class="">Visa Fee</div>
+        <div class="font-bold">$50</div>
+      </div>
+      <div class="flex justify-content-between total-row mt-2">
+        <div class="">Service Fee</div>
+        <div class="font-bold">$10</div>
+      </div>
+      <!-- <p-divider /> -->
+      <div class="flex justify-content-between total-row mt-3">
+        <div class="font-bold">Total</div>
+        <div class="font-bold">$60</div>
+      </div>
+    </div>
+    <p-divider></p-divider>
+  </div>
+
+  <div class="flex justify-content-center mb-3 gap-3">
+    <p-button
+      label="Approve"
+      [disabled]="currentApplicationDetails?.status === 'Approved'"
+      severity="success"
+      (click)="onApprov()"
+    ></p-button>
+
+    <p-button
+      label="Reject"
+      [disabled]="currentApplicationDetails?.status === 'Rejected'"
+      severity="danger"
+      (click)="onApprov()"
+    ></p-button>
+
+    <p-button
+      label="On-Hold"
+      [disabled]="currentApplicationDetails?.status === 'On-Hold'"
+      severity="help"
+      (click)="onApprov()"
+    ></p-button>
+  </div>
+</p-dialog>

@@ -1,0 +1,47 @@
+.header {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(209 213 219);
+    padding: 0 4rem;
+
+    .topbar-profile {
+      border-radius: var(--border-radius);
+      margin-left: 2rem;
+      position: relative;
+      flex-shrink: 0;
+
+      .topbar-profile-button {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        cursor: pointer;
+
+        > img {
+          width: 36px;
+          margin-right: 0.55rem;
+        }
+
+        .profile-details {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .profile-name {
+          color: var(--v-menuitem-text-color);
+          font-weight: 700;
+        }
+
+        .profile-job {
+          color: var(--v-menuitem-text-color-secondary);
+        }
+
+        i {
+          margin-left: 0.5rem;
+          color: var(--v-menuitem-text-color-secondary);
+          transition: transform var(--transition-duration);
+        }
+      }
+    }
+  }

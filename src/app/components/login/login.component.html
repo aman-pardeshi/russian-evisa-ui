@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="header">
+    <div></div>
+
+    <div>
+      <p-button icon="pi pi-phone" label="Need Help?"></p-button>
+    </div>
+  </div>
+
+  <p-toast />
+  <div class="subcontainer">
+    <div class="sign-in-container">
+      <h1 class="text-center">Sign in</h1>
+      <form [formGroup]="loginForm">
+        <div class="field flex flex-column">
+          <label for="email" class="font-bold"
+            >Email<span class="text-red-400">*</span></label
+          >
+
+          <div class="p-input-icon-left">
+            <i class="pi pi-user"></i>
+            <input
+              id="email"
+              type="text"
+              pInputText
+              placeholder="Email"
+              class="w-full"
+              formControlName="email"
+              autocomplete
+            />
+          </div>
+        </div>
+
+        <div class="field flex flex-column">
+          <label for="addressLine1" class="font-bold"
+            >Password<span class="text-red-400">*</span></label
+          >
+
+          <div class="p-input-icon-left">
+            <i class="pi pi-key"></i>
+            <input
+              type="password"
+              pInputText
+              id="password"
+              placeholder="Password"
+              class="w-full"
+              formControlName="password"
+              autocomplete
+            />
+          </div>
+        </div>
+
+        <p-button
+          label="Sign In"
+          styleClass="w-full mt-3"
+          (onClick)="handleLogin()"
+          [disabled]="
+            !(loginForm.get('email').valid && loginForm.get('password').valid)
+          "
+        ></p-button>
+
+        <p-divider class="divider-bg" align="center">
+          <div class="flex gap-5 px-5">OR</div>
+        </p-divider>
+
+        <p-button
+          icon="pi pi-google"
+          label="Sign in with Google"
+          styleClass="w-full p-button-outlined p-button-secondary"
+        ></p-button>
+      </form>
+    </div>
+
+    <div
+      class="sign-in-container flex justify-content-center gap-3 align-items-center"
+    >
+      Don't have an account?
+      <p-button styleClass=" p-button-outlined" label="Sign up"></p-button>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>

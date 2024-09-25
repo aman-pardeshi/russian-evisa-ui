@@ -1,0 +1,938 @@
+<div class="container">
+  <div class="flex gap-3 p-3">
+    <div class="content-container">
+      <p-toast />
+
+      <div class="form-container">
+        <div class="card flex justify-content-center form-subcontainer">
+          <p-stepper [(activeStep)]="active" orientation="vertical">
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-user text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Personal Details</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="content" let-nextCallback="nextCallback">
+                <form [formGroup]="applicantDetailsForm">
+                  <div class="px-5">
+                    <div class="flex flex-column w-full">
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="firstName" class="font-bold"
+                            >First Name<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="firstName"
+                            placeholder="Enter first name"
+                            formControlName="firstName"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="lastName" class="font-bold"
+                            >Last Name<span class="text-red-400">*</span></label
+                          >
+
+                          <input
+                            pInputText
+                            id="lastName"
+                            placeholder="Enter last name"
+                            formControlName="lastName"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="dateOfBirth" class="font-bold"
+                            >Date of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-calendar
+                            id="dateOfBirth"
+                            formControlName="dateOfBirth"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            dateFormat="dd/mm/yy"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [maxDate]="maxDate"
+                          ></p-calendar>
+                        </div>
+
+                        <div class="field">
+                          <label for="placeOfBirth" class="font-bold"
+                            >Place of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="placeOfBirth"
+                            formControlName="placeOfBirth"
+                            class="w-full"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="gender" class="font-bold"
+                            >Gender<span class="text-red-400">*</span></label
+                          >
+                          <p-dropdown
+                            id="gender"
+                            [options]="genderList"
+                            formControlName="gender"
+                            optionLabel="label"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="country" class="font-bold"
+                            >Country<span class="text-red-400">*</span></label
+                          >
+                          <div class="mobile-number-container p-filled">
+                            <p-dropdown
+                              [options]="nationalityList"
+                              formControlName="country"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="label"
+                              class="outline-none w-full"
+                              [style]="{ width: '100%' }"
+                            >
+                              <ng-template
+                                pTemplate="selectedItem"
+                                let-selectedOption
+                              >
+                                <div class="flex align-items-center gap-2 pr-0">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' +
+                                      applicantDetailsForm
+                                        .get('country')
+                                        ?.value.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>
+                                    {{
+                                      applicantDetailsForm.get('country')?.value
+                                        .label
+                                    }}
+                                  </div>
+                                </div>
+                              </ng-template>
+                              <ng-template let-country pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' + country.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>{{ country.label }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="email" class="font-bold"
+                            >Email<span class="text-red-400">*</span></label
+                          >
+                          <input
+                            pInputText
+                            id="email"
+                            formControlName="email"
+                            class="w-full"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="mobileNumber" class="font-bold"
+                            >Mobile Number<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <div class="mobile-number-container p-filled">
+                            <p-dropdown
+                              [options]="countries"
+                              formControlName="countryCode"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="name"
+                              class="outline-none w-4"
+                            >
+                              <ng-template
+                                pTemplate="selectedItem"
+                                let-selectedOption
+                              >
+                                <div class="flex align-items-center gap-2 pr-0">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' +
+                                      applicantDetailsForm
+                                        .get('countryCode')
+                                        .value.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>
+                                    {{
+                                      applicantDetailsForm.get('countryCode')
+                                        ?.value.countryCode
+                                    }}
+                                  </div>
+                                </div>
+                              </ng-template>
+                              <ng-template let-country pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' + country.code.toLowerCase()
+                                    "
+                                    style="width: 18px"
+                                  />
+                                  <div>{{ country.name }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+
+                            <p-inputNumber
+                              formControlName="contactNo"
+                              mode="decimal"
+                              inputId="withoutgrouping"
+                              [useGrouping]="false"
+                              class="w-full outline-none"
+                              placeholder="Mobile Number"
+                              [style]="{ width: '95%', marginLeft: '5px' }"
+                              id="mobileNumber"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container"></div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="flex pt-4 justify-content-end">
+                  <p-button
+                    (onClick)="handlePersonalDetailsSubmit(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-send text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Passport & Travel Details</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <div class="flex flex-column gap-2 mx-auto pl-5">
+                  <form [formGroup]="applicantPassportDetailsForm">
+                    <div class="flex flex-column w-full">
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="passportNumber" class="font-bold"
+                            >Passport Number<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="passportNumber"
+                            formControlName="passportNumber"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="passportPlaceOfIssue" class="font-bold"
+                            >Passport Place of issue<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="passportPlaceOfIssue"
+                            formControlName="passportPlaceOfIssue"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="passportDateOfIssue" class="font-bold"
+                            >Passport Date of Issue<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-calendar
+                            id="passportDateOfIssue"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            [iconDisplay]="'input'"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            formControlName="passportDateOfIssue"
+                          ></p-calendar>
+                        </div>
+
+                        <div class="field">
+                          <label for="passportExpiryDate" class="font-bold"
+                            >Passport Expiry Date<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-calendar
+                            appendTo="body"
+                            id="passportExpiryDate"
+                            dateFormat="dd/mm/yy"
+                            [overwriteOnInsert]="true"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            rPCalendarMask
+                            [defaultDate]="passportExpDate"
+                            [minDate]="passportExpDate"
+                            formControlName="passportExpiryDate"
+                          ></p-calendar>
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div
+                          class="field flex flex-column justify-content-center"
+                        >
+                          <label for="intentedDateOfEntry" class="font-bold"
+                            >Intented Date of Entry<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-calendar
+                            appendTo="body"
+                            id="intentedDateOfEntry"
+                            dateFormat="dd/mm/yy"
+                            [overwriteOnInsert]="true"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            rPCalendarMask
+                            [defaultDate]="passportExpDate"
+                            [minDate]="passportExpDate"
+                            formControlName="intentedDateOfEntry"
+                          ></p-calendar>
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="isOtherNationality" class="font-bold"
+                            >Do you have any other Nationality?
+                            <span class="text-red-400">*</span></label
+                          >
+                          <p-selectButton
+                            [options]="otherNationalityOptions"
+                            formControlName="isOtherNationality"
+                            optionLabel="label"
+                            optionValue="value"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          applicantPassportDetailsForm.get('isOtherNationality')
+                            .value
+                        "
+                      >
+                        <div class="field">
+                          <label for="otherNationality" class="font-bold"
+                            >Other Nationality<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <div class="mobile-number-container p-filled">
+                            <p-dropdown
+                              [options]="nationalityList"
+                              formControlName="otherNationality"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="label"
+                              class="outline-none w-full"
+                              [style]="{ width: '100%' }"
+                            >
+                              <ng-template
+                                pTemplate="selectedItem"
+                                let-selectedOption
+                              >
+                                <div class="flex align-items-center gap-2 pr-0">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' +
+                                      applicantPassportDetailsForm
+                                        .get('otherNationality')
+                                        ?.value.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>
+                                    {{
+                                      applicantPassportDetailsForm.get(
+                                        'otherNationality'
+                                      )?.value.label
+                                    }}
+                                  </div>
+                                </div>
+                              </ng-template>
+                              <ng-template let-country pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' + country.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>{{ country.label }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label for="yearOfAcquisition" class="font-bold"
+                            >Year of Acquisition
+                            <span class="text-red-400">*</span></label
+                          >
+                          <p-inputNumber
+                            formControlName="yearOfAcquisition"
+                            mode="decimal"
+                            inputId="withoutgrouping"
+                            [useGrouping]="false"
+                            class="w-full outline-none"
+                            [style]="{ width: '100%' }"
+                            id="mobileNumber"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                  <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  />
+                  <p-button
+                    (onClick)="handlePassportDetailsSubmit(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-check-square text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Review Details</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <div class="flex flex-column gap-2 pl-5">
+                  <div>
+                    <div class="mt-3 mb-3 font-semibold">Personal Details</div>
+
+                    <div>
+                      <div class="applicant-individual-details">
+                        <div class="flex flex-column">
+                          <small>First Name</small>
+                          <div class="font-bold text-xl">
+                            {{ applicantDetailsForm.get('firstName').value }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Last Name</small>
+                          <div class="font-bold text-xl">
+                            {{ applicantDetailsForm.get('lastName')?.value }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Gender</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantDetailsForm.get('gender')?.value.label ||
+                                '-'
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Date of Birth</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              formatDate(
+                                applicantDetailsForm.get('dateOfBirth')?.value
+                              )
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Place of Birth</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantDetailsForm.get('placeOfBirth')?.value
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Country</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantDetailsForm.get('country')?.value
+                                .label || '-'
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Email</small>
+                          <div class="font-bold text-xl">
+                            {{ applicantDetailsForm.get('email')?.value }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Contact Number</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantDetailsForm.get('countryCode')?.value
+                                .countryCode
+                            }}
+                            {{
+                              applicantDetailsForm.get('contactNo').value || '-'
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p-divider />
+
+                  <div>
+                    <div class="mt-3 mb-3 font-semibold">
+                      Passport & Travel Details
+                    </div>
+
+                    <div>
+                      <div class="applicant-individual-details">
+                        <div class="flex flex-column">
+                          <small>Passport Number</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantPassportDetailsForm.get('passportNumber')
+                                ?.value
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Passport Place of Issue</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantPassportDetailsForm.get(
+                                'passportPlaceOfIssue'
+                              )?.value
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Passport Date of Issue</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              formatDate(
+                                applicantPassportDetailsForm.get(
+                                  'passportDateOfIssue'
+                                )?.value
+                              )
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Passport Expiry Date</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              formatDate(
+                                applicantPassportDetailsForm.get(
+                                  'passportExpiryDate'
+                                )?.value
+                              )
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Intented Date Of Entry</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              formatDate(
+                                applicantPassportDetailsForm.get(
+                                  'intentedDateOfEntry'
+                                )?.value
+                              )
+                            }}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-column">
+                          <small>Do you have any other Nationality?</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantPassportDetailsForm.get(
+                                'isOtherNationality'
+                              )?.value === true
+                                ? 'Yes'
+                                : 'No'
+                            }}
+                          </div>
+                        </div>
+
+                        <div
+                          class="flex flex-column"
+                          *ngIf="
+                            applicantPassportDetailsForm.get(
+                              'isOtherNationality'
+                            ).value
+                          "
+                        >
+                          <small>Other Nationality</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantPassportDetailsForm.get(
+                                'otherNationality'
+                              )?.value.label
+                            }}
+                          </div>
+                        </div>
+
+                        <div
+                          class="flex flex-column"
+                          *ngIf="
+                            applicantPassportDetailsForm.get(
+                              'isOtherNationality'
+                            ).value
+                          "
+                        >
+                          <small>Year of Acquisition</small>
+                          <div class="font-bold text-xl">
+                            {{
+                              applicantPassportDetailsForm.get(
+                                'yearOfAcquisition'
+                              )?.value
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p-divider />
+
+                  <div class="mt-3 mb-3 font-semibold">Payment Details</div>
+                  <div class="" style="max-width: 15rem">
+                    <div class="flex justify-content-between total-row">
+                      <div class="">Visa Fee</div>
+                      <div class="font-bold">$50</div>
+                    </div>
+                    <div class="flex justify-content-between total-row mt-2">
+                      <div class="">Service Fee</div>
+                      <div class="font-bold">$10</div>
+                    </div>
+                    <p-divider />
+                    <div class="flex justify-content-between total-row">
+                      <div class="font-bold">Total</div>
+                      <div class="font-bold">$60</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                  <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  />
+                  <p-button
+                    (onClick)="nextCallback.emit()"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-id-card text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Payment</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="content" let-prevCallback="prevCallback">
+                <div class="flex flex-column gap-2 mx-auto pl-5">
+                  <div class="text-center mt-3 mb-3 text-xl font-semibold">
+                    Application created successfully
+                  </div>
+                  <div class="text-center">
+                    <img
+                      alt="logo"
+                      src="https://primefaces.org/cdn/primeng/images/stepper/content.svg"
+                    />
+                  </div>
+                </div>
+                <div class="flex pt-4 justify-content-start">
+                  <!-- <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  /> -->
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+          </p-stepper>
+        </div>
+      </div>
+
+      <!-- <div class="mt-3 form-container">
+        <div class="flex justify-content-end mt-1">
+          <div class="mt-3 flex justify-content-end gap-3 align-items-center">
+            <div class="text-red-400">
+              <small
+                *ngIf="
+                  formSubmitted &&
+                  (applicationForm.invalid || applicationForm.invalid)
+                "
+                >*Some fields are missing</small
+              >
+            </div>
+
+            <p-button
+              [label]="'Next'"
+              (onClick)="nextPage()"
+              icon="pi pi-angle-right"
+              iconPos="right"
+            ></p-button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="sidemsg-container card">
+      <div class="msg-container">
+        <div class="title">
+          <h5 class="mb-0">👋 Hey there!</h5>
+        </div>
+
+        <div class="mt-2">
+          <p>
+            We're glad you are here. Let's get you started with your
+            application.
+          </p>
+        </div>
+      </div>
+
+      <div class="msg-container mt-3">
+        <div class="title">
+          <img src="/assets/demo/images/passport-img-3.png" width="100%" />
+        </div>
+
+        <div class="mt-2 font-bold">
+          <p>Enter your personal information as it appears on your passport</p>
+        </div>
+      </div>
+
+      <div *ngIf="active === 4">
+        <div class="msg-container mt-3">
+          <div class="title text-xl font-bold">
+            <h5 class="mb-0">Final Step!</h5>
+          </div>
+
+          <div class="mt-2">
+            Make payment through our secured payment gateway
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-content-center">
+        <div class="safe-container">
+          <i class="pi pi-lock" [style]="{ fontWeight: 700 }"></i>
+          100% safe and secure
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>

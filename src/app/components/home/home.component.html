@@ -1,0 +1,237 @@
+<div class="surface-ground min-h-screen wrapper">
+  <div class="landing-wrapper">
+    <div [ngStyle]="backgroundStyle" class="bg-no-repeat bg-cover bg-bottom">
+      <div
+        class="flex align-items-center justify-content-between px-5 sm:px-8 py-6"
+      ></div>
+      <div
+        class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between px-5 sm:px-8 py-8 overflow-hidden"
+      >
+        <div class="flex-1 fadein animation-duration-1000">
+          <h1 class="font-bold text-7xl mt-0 mb-5">Get Your Russian eVisa</h1>
+          <!-- <p class="text-3xl mb-5 line-height-3">
+            Minimal layout inspired by a beautiful city
+          </p> -->
+          <button
+            pButton
+            pRipple
+            label="Apply Now"
+            routerLink="/login"
+          ></button>
+        </div>
+        <div class="flex-1">
+          <img
+            alt="intro image"
+            src="assets/demo/images/landing/hero-img.png"
+            class="fadeinright animation-ease-in-out animation-duration-1000 w-full border-round-2xl shadow-2"
+          />
+        </div>
+      </div>
+      <div #stats class="py-8">
+        <div class="flex flex-column align-items-center mb-7">
+          <h2 class="font-bold text-3xl my-0">
+            How to Apply for Your Russian e-Visa
+          </h2>
+          <div>We’ve simplified the process for a smooth experience:</div>
+        </div>
+        <div class="flex flex-column xl:flex-row justify-content-center gap-5">
+          <div
+            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
+            style="border-radius: 14px"
+          >
+            <h3 class="mt-0 mb-3 font-bold text-4xl">
+              Complete the Application
+            </h3>
+            <p class="line-height-3 mb-5 text-color-secondary">
+              Provide basic details like your name, travel plans, and passport
+              information.
+            </p>
+          </div>
+          <div
+            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
+            style="border-radius: 14px"
+          >
+            <h3 class="mt-0 mb-3 font-bold text-4xl">Pay the Fee</h3>
+            <p class="line-height-3 mb-5 text-color-secondary">
+              Securely pay the e-visa processing fee online. Our service
+              includes expert review and 24/7 support.
+            </p>
+          </div>
+
+          <div
+            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
+            style="border-radius: 14px"
+          >
+            <h3 class="mt-0 mb-3 font-bold text-4xl">Receive Your e-Visa</h3>
+            <p class="line-height-3 mb-5 text-color-secondary">
+              Get your approved e-visa via email within 4-6 days. Print it and
+              your travel purpose aligns with those permitted by the
+              e-Visapresent it at the Russian border.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div #features class="px-5 sm:px-8 py-8 surface-card">
+      <h3 class="mt-0 mb-5 font-bold text-3xl text-900">
+        Three easy steps to obtain your E visa
+      </h3>
+      <div class="flex flex-column lg:flex-row justify-content-center gap-5">
+        <div class="w-full lg:w-4">
+          <div
+            class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5"
+            style="border-radius: 14px; border-top-left-radius: 5rem"
+          >
+            <img
+              alt="intro image"
+              src="assets/demo/images/landing/application.png"
+              class="h-5rem sm:h-8rem"
+            />
+          </div>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">
+            Fill your online application
+          </h3>
+          <p class="line-height-3 text-color-secondary">
+            Fill in your details, travel information, and passport details.
+            Double-check to ensure all information is accurate and up to date
+            before submitting.
+          </p>
+        </div>
+        <div class="w-full lg:w-4">
+          <div
+            class="bg-green-50 p-6 flex align-items-center justify-content-center mb-5"
+            style="border-radius: 14px"
+          >
+            <img
+              alt="intro image"
+              src="assets/demo/images/landing/pay-fees.png"
+              class="h-5rem sm:h-8rem"
+            />
+          </div>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">Pay the fee</h3>
+          <p class="line-height-3 text-color-secondary">
+            After submitting your application, proceed to the payment section.
+            Pay the required fee securely using our trusted payment gateway.
+          </p>
+        </div>
+        <div class="w-full lg:w-4">
+          <div
+            class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
+            style="border-radius: 14px; border-bottom-right-radius: 5rem"
+          >
+            <img
+              alt="intro image"
+              src="assets/demo/images/landing/received-evisa.png"
+              class="h-5rem sm:h-8rem"
+            />
+          </div>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">Received eVisa</h3>
+          <p class="line-height-3 text-color-secondary">
+            Once you've submitted your application, you'll receive a
+            confirmation email. Your approved visa document will be sent to you
+            via email within the specified processing time. Be sure to check
+            your inbox regularly, including the spam or junk folder.
+          </p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div #pricing class="px-5 sm:px-8 py-8 surface-card gap-5">
+      <h3 class="mt-0 mb-5 font-bold text-3xl text-900">
+        Russia e-Visa Application Checklist
+      </h3>
+      <div class="shadow-2 surface-card p-5 border-round-2xl">
+        <div class="mb-3 font-bold">
+          Before starting your application, make sure:
+        </div>
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center mb-3">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>You are a citizen of an e-Visa eligible country.</span>
+          </li>
+          <li class="flex align-items-center">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Your stay in Russia will be 16 days or less.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- <div
+      class="px-5 sm:px-8 py-8 bg-gray-900 flex flex-column md:flex-row md:align-items-start gap-5"
+      style="border-top-left-radius: 14px; border-top-right-radius: 14px"
+    >
+      <div class="flex align-items-center flex-1">
+        <img
+          alt="intro image"
+          src="assets/demo/images/landing/logo-v.svg"
+          class="w-4rem"
+        />
+        <span class="text-white text-5xl font-bold ml-2">Verona</span>
+      </div>
+      <div class="flex-1">
+        <div class="text-xl text-gray-600 mb-4">LATEST</div>
+        <ul class="list-none p-0 m-0">
+          <li class="mb-3">
+            <a class="cursor-pointer text-white text-xl">Ultima</a>
+          </li>
+          <li class="mb-3">
+            <a class="cursor-pointer text-white text-xl">Apollo</a>
+          </li>
+          <li class="mb-3">
+            <a class="cursor-pointer text-white text-xl">Sakai</a>
+          </li>
+          <li class="mb-3">
+            <a class="cursor-pointer text-white text-xl">Diamond</a>
+          </li>
+          <li>
+            <a class="cursor-pointer text-white text-xl">Poseidon</a>
+          </li>
+        </ul>
+      </div>
+      <div class="flex-1">
+        <div class="text-xl text-gray-600 mb-4">DEMOS</div>
+        <ul class="list-none p-0 m-0">
+          <li class="mb-3">
+            <a
+              href="https://www.primefaces.org/primeng"
+              class="cursor-pointer text-white text-xl"
+              >PrimeNG</a
+            >
+          </li>
+          <li class="mb-3">
+            <a
+              href="https://www.primefaces.org/showcase"
+              class="cursor-pointer text-white text-xl"
+              >PrimeFaces</a
+            >
+          </li>
+          <li class="mb-3">
+            <a
+              href="https://www.primefaces.org/primereact"
+              class="cursor-pointer text-white text-xl"
+              >PrimeReact</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.primefaces.org/primevue"
+              class="cursor-pointer text-white text-xl"
+              >PrimeVue</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="flex flex-1 gap-4">
+        <a href="http://github.com/primefaces">
+          <i class="pi pi-github text-white text-5xl"></i>
+        </a>
+        <a href="https://discord.gg/gzKFYnpmCY">
+          <i class="pi pi-discord text-white text-5xl"></i>
+        </a>
+        <a href="http://twitter/primeng">
+          <i class="pi pi-twitter text-white text-5xl"></i>
+        </a>
+      </div>
+    </div> -->
+  </div>
+</div>

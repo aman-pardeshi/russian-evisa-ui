@@ -1,0 +1,544 @@
+{
+  "data": [
+    {
+      "applicationNumber": "UAED03683224",
+      "name": "Ravi Kumar",
+      "passportNumber": "A1234567",
+      "fees": "$60",
+      "nationality": "Indian",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED02987412",
+      "name": "Sophia Lee",
+      "passportNumber": "Z8765432",
+      "fees": "$60",
+      "nationality": "South Korean",
+      "status": "On-Hold",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED05678123",
+      "name": "Liam Johnson",
+      "passportNumber": "M2345678",
+      "fees": "$60",
+      "nationality": "American",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED08934567",
+      "name": "Yuki Tanaka",
+      "passportNumber": "J3456789",
+      "fees": "$60",
+      "nationality": "Japanese",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED01458923",
+      "name": "Ahmed Al-Farsi",
+      "passportNumber": "Q4567890",
+      "fees": "$60",
+      "nationality": "Omani",
+      "status": "Rejected",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED09234561",
+      "name": "Maria Garcia",
+      "passportNumber": "R1234567",
+      "fees": "$60",
+      "nationality": "Spanish",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03781245",
+      "name": "Chen Wei",
+      "passportNumber": "T5678901",
+      "fees": "$60",
+      "nationality": "Chinese",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07654321",
+      "name": "Olivia Brown",
+      "passportNumber": "S6789012",
+      "fees": "$60",
+      "nationality": "Australian",
+      "status": "Rejected",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED03214598",
+      "name": "David Smith",
+      "passportNumber": "U7890123",
+      "fees": "$60",
+      "nationality": "British",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED06547812",
+      "name": "Fatima Khan",
+      "passportNumber": "V8901234",
+      "fees": "$60",
+      "nationality": "Pakistani",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED01234567",
+      "name": "Hassan Ibrahim",
+      "passportNumber": "W1234567",
+      "fees": "$60",
+      "nationality": "Egyptian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED08912345",
+      "name": "Sara Müller",
+      "passportNumber": "X2345678",
+      "fees": "$60",
+      "nationality": "German",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED07654390",
+      "name": "Amina Ndiaye",
+      "passportNumber": "Y3456789",
+      "fees": "$60",
+      "nationality": "Senegalese",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED03456789",
+      "name": "Ivan Petrov",
+      "passportNumber": "Z4567890",
+      "fees": "$60",
+      "nationality": "Russian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06543210",
+      "name": "Nina Rossi",
+      "passportNumber": "A5678901",
+      "fees": "$60",
+      "nationality": "Italian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED09876543",
+      "name": "Ali Reza",
+      "passportNumber": "B6789012",
+      "fees": "$60",
+      "nationality": "Iranian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED02345678",
+      "name": "Emily Wilson",
+      "passportNumber": "C7890123",
+      "fees": "$60",
+      "nationality": "Canadian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06547892",
+      "name": "Lucas Costa",
+      "passportNumber": "D8901234",
+      "fees": "$60",
+      "nationality": "Brazilian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED05432109",
+      "name": "Fatoumata Keita",
+      "passportNumber": "E9012345",
+      "fees": "$60",
+      "nationality": "Malian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07893456",
+      "name": "Andreas Lund",
+      "passportNumber": "F0123456",
+      "fees": "$60",
+      "nationality": "Swedish",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06547238",
+      "name": "Elena Popov",
+      "passportNumber": "G1234567",
+      "fees": "$60",
+      "nationality": "Bulgarian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03218745",
+      "name": "Mohamed Hassan",
+      "passportNumber": "H2345678",
+      "fees": "$60",
+      "nationality": "Somali",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07894561",
+      "name": "Hiroshi Nakamura",
+      "passportNumber": "I3456789",
+      "fees": "$60",
+      "nationality": "Japanese",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED09452361",
+      "name": "Marta Nowak",
+      "passportNumber": "J4567890",
+      "fees": "$60",
+      "nationality": "Polish",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03456921",
+      "name": "Nguyen Thi Mai",
+      "passportNumber": "K5678901",
+      "fees": "$60",
+      "nationality": "Vietnamese",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07654832",
+      "name": "John Doe",
+      "passportNumber": "L6789012",
+      "fees": "$60",
+      "nationality": "American",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED05647893",
+      "name": "Carlos Pérez",
+      "passportNumber": "M7890123",
+      "fees": "$60",
+      "nationality": "Mexican",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03214567",
+      "name": "Katarina Ivanov",
+      "passportNumber": "N8901234",
+      "fees": "$60",
+      "nationality": "Serbian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED09834521",
+      "name": "Ali Mahmoud",
+      "passportNumber": "O9012345",
+      "fees": "$60",
+      "nationality": "Lebanese",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED07891234",
+      "name": "Zara Begum",
+      "passportNumber": "P0123456",
+      "fees": "$60",
+      "nationality": "Bangladeshi",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03683224",
+      "name": "Ravi Kumar",
+      "passportNumber": "A1234567",
+      "fees": "$60",
+      "nationality": "Indian",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED02987412",
+      "name": "Sophia Lee",
+      "passportNumber": "Z8765432",
+      "fees": "$60",
+      "nationality": "South Korean",
+      "status": "On-Hold",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED05678123",
+      "name": "Liam Johnson",
+      "passportNumber": "M2345678",
+      "fees": "$60",
+      "nationality": "American",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED08934567",
+      "name": "Yuki Tanaka",
+      "passportNumber": "J3456789",
+      "fees": "$60",
+      "nationality": "Japanese",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED01458923",
+      "name": "Ahmed Al-Farsi",
+      "passportNumber": "Q4567890",
+      "fees": "$60",
+      "nationality": "Omani",
+      "status": "Rejected",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED09234561",
+      "name": "Maria Garcia",
+      "passportNumber": "R1234567",
+      "fees": "$60",
+      "nationality": "Spanish",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03781245",
+      "name": "Chen Wei",
+      "passportNumber": "T5678901",
+      "fees": "$60",
+      "nationality": "Chinese",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07654321",
+      "name": "Olivia Brown",
+      "passportNumber": "S6789012",
+      "fees": "$60",
+      "nationality": "Australian",
+      "status": "Rejected",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED03214598",
+      "name": "David Smith",
+      "passportNumber": "U7890123",
+      "fees": "$60",
+      "nationality": "British",
+      "status": "Pending",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED06547812",
+      "name": "Fatima Khan",
+      "passportNumber": "V8901234",
+      "fees": "$60",
+      "nationality": "Pakistani",
+      "status": "Approved",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED01234567",
+      "name": "Hassan Ibrahim",
+      "passportNumber": "W1234567",
+      "fees": "$60",
+      "nationality": "Egyptian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED08912345",
+      "name": "Sara Müller",
+      "passportNumber": "X2345678",
+      "fees": "$60",
+      "nationality": "German",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED07654390",
+      "name": "Amina Ndiaye",
+      "passportNumber": "Y3456789",
+      "fees": "$60",
+      "nationality": "Senegalese",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED03456789",
+      "name": "Ivan Petrov",
+      "passportNumber": "Z4567890",
+      "fees": "$60",
+      "nationality": "Russian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06543210",
+      "name": "Nina Rossi",
+      "passportNumber": "A5678901",
+      "fees": "$60",
+      "nationality": "Italian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED09876543",
+      "name": "Ali Reza",
+      "passportNumber": "B6789012",
+      "fees": "$60",
+      "nationality": "Iranian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED02345678",
+      "name": "Emily Wilson",
+      "passportNumber": "C7890123",
+      "fees": "$60",
+      "nationality": "Canadian",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06547892",
+      "name": "Lucas Costa",
+      "passportNumber": "D8901234",
+      "fees": "$60",
+      "nationality": "Brazilian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED05432109",
+      "name": "Fatoumata Keita",
+      "passportNumber": "E9012345",
+      "fees": "$60",
+      "nationality": "Malian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07893456",
+      "name": "Andreas Lund",
+      "passportNumber": "F0123456",
+      "fees": "$60",
+      "nationality": "Swedish",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED06547238",
+      "name": "Elena Popov",
+      "passportNumber": "G1234567",
+      "fees": "$60",
+      "nationality": "Bulgarian",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03218745",
+      "name": "Mohamed Hassan",
+      "passportNumber": "H2345678",
+      "fees": "$60",
+      "nationality": "Somali",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07894561",
+      "name": "Hiroshi Nakamura",
+      "passportNumber": "I3456789",
+      "fees": "$60",
+      "nationality": "Japanese",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED09452361",
+      "name": "Marta Nowak",
+      "passportNumber": "J4567890",
+      "fees": "$60",
+      "nationality": "Polish",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03456921",
+      "name": "Nguyen Thi Mai",
+      "passportNumber": "K5678901",
+      "fees": "$60",
+      "nationality": "Vietnamese",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED07654832",
+      "name": "John Doe",
+      "passportNumber": "L6789012",
+      "fees": "$60",
+      "nationality": "American",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED05647893",
+      "name": "Carlos Pérez",
+      "passportNumber": "M7890123",
+      "fees": "$60",
+      "nationality": "Mexican",
+      "status": "Approved",
+      "flag": "Green"
+    },
+    {
+      "applicationNumber": "UAED03214567",
+      "name": "Katarina Ivanov",
+      "passportNumber": "N8901234",
+      "fees": "$60",
+      "nationality": "Serbian",
+      "status": "Rejected",
+      "flag": "Red"
+    },
+    {
+      "applicationNumber": "UAED09834521",
+      "name": "Ali Mahmoud",
+      "passportNumber": "O9012345",
+      "fees": "$60",
+      "nationality": "Lebanese",
+      "status": "Pending",
+      "flag": "Blue"
+    },
+    {
+      "applicationNumber": "UAED07891234",
+      "name": "Zara Begum",
+      "passportNumber": "P0123456",
+      "fees": "$60",
+      "nationality": "Bangladeshi",
+      "status": "Approved",
+      "flag": "Green"
+    }
+  ]
+}

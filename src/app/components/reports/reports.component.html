@@ -1,0 +1,167 @@
+<div class="card">
+  <h3>Reports</h3>
+  <div class="p-text-secondary">
+    Generate reports on the applications received. Filter by date, status,
+    nationality and categorization.
+  </div>
+
+  <div class="mt-3">
+    <form [formGroup]="reportSearchForm">
+      <div class="field">
+        <label for="reportType" class="font-bold"
+          >Report Type<span class="text-red-400">*</span></label
+        >
+        <p-dropdown
+          id="reportType"
+          [options]="reportTypes"
+          formControlName="reportType"
+          optionLabel="label"
+          [style]="{ width: '100%' }"
+        />
+      </div>
+
+      <div class="date-container">
+        <div class="field">
+          <label for="nationalityList" class="font-bold"
+            >Nationality<span class="text-red-400">*</span></label
+          >
+          <p-dropdown
+            id="nationalityList"
+            [options]="nationalityList"
+            formControlName="nationality"
+            optionLabel="label"
+            [filter]="true"
+            filterBy="label"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+
+        <div class="field">
+          <label for="status" class="font-bold"
+            >Status<span class="text-red-400">*</span></label
+          >
+          <p-dropdown
+            id="status"
+            [options]="statusList"
+            formControlName="status"
+            optionLabel="label"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+
+        <div class="field">
+          <label for="categorization" class="font-bold"
+            >Categorization<span class="text-red-400">*</span></label
+          >
+          <p-dropdown
+            id="categorization"
+            [options]="categorization"
+            formControlName="categorization"
+            optionLabel="label"
+            [style]="{ width: '100%' }"
+          />
+        </div>
+      </div>
+
+      <div class="date-container">
+        <div class="field">
+          <label for="startDate" class="font-bold"
+            >Start Date<span class="text-red-400">*</span></label
+          >
+          <p-calendar
+            id="startDate"
+            formControlName="startDate"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            [style]="{ width: '100%' }"
+            placeholder="dd/mm/yyyy"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1930:2050"
+          ></p-calendar>
+        </div>
+
+        <div class="field">
+          <label for="endDate" class="font-bold"
+            >End Date<span class="text-red-400">*</span></label
+          >
+          <p-calendar
+            id="endDate"
+            formControlName="endDate"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            [style]="{ width: '100%' }"
+            placeholder="dd/mm/yyyy"
+            dateFormat="dd/mm/yy"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            yearRange="1930:2050"
+          ></p-calendar>
+        </div>
+      </div>
+
+      <p-button
+        (click)="onSearch()"
+        label="Generate Report"
+        icon="pi pi-search"
+        [disabled]="!reportSearchForm.get('reportType').valid"
+      />
+    </form>
+  </div>
+</div>
+
+<div *ngIf="reportValues.length > 0" class="card">
+  <div class="flex justify-content-center gap-3 mb-3">
+    <p-button
+      label="Export PDF"
+      icon="pi pi-file-pdf"
+      styleClass="p-button-outlined"
+    />
+
+    <p-button
+      label="Export Excel"
+      icon="pi pi-file-excel"
+      styleClass="p-button-outlined"
+    />
+  </div>
+  <p-table
+    [value]="reportValues"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Application No.</th>
+        <th>Name</th>
+        <th>Passport No.</th>
+        <th>Nationality</th>
+        <th>Fees</th>
+        <th>Status</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.applicationNumber }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.passportNumber }}</td>
+        <td>{{ product.nationality }}</td>
+        <td>{{ product.fees }}</td>
+        <td>{{ product.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>
