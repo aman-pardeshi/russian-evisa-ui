@@ -16,17 +16,17 @@ export class AppMenuComponent implements OnInit {
       {
         label: 'Dashboard',
         icon: 'pi pi-chart-bar',
-        routerLink: ['/demo/dashboard'],
+        routerLink: ['/dashboard'],
       },
       {
         label: 'Applications',
         icon: 'pi pi-check-circle',
-        routerLink: ['/demo/admin/applications'],
+        routerLink: ['/admin/applications'],
       },
       {
         label: 'Reports',
         icon: 'pi pi-chart-pie',
-        routerLink: ['/demo/admin/reports'],
+        routerLink: ['/admin/reports'],
       },
       {
         label: 'Settings',

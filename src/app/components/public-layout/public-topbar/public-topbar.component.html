@@ -1,0 +1,36 @@
+<div class="layout-topbar bg-white">
+  <div class="wrapper flex align-items-center">
+    <div>Russian eVisa</div>
+
+    <ul class="topbar-menu">
+      <li *ngFor="let item of tabs; let i = index">
+        <a
+          [routerLink]="item.routerLink"
+          routerLinkActive="active-route"
+          [routerLinkActiveOptions]="
+            item.routerLinkActiveOptions || {
+              paths: 'exact',
+              queryParams: 'ignored',
+              fragment: 'ignored',
+              matrixParams: 'ignored'
+            }
+          "
+          [fragment]="item.fragment"
+          [queryParamsHandling]="item.queryParamsHandling"
+          [preserveFragment]="item.preserveFragment!"
+          [skipLocationChange]="item.skipLocationChange!"
+          [replaceUrl]="item.replaceUrl!"
+          [state]="item.state"
+          [queryParams]="item.queryParams"
+        >
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="topbar-profile">
+      <p-button icon="pi pi-phone" label="Need Help?"></p-button>
+    </div>
+  </div>
+</div>
+

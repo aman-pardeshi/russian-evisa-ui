@@ -76,6 +76,14 @@ export class LoginComponent {
             detail: 'Logged in successfully',
           });
           this.router.navigate(['/application']);
+        } else if (response.data && response?.data?.role === 'admin') {
+          this.spinner.hide();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Logged in successfully',
+          });
+          this.router.navigate(['/dashboard']);
         }
       },
       (error) => {

@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import { GeneralInformationComponent } from './components/general-information/general-information.component';
 import { VisaRequirementComponent } from './components/visa-requirement/visa-requirement.component';
 import { AdditionalServicesComponent } from './components/additional-services/additional-services.component';
+import { PublicLayoutComponent } from './components/public-layout/public-layout.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: AppLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
       {
         path: '',
@@ -29,13 +30,7 @@ const routes: Routes = [
             (m) => m.ApplicationModule
           ),
       },
-      {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('./demo/components/dashboards/dashboards.module').then(
-            (m) => m.DashboardsModule
-          ),
-      },
+
       {
         path: 'uikit',
         data: { breadcrumb: 'UI Kit' },
@@ -111,6 +106,19 @@ const routes: Routes = [
       {
         path: 'additional-services',
         component: AdditionalServicesComponent,
+      },
+    ],
+  },
+  {
+    path: '',
+    component: AppLayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./demo/components/dashboards/dashboards.module').then(
+            (m) => m.DashboardsModule
+          ),
       },
       {
         path: 'admin/applications',
