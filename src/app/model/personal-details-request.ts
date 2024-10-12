@@ -1,5 +1,5 @@
 export class PersonalDetailsRequest {
-  applicationId: string;
+  referenceId: string;
   firstName: string;
   lastName: string;
   gender: string;

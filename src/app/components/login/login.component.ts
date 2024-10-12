@@ -75,7 +75,12 @@ export class LoginComponent {
             summary: 'Success',
             detail: 'Logged in successfully',
           });
-          this.router.navigate(['/application']);
+          const serializedUserData = JSON.stringify({
+            authToken: response?.token,
+            userData: response?.data,
+          });
+          localStorage.setItem('userDetails', serializedUserData);
+          // this.router.navigate(['/application']);
         } else if (response.data && response?.data?.role === 'admin') {
           this.spinner.hide();
           this.messageService.add({
@@ -83,11 +88,16 @@ export class LoginComponent {
             summary: 'Success',
             detail: 'Logged in successfully',
           });
+          const serializedUserData = JSON.stringify({
+            authToken: response?.token,
+            userData: response?.data,
+          });
+          localStorage.setItem('userDetails', serializedUserData);
           this.router.navigate(['/dashboard']);
         }
       },
       (error) => {
-        console.log(error.error);
+        console.log(error);
         this.spinner.hide();
         this.messageService.add({
           severity: 'error',

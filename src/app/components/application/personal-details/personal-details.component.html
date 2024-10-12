@@ -217,7 +217,7 @@
                                       'flag flag-' +
                                       applicantDetailsForm
                                         .get('countryCode')
-                                        .value.code.toLowerCase()
+                                        .value.code?.toLowerCase()
                                     "
                                     style="width: 20px"
                                   />
@@ -549,6 +549,111 @@
                       }"
                       style="border-radius: 10rem"
                     >
+                      <i class="pi pi-cloud-upload text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Upload Documents</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <div class="px-5">
+                  <div class="flex gap-3 align-items-center mb-3">
+                    <div class="w-9rem">Photo</div>
+
+                    <div class="w-12rem">
+                      <p-fileUpload
+                        name="photo"
+                        mode="basic"
+                        chooseIcon="pi pi-upload"
+                        accept="image/*"
+                        maxFileSize="1000000"
+                        (onSelect)="onFileSelect($event, 'photo')"
+                        [auto]="false"
+                        chooseLabel="Upload"
+                        styleClass="w-full"
+                      >
+                      </p-fileUpload>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 align-items-center mb-3">
+                    <div class="w-9rem">Passport Front Side</div>
+                    <div class="w-12rem">
+                      <p-fileUpload
+                        name="passport"
+                        mode="basic"
+                        chooseIcon="pi pi-upload"
+                        accept="image/*"
+                        maxFileSize="1000000"
+                        (onSelect)="onFileSelect($event, 'passportFront')"
+                        [auto]="false"
+                        chooseLabel="Upload"
+                        styleClass="w-full"
+                      >
+                      </p-fileUpload>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 align-items-center">
+                    <div class="w-9rem">Passport Back Side</div>
+                    <div class="w-12rem">
+                      <p-fileUpload
+                        name="passport"
+                        mode="basic"
+                        chooseIcon="pi pi-upload"
+                        accept="image/*"
+                        maxFileSize="1000000"
+                        (onSelect)="onFileSelect($event, 'passportBack')"
+                        [auto]="false"
+                        chooseLabel="Upload"
+                        styleClass="w-full"
+                      >
+                      </p-fileUpload>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                  <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  />
+                  <p-button
+                    (onClick)="handleFileUpload(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
                       <i class="pi pi-check-square text-xl"></i>
                     </span>
                   </button>
@@ -572,24 +677,21 @@
                         <div class="flex flex-column">
                           <small>First Name</small>
                           <div class="font-bold text-xl">
-                            {{ applicantDetailsForm.get('firstName').value }}
+                            {{ submitedApplicationDetails?.firstName }}
                           </div>
                         </div>
 
                         <div class="flex flex-column">
                           <small>Last Name</small>
                           <div class="font-bold text-xl">
-                            {{ applicantDetailsForm.get('lastName')?.value }}
+                            {{ submitedApplicationDetails?.lastName }}
                           </div>
                         </div>
 
                         <div class="flex flex-column">
                           <small>Gender</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantDetailsForm.get('gender')?.value.label ||
-                                '-'
-                            }}
+                            {{ submitedApplicationDetails?.gender || '-' }}
                           </div>
                         </div>
 
@@ -598,7 +700,7 @@
                           <div class="font-bold text-xl">
                             {{
                               formatDate(
-                                applicantDetailsForm.get('dateOfBirth')?.value
+                                submitedApplicationDetails?.dateOfBirth
                               )
                             }}
                           </div>
@@ -607,39 +709,32 @@
                         <div class="flex flex-column">
                           <small>Place of Birth</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantDetailsForm.get('placeOfBirth')?.value
-                            }}
+                            {{ submitedApplicationDetails?.placeOfBirth }}
                           </div>
                         </div>
 
                         <div class="flex flex-column">
                           <small>Country</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantDetailsForm.get('country')?.value
-                                .label || '-'
-                            }}
+                            {{ submitedApplicationDetails?.country || '-' }}
                           </div>
                         </div>
 
                         <div class="flex flex-column">
                           <small>Email</small>
                           <div class="font-bold text-xl">
-                            {{ applicantDetailsForm.get('email')?.value }}
+                            {{
+                              submitedApplicationDetails?.email ||
+                                submitedApplicationDetails?.groupEmail
+                            }}
                           </div>
                         </div>
 
                         <div class="flex flex-column">
                           <small>Contact Number</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantDetailsForm.get('countryCode')?.value
-                                .countryCode
-                            }}
-                            {{
-                              applicantDetailsForm.get('contactNo').value || '-'
-                            }}
+                            {{ submitedApplicationDetails?.countryCode }}
+                            {{ submitedApplicationDetails?.contactNo || '-' }}
                           </div>
                         </div>
                       </div>
@@ -768,21 +863,52 @@
                   </div>
 
                   <p-divider />
+                  <div>
+                    <div class="mt-3 mb-3 font-semibold">Documents</div>
 
-                  <div class="mt-3 mb-3 font-semibold">Payment Details</div>
-                  <div class="" style="max-width: 15rem">
-                    <div class="flex justify-content-between total-row">
-                      <div class="">Visa Fee</div>
-                      <div class="font-bold">$50</div>
+                    <div class="mb-3">
+                      <div class="w-6">
+                        <div class="mb-3">Photo</div>
+
+                        <div>
+                          <img
+                            [src]="submitedApplicationDetails?.photo?.url"
+                            width="100%"
+                            class="passport-img"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div class="flex justify-content-between total-row mt-2">
-                      <div class="">Service Fee</div>
-                      <div class="font-bold">$10</div>
-                    </div>
-                    <p-divider />
-                    <div class="flex justify-content-between total-row">
-                      <div class="font-bold">Total</div>
-                      <div class="font-bold">$60</div>
+
+                    <div class="flex gap-3">
+                      <div class="w-6">
+                        <div class="mb-3">Passport Front Side</div>
+
+                        <div>
+                          <img
+                            [src]="
+                              submitedApplicationDetails?.passportPhotoFront
+                                ?.url
+                            "
+                            width="100%"
+                            class="passport-img"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="w-6">
+                        <div class="mb-3">Passport Back Side</div>
+
+                        <div>
+                          <img
+                            [src]="
+                              submitedApplicationDetails?.passportPhotoBack?.url
+                            "
+                            width="100%"
+                            class="passport-img"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -833,17 +959,59 @@
                 </div>
               </ng-template>
               <ng-template pTemplate="content" let-prevCallback="prevCallback">
-                <div class="flex flex-column gap-2 mx-auto pl-5">
-                  <div class="text-center mt-3 mb-3 text-xl font-semibold">
-                    Application created successfully
+                <div
+                  *ngIf="
+                    submitedApplicationDetails?.paymentStatus === 'unpaid' &&
+                      submitedApplicationDetails?.status === 'incomplete';
+                    else applicationCreated
+                  "
+                >
+                  <div class="mt-3 mb-3 font-semibold text-center">
+                    Payment Details
                   </div>
-                  <div class="text-center">
-                    <img
-                      alt="logo"
-                      src="https://primefaces.org/cdn/primeng/images/stepper/content.svg"
+                  <div class="flex justify-content-center">
+                    <div class="" style="width: 15rem">
+                      <div class="flex justify-content-between total-row">
+                        <div class="">Visa Fee</div>
+                        <div class="font-bold">$50</div>
+                      </div>
+                      <div class="flex justify-content-between total-row mt-2">
+                        <div class="">Service Fee</div>
+                        <div class="font-bold">$10</div>
+                      </div>
+                      <p-divider />
+                      <div class="flex justify-content-between total-row">
+                        <div class="font-bold">Total</div>
+                        <div class="font-bold">$60</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-content-center mt-3">
+                    <p-button
+                      (onClick)="processPayment()"
+                      label="Proceed to pay"
+                      icon="pi pi-arrow-right"
+                      iconPos="right"
                     />
                   </div>
                 </div>
+                <ng-template #applicationCreated>
+                  <div
+                    class="flex flex-column gap-2 mx-auto pl-5"
+                    #applicationCreated
+                  >
+                    <div class="text-center mt-3 mb-3 text-xl font-semibold">
+                      Application created successfully
+                    </div>
+                    <div class="text-center">
+                      <img
+                        alt="logo"
+                        src="https://primefaces.org/cdn/primeng/images/stepper/content.svg"
+                      />
+                    </div>
+                  </div>
+                </ng-template>
+
                 <div class="flex pt-4 justify-content-start">
                   <!-- <p-button
                     (onClick)="prevCallback.emit()"

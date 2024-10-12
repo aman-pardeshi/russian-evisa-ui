@@ -3,16 +3,6 @@
   flex-direction: column;
 }
 
-.date-container {
-  width: fit-content;
-  display: flex;
-  gap: 1rem;
-  padding: 1rem 1rem 0 1rem;
-  border-radius: 1rem;
-  background: rgba(12, 74, 110, 0.1);
-  margin-bottom: 1rem;
-}
-
 .application-name {
   width: fit-content;
   padding: 0.4rem 0.8rem;
@@ -24,7 +14,7 @@
   cursor: pointer;
 }
 
-.applicant-details-container {
+applicant-details-container {
   max-height: 60%;
   overflow-y: auto;
 

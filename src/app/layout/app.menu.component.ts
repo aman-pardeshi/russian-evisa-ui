@@ -19,9 +19,19 @@ export class AppMenuComponent implements OnInit {
         routerLink: ['/dashboard'],
       },
       {
-        label: 'Applications',
+        label: 'Submitted Applications',
         icon: 'pi pi-check-circle',
-        routerLink: ['/admin/applications'],
+        routerLink: ['/admin/submitted-applications'],
+      },
+      {
+        label: 'Applied Applications',
+        icon: 'pi pi-check-circle',
+        routerLink: ['/admin/applied-applications'],
+      },
+      {
+        label: 'Total Applications',
+        icon: 'pi pi-check-circle',
+        routerLink: ['/admin/total-applications'],
       },
       {
         label: 'Reports',

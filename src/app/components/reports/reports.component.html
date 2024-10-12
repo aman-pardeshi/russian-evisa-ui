@@ -7,63 +7,20 @@
 
   <div class="mt-3">
     <form [formGroup]="reportSearchForm">
-      <div class="field">
-        <label for="reportType" class="font-bold"
-          >Report Type<span class="text-red-400">*</span></label
-        >
-        <p-dropdown
-          id="reportType"
-          [options]="reportTypes"
-          formControlName="reportType"
-          optionLabel="label"
-          [style]="{ width: '100%' }"
-        />
-      </div>
-
-      <div class="date-container">
+      <div class="flex gap-3">
         <div class="field">
-          <label for="nationalityList" class="font-bold"
-            >Nationality<span class="text-red-400">*</span></label
+          <label for="reportType" class="font-bold"
+            >Report Type<span class="text-red-400">*</span></label
           >
           <p-dropdown
-            id="nationalityList"
-            [options]="nationalityList"
-            formControlName="nationality"
-            optionLabel="label"
-            [filter]="true"
-            filterBy="label"
-            [style]="{ width: '100%' }"
-          />
-        </div>
-
-        <div class="field">
-          <label for="status" class="font-bold"
-            >Status<span class="text-red-400">*</span></label
-          >
-          <p-dropdown
-            id="status"
-            [options]="statusList"
-            formControlName="status"
+            id="reportType"
+            [options]="reportTypes"
+            formControlName="reportType"
             optionLabel="label"
             [style]="{ width: '100%' }"
           />
         </div>
 
-        <div class="field">
-          <label for="categorization" class="font-bold"
-            >Categorization<span class="text-red-400">*</span></label
-          >
-          <p-dropdown
-            id="categorization"
-            [options]="categorization"
-            formControlName="categorization"
-            optionLabel="label"
-            [style]="{ width: '100%' }"
-          />
-        </div>
-      </div>
-
-      <div class="date-container">
         <div class="field">
           <label for="startDate" class="font-bold"
             >Start Date<span class="text-red-400">*</span></label

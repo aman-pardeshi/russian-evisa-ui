@@ -51,8 +51,11 @@ export class ReportsComponent implements OnInit {
 
   ngOnInit() {
     this.reportTypes = [
-      { label: 'Report 1', value: 'M' },
-      { label: 'Report 2', value: 'F' },
+      { label: 'Application Submitted', value: 'Application Submitted' },
+      { label: 'Applied Visa', value: 'Applied Visa' },
+      { label: 'Processed Visa', value: 'Processed Visa' },
+      { label: 'Account Report', value: 'Account Report' },
+      { label: 'Incomplete Application', value: 'Incomplete Application' },
     ];
 
     this.statusList.push(

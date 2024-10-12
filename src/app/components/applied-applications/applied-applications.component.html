@@ -1,6 +1,6 @@
 <p-toast />
 <div>
-  <h3>Submitted Applications</h3>
+  <h3>Applied Applications</h3>
   <div class="card">
     <form [formGroup]="applicationSearchForm">
       <div class="flex gap-3">
@@ -113,78 +113,12 @@
       </div>
 
       <p-button (click)="onSearch()" label="Search" icon="pi pi-search" />
-      <!-- [disabled]="!applicationSearchForm.get('reportType').valid" -->
     </form>
   </div>
 
-  <div class="card mb-3" *ngIf="applicationsList">
-    <!-- <form [formGroup]="applicationFilterForm">
-      <div class="flex justify-content-between align-items-center mb-3">
-        <div class="flex gap-3">
-          <div style="width: 230px">
-            <p-dropdown
-              id="nationalityList"
-              [options]="nationalityList"
-              optionLabel="label"
-              formControlName="nationality"
-              styleClass="p-button-raised"
-              [style]="{ borderRadius: '10rem', width: '100%' }"
-              [filter]="true"
-              filterBy="label"
-              (onChange)="onFilterChange()"
-            />
-          </div>
-
-          <div style="width: 135px">
-            <p-dropdown
-              id="status"
-              [options]="statusList"
-              formControlName="status"
-              optionLabel="label"
-              [style]="{ borderRadius: '10rem', width: '100%' }"
-              (onChange)="onFilterChange()"
-            />
-          </div>
-
-          <div style="width: 190px">
-            <p-dropdown
-              id="categorization"
-              [options]="categorization"
-              formControlName="categorization"
-              optionLabel="label"
-              [style]="{ borderRadius: '10rem', width: '100%' }"
-              (onChange)="onFilterChange()"
-            />
-          </div>
-        </div>
-
-        <div class="flex gap-3">
-          <p-button
-            label="Approve"
-            styleClass="p-button-outlined p-button-secondary"
-            (click)="onApprov()"
-            [disabled]="selectedApplications.length === 0"
-          ></p-button>
-          <p-button
-            label="Reject"
-            (click)="onApprov()"
-            styleClass="p-button-outlined p-button-secondary"
-            [disabled]="selectedApplications.length === 0"
-          ></p-button>
-          <p-button
-            label="On-Hold"
-            (click)="onApprov()"
-            styleClass="p-button-outlined p-button-secondary"
-            [disabled]="selectedApplications.length === 0"
-          ></p-button>
-        </div>
-      </div>
-    </form> -->
-
+  <div class="card" *ngIf="applicationsList">
     <p-table
       [value]="applicationsList"
-      [(selection)]="selectedApplications"
-      dataKey="applicationNumber"
       [tableStyle]="{ 'min-width': '50rem' }"
       [paginator]="true"
       [rows]="10"
@@ -197,7 +131,7 @@
           <th>Email</th>
           <th>Passport</th>
           <th>Nationality</th>
-          <th (click)="delete()">Status</th>
+          <th>Status</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product>
@@ -376,11 +310,15 @@
       </div>
     </div>
     <p-divider></p-divider>
+
     <div class="flex gap-3">
       <div class="w-6">
         <p-timeline [value]="selectedApplicationHistory">
           <ng-template pTemplate="opposite" let-event>
-            <small class="p-text-secondary">{{ event.created_at }}</small>
+            <small class="p-text-secondary">
+              <div>{{ event.date }}</div>
+              <div>{{ event.time }}</div>
+            </small>
           </ng-template>
           <ng-template pTemplate="content" let-event>
             {{ event.description }}
@@ -407,15 +345,56 @@
         </div>
       </div>
     </div>
-    <p-divider></p-divider>
   </div>
 
   <div class="flex justify-content-center mb-3 gap-3">
     <p-button
-      label="Apply Visa"
+      label="Approve"
       [disabled]="currentApplicationDetails?.status === 'Approved'"
       severity="success"
-      (click)="handleApplyVisa()"
+      (click)="showApprovalConfirmationDialog = true"
     ></p-button>
+
+    <p-button
+      label="Reject"
+      [disabled]="currentApplicationDetails?.status === 'Rejected'"
+      (click)="handleReject()"
+    ></p-button>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showApprovalConfirmationDialog"
+  [modal]="true"
+  header="Applicant Details"
+>
+  <ng-template pTemplate="header">
+    <div class="flex gap-3 bg-white" style="border-radius: 14px">
+      <div class="text-2xl font-bold">Upload Approval Document</div>
+    </div>
+  </ng-template>
+
+  <div>
+    <div class="flex gap-3 align-items-center mb-3">
+      <div class="w-9rem">Approval Document</div>
+
+      <div class="w-12rem">
+        <p-fileUpload
+          name="photo"
+          mode="basic"
+          chooseIcon="pi pi-upload"
+          maxFileSize="1000000"
+          (onSelect)="onFileSelect($event)"
+          [auto]="false"
+          chooseLabel="Upload"
+          styleClass="w-full"
+        >
+        </p-fileUpload>
+      </div>
+    </div>
+
+    <div class="flex gap-3 justify-content-center mb-3">
+      <p-button label="Submit" (click)="handleApprove()"></p-button>
+    </div>
   </div>
 </p-dialog>

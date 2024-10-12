@@ -5,66 +5,58 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
+import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { AdminService } from 'src/app/services/admin.service';
+import { ApplicationService } from 'src/app/services/application.service';
 import { LoaderComponent } from '../Shared/loader/loader.component';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
-import { DividerModule } from 'primeng/divider';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { ApplicationService } from 'src/app/services/application.service';
-import { AdminService } from 'src/app/services/admin.service';
-import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { first } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
 import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
+import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import { DividerModule } from 'primeng/divider';
 import { TimelineModule } from 'primeng/timeline';
 
 @Component({
-  selector: 'app-process-applications',
+  selector: 'app-total-applications',
   standalone: true,
   imports: [
+    ToastModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     DropdownModule,
-    ButtonModule,
-    CalendarModule,
-    TableModule,
     InputTextModule,
-    SplitButtonModule,
     NgxSpinnerModule,
     LoaderComponent,
     TagModule,
     DialogModule,
+    TableModule,
+    CalendarModule,
+    ButtonModule,
     DividerModule,
-    ToastModule,
-    TimelineModule,
+    TimelineModule
   ],
-  templateUrl: './process-applications.component.html',
-  styleUrl: './process-applications.component.scss',
+  templateUrl: './total-applications.component.html',
+  styleUrl: './total-applications.component.scss',
   providers: [MessageService],
 })
-export class ProcessApplicationsComponent {
+export class TotalApplicationsComponent {
   searchBy: string = 'date';
   applicationSearchForm: FormGroup;
   applicationSearchParams: ApplicationSearchRequest;
-  applicationFilterForm: FormGroup;
-  nationalityList: any[] = [];
-  statusList: any[] = [];
-  categorization: any[] = [];
-  showApplicationDetailsDialog: boolean = false;
-
   applicationsList: any[];
-  selectedApplications: any[] = [];
-
+  showApplicationDetailsDialog: boolean = false;
   currentApplicationDetails: any;
+  selectedApplications: any[] = [];
   selectedApplicationHistory: [] = [];
 
   searchByList: any[] = [
@@ -97,26 +89,8 @@ export class ProcessApplicationsComponent {
     });
   }
 
-  ngOnInit() {
-    this.statusList.push(
-      { label: 'All Status', value: 'All' },
-      { label: 'Pending', value: 'Pending' },
-      { label: 'Approved', value: 'Approved' },
-      { label: 'Rejected', value: 'Rejected' },
-      { label: 'On-Hold', value: 'On-Hold' }
-    );
-
-    this.categorization.push(
-      { label: 'All Categorization', value: 'All' },
-      { label: 'Red Applications', value: 'Red' },
-      { label: 'Blue Applications', value: 'Blue' },
-      { label: 'Green Applications', value: 'Green' }
-    );
-
-    this.applicationService.getNationalityList().subscribe((response) => {
-      this.nationalityList = response;
-      this.nationalityList.unshift({ label: 'All Nationality', value: 'All' });
-    });
+  onFilterChange() {
+    this.searchBy = this.applicationSearchForm.get('searchBy')?.value?.value;
   }
 
   onSearch() {
@@ -124,28 +98,32 @@ export class ProcessApplicationsComponent {
     this.applicationSearchParams = new ApplicationSearchRequest();
     this.applicationSearchParams.searchBy =
       this.applicationSearchForm.get('searchBy')?.value?.value;
+    this.applicationSearchParams.applicationId =
+      this.applicationSearchForm.get('applicationId')?.value;
+
     this.adminService
-      .getSubmittedApplications(this.applicationSearchParams)
+      .getAllApplications(this.applicationSearchParams)
       .subscribe(
         (response) => {
+          console.log(response);
           if (response?.admin_applications?.length > 0) {
             this.applicationsList = mapArrayFromSnakeToCamel(
-              response?.admin_applications
+              response.admin_applications
             );
             console.log(this.applicationsList);
+            this.spinner.hide();
           } else {
             this.messageService.add({
               severity: 'error',
               detail: 'No Application Present',
             });
           }
-          this.spinner.hide();
         },
         (error) => {
           this.spinner.hide();
           this.messageService.add({
             severity: 'error',
-            detail: 'Something went wrong',
+            detail: 'Error While Fetching Applications',
           });
         }
       );
@@ -185,42 +163,7 @@ export class ProcessApplicationsComponent {
       referenceId: application.referenceId,
       status: application.status,
     };
-
     this.selectedApplicationHistory = application.applicationHistories;
     console.log(application);
-  }
-
-  handleApplyVisa() {
-    this.spinner.show();
-
-    const params = {
-      referenceId: this.currentApplicationDetails.referenceId,
-    };
-
-    console.log(params, this.currentApplicationDetails);
-
-    this.adminService.applyVisaForApplication(params).subscribe(
-      (response) => {
-        console.log(response);
-        this.spinner.hide();
-      },
-      (error) => {
-        this.spinner.hide();
-        this.messageService.add({
-          severity: 'error',
-          detail: 'Something went wrong',
-        });
-      }
-    );
-
-    // this.messageService.add({
-    //   severity: 'success',
-    //   summary: 'Success',
-    //   detail: 'Application Updated Successfully',
-    // });
-  }
-
-  onFilterChange() {
-    this.searchBy = this.applicationSearchForm.get('searchBy')?.value?.value;
   }
 }

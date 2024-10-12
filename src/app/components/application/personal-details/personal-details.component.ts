@@ -33,6 +33,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PersonalDetailsRequest } from 'src/app/model/personal-details-request';
 import { PassportDetailRequest } from 'src/app/model/passport-detail-request';
 import { mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import { FileUploadRequest } from 'src/app/model/files-upload-request';
+// import * as Tesseract from 'tesseract.js';
 
 interface City {
   name: string;
@@ -87,10 +89,14 @@ export class PersonalDetailsComponent implements OnInit {
     { label: 'Yes', value: true },
     { label: 'No', value: false },
   ];
-  applicationId: string;
+  referenceId: string;
   personalDetailsRequest: PersonalDetailsRequest;
   passportDetailsRequest: PassportDetailRequest;
   submitedApplicationDetails: any;
+  photoFile: File | null = null;
+  passportFrontFile: File | null = null;
+  passportBackFile: File | null = null;
+  fileUploadRequest: FileUploadRequest;
 
   constructor(
     private router: Router,
@@ -102,11 +108,12 @@ export class PersonalDetailsComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.route.params.subscribe((params: Params) => {
-      this.applicationId = params.id;
+      this.referenceId = params.id;
     });
 
-    console.log(this.applicationId);
+    console.log(this.referenceId);
     this.initForm();
+    this.fetchApplicationDetails();
   }
 
   ngOnInit() {
@@ -138,6 +145,55 @@ export class PersonalDetailsComponent implements OnInit {
       otherNationality: [''],
       yearOfAcquisition: [undefined],
     });
+  }
+
+  fetchApplicationDetails() {
+    const params = {
+      referenceId: this.referenceId,
+    };
+    this.applicationService.getApplicationDetails(params).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          this.spinner.hide();
+          this.submitedApplicationDetails = mapObjectFromSnakeToCamel(
+            response.data,
+            {}
+          );
+
+          this.updateFormFields();
+
+          console.log(this.submitedApplicationDetails);
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
+
+        this.spinner.hide();
+      }
+    );
+  }
+
+  updateFormFields() {
+    this.applicantDetailsForm.patchValue({
+      firstName: this.submitedApplicationDetails.firstName,
+      lastName: this.submitedApplicationDetails.lastName,
+      gender: this.submitedApplicationDetails.gender,
+      dateOfBirth: new Date(this.submitedApplicationDetails.dateOfBirth),
+      placeOfBirth: this.submitedApplicationDetails.placeOfBirth,
+      country: this.submitedApplicationDetails.country,
+      countryCode: this.submitedApplicationDetails.countryCode,
+      contactNo: this.submitedApplicationDetails.mobile,
+      email:
+        this.submitedApplicationDetails.email ||
+        this.submitedApplicationDetails.groupEmail,
+    });
+
+    console.log(this.applicantDetailsForm);
   }
 
   fetchFormsOptions() {
@@ -185,13 +241,13 @@ export class PersonalDetailsComponent implements OnInit {
     this.spinner.show();
     console.log('elp-Handle Next', nextFunction);
     this.personalDetailsRequest = new PersonalDetailsRequest();
-    this.personalDetailsRequest.applicationId = this.applicationId;
+    this.personalDetailsRequest.referenceId = this.referenceId;
     this.personalDetailsRequest.firstName =
       this.applicantDetailsForm.get('firstName').value;
     this.personalDetailsRequest.lastName =
       this.applicantDetailsForm.get('lastName').value;
     this.personalDetailsRequest.gender =
-      this.applicantDetailsForm.get('gender').value.label;
+      this.applicantDetailsForm.get('gender').value?.label;
     this.personalDetailsRequest.dateOfBirth =
       this.applicantDetailsForm.get('dateOfBirth').value;
     this.personalDetailsRequest.placeOfBirth =
@@ -241,7 +297,7 @@ export class PersonalDetailsComponent implements OnInit {
 
     this.passportDetailsRequest = new PassportDetailRequest();
 
-    this.passportDetailsRequest.applicationId = this.applicationId;
+    this.passportDetailsRequest.referenceId = this.referenceId;
     this.passportDetailsRequest.passportNumber =
       this.applicantPassportDetailsForm.get('passportNumber').value;
     this.passportDetailsRequest.passportExpiryDate =
@@ -289,5 +345,109 @@ export class PersonalDetailsComponent implements OnInit {
           this.spinner.hide();
         }
       );
+  }
+
+  onFileSelect(event: any, type: string) {
+    const file = event.files[0];
+    if (type === 'photo') {
+      this.photoFile = file;
+    } else if (type === 'passportFront') {
+      this.passportFrontFile = file;
+      this.extractTextFromImage(this.passportFrontFile);
+    } else if (type === 'passportBack') {
+      this.passportBackFile = file;
+    }
+  }
+
+  extractTextFromImage(file: File) {
+    // Tesseract.recognize(file, 'eng', {
+    //   logger: (info) => console.log(info), // Optional: log progress
+    // }).then(({ data: { text } }) => {
+    //   console.log('extracted-text', text);
+    //   // this.fillFormWithExtractedData(text);
+    // });
+  }
+
+  handleFileUpload(nextFunction: any) {
+    this.spinner.show();
+
+    const formData = new FormData();
+
+    formData.append('referenceId', this.referenceId);
+
+    if (this.photoFile) {
+      formData.append('photo', this.photoFile); // Correct file input
+    }
+    if (this.passportFrontFile) {
+      formData.append('passportFront', this.passportFrontFile); // Correct file input
+    }
+
+    if (this.passportBackFile) {
+      formData.append('passportBack', this.passportBackFile); // Correct file input
+    }
+
+    this.applicationService.uploadDocuments(formData).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          this.spinner.hide();
+          this.submitedApplicationDetails = mapObjectFromSnakeToCamel(
+            response.data,
+            {}
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Document Uploaded Successfully',
+          });
+          nextFunction.emit();
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
+
+        this.spinner.hide();
+      }
+    );
+    console.log(this.fileUploadRequest);
+  }
+
+  processPayment() {
+    this.spinner.show();
+
+    const params = {
+      referenceId: this.referenceId,
+    };
+
+    this.applicationService.submitApplication(params).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          this.spinner.hide();
+          this.submitedApplicationDetails = mapObjectFromSnakeToCamel(
+            response.data,
+            {}
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Application Created Successfully',
+          });
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
+
+        this.spinner.hide();
+      }
+    );
   }
 }

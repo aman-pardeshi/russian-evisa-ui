@@ -1,5 +1,5 @@
 export class PassportDetailRequest {
-  applicationId: string;
+  referenceId: string;
   passportNumber: string;
   passportExpiryDate: Date;
   passportDateOfIssue: Date;

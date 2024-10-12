@@ -9,6 +9,8 @@ import { GeneralInformationComponent } from './components/general-information/ge
 import { VisaRequirementComponent } from './components/visa-requirement/visa-requirement.component';
 import { AdditionalServicesComponent } from './components/additional-services/additional-services.component';
 import { PublicLayoutComponent } from './components/public-layout/public-layout.component';
+import { AppliedApplicationsComponent } from './components/applied-applications/applied-applications.component';
+import { TotalApplicationsComponent } from './components/total-applications/total-applications.component';
 
 const routes: Routes = [
   {
@@ -56,9 +58,19 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'admin/applications',
+        path: 'admin/submitted-applications',
         data: { breadcrumb: 'Applications' },
         component: ProcessApplicationsComponent,
+      },
+      {
+        path: 'admin/applied-applications',
+        data: { breadcrumb: 'Applications' },
+        component: AppliedApplicationsComponent,
+      },
+      {
+        path: 'admin/total-applications',
+        data: { breadcrumb: 'Applications' },
+        component: TotalApplicationsComponent,
       },
       {
         path: 'admin/reports',

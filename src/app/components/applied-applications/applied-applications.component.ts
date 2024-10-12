@@ -5,67 +5,66 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 import { LoaderComponent } from '../Shared/loader/loader.component';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
-import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { TimelineModule } from 'primeng/timeline';
+import { getDateInFormat } from '../Shared/utils';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
-  selector: 'app-process-applications',
+  selector: 'app-applied-applications',
   standalone: true,
   imports: [
+    ToastModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     DropdownModule,
-    ButtonModule,
-    CalendarModule,
-    TableModule,
     InputTextModule,
-    SplitButtonModule,
     NgxSpinnerModule,
     LoaderComponent,
     TagModule,
     DialogModule,
+    TableModule,
+    CalendarModule,
+    ButtonModule,
     DividerModule,
-    ToastModule,
     TimelineModule,
+    FileUploadModule,
   ],
-  templateUrl: './process-applications.component.html',
-  styleUrl: './process-applications.component.scss',
+  templateUrl: './applied-applications.component.html',
+  styleUrl: './applied-applications.component.scss',
   providers: [MessageService],
 })
-export class ProcessApplicationsComponent {
+export class AppliedApplicationsComponent {
   searchBy: string = 'date';
   applicationSearchForm: FormGroup;
   applicationSearchParams: ApplicationSearchRequest;
-  applicationFilterForm: FormGroup;
-  nationalityList: any[] = [];
-  statusList: any[] = [];
-  categorization: any[] = [];
-  showApplicationDetailsDialog: boolean = false;
-
   applicationsList: any[];
-  selectedApplications: any[] = [];
+  showApplicationDetailsDialog: boolean = false;
+  showApprovalConfirmationDialog: boolean = false;
+  showRejectionConfirmationDialog: boolean = false;
 
   currentApplicationDetails: any;
+  selectedApplications: any[] = [];
   selectedApplicationHistory: [] = [];
+  approvalDocument: File | null = null;
+  rejectionNote: string = '';
 
   searchByList: any[] = [
     { label: 'Application ID', value: 'applicationId' },
@@ -97,26 +96,8 @@ export class ProcessApplicationsComponent {
     });
   }
 
-  ngOnInit() {
-    this.statusList.push(
-      { label: 'All Status', value: 'All' },
-      { label: 'Pending', value: 'Pending' },
-      { label: 'Approved', value: 'Approved' },
-      { label: 'Rejected', value: 'Rejected' },
-      { label: 'On-Hold', value: 'On-Hold' }
-    );
-
-    this.categorization.push(
-      { label: 'All Categorization', value: 'All' },
-      { label: 'Red Applications', value: 'Red' },
-      { label: 'Blue Applications', value: 'Blue' },
-      { label: 'Green Applications', value: 'Green' }
-    );
-
-    this.applicationService.getNationalityList().subscribe((response) => {
-      this.nationalityList = response;
-      this.nationalityList.unshift({ label: 'All Nationality', value: 'All' });
-    });
+  onFilterChange() {
+    this.searchBy = this.applicationSearchForm.get('searchBy')?.value?.value;
   }
 
   onSearch() {
@@ -124,22 +105,24 @@ export class ProcessApplicationsComponent {
     this.applicationSearchParams = new ApplicationSearchRequest();
     this.applicationSearchParams.searchBy =
       this.applicationSearchForm.get('searchBy')?.value?.value;
+
     this.adminService
-      .getSubmittedApplications(this.applicationSearchParams)
+      .getAppliedApplication(this.applicationSearchParams)
       .subscribe(
         (response) => {
           if (response?.admin_applications?.length > 0) {
             this.applicationsList = mapArrayFromSnakeToCamel(
-              response?.admin_applications
+              response.admin_applications
             );
             console.log(this.applicationsList);
+            this.spinner.hide();
           } else {
+            this.spinner.hide();
             this.messageService.add({
               severity: 'error',
               detail: 'No Application Present',
             });
           }
-          this.spinner.hide();
         },
         (error) => {
           this.spinner.hide();
@@ -190,37 +173,74 @@ export class ProcessApplicationsComponent {
     console.log(application);
   }
 
-  handleApplyVisa() {
+  handleApprove() {
     this.spinner.show();
+    const formData = new FormData();
 
-    const params = {
-      referenceId: this.currentApplicationDetails.referenceId,
-    };
+    formData.append('referenceId', this.currentApplicationDetails.referenceId);
 
-    console.log(params, this.currentApplicationDetails);
+    if (this.approvalDocument) {
+      formData.append('approvalDocument', this.approvalDocument);
+    }
 
-    this.adminService.applyVisaForApplication(params).subscribe(
+    this.adminService.approveApplication(formData).subscribe(
       (response) => {
-        console.log(response);
-        this.spinner.hide();
+        if (response.admin_application) {
+          this.spinner.hide();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Applicaion Approved Successfully',
+          });
+        }
       },
       (error) => {
-        this.spinner.hide();
+        console.error(error);
         this.messageService.add({
           severity: 'error',
-          detail: 'Something went wrong',
+          summary: 'Error',
+          detail: error?.error?.message,
         });
+
+        this.spinner.hide();
       }
     );
-
-    // this.messageService.add({
-    //   severity: 'success',
-    //   summary: 'Success',
-    //   detail: 'Application Updated Successfully',
-    // });
   }
 
-  onFilterChange() {
-    this.searchBy = this.applicationSearchForm.get('searchBy')?.value?.value;
+  handleReject() {
+    this.spinner.show();
+    const formData = new FormData();
+
+    formData.append('referenceId', this.currentApplicationDetails.referenceId);
+
+    formData.append('rejectionNote', this.rejectionNote);
+
+    this.adminService.rejectApplication(formData).subscribe(
+      (response) => {
+        if (response.admin_application) {
+          this.spinner.hide();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Applicaion Rejected Successfully',
+          });
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
+
+        this.spinner.hide();
+      }
+    );
+  }
+
+  onFileSelect(event: any) {
+    const file = event.files[0];
+    this.approvalDocument = file;
   }
 }

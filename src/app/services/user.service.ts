@@ -10,6 +10,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   loginUser(details: any) {
-    return this.http.post<any>(this.serverUrl + `sessions`, details);
+    return this.http.post<any>(this.serverUrl + `/sessions`, details);
   }
 }

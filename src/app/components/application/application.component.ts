@@ -49,11 +49,8 @@ export class ApplicationComponent implements OnInit {
 
     this.applicationService.createApplication().subscribe(
       (response) => {
-        if (response.application_id) {
-          this.router.navigate([
-            '/application/apply/',
-            response.application_id,
-          ]);
+        if (response.reference_id) {
+          this.router.navigate(['/application/apply/', response.reference_id]);
         }
         this.spinner.hide();
       },

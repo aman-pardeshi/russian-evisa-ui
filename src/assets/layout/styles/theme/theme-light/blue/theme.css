@@ -450,7 +450,6 @@
   .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
 
@@ -499,7 +498,6 @@
 .p-datepicker .p-datepicker-header .p-datepicker-next:focus-visible {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-datepicker .p-datepicker-header .p-datepicker-title {
     line-height: 2rem;
@@ -546,7 +544,6 @@
   .p-datepicker table td > span:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-datepicker table td.p-datepicker-today > span {
     background: #ced4da;
@@ -643,7 +640,6 @@
   .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover {
     background: #e9ecef;
@@ -651,7 +647,6 @@
   .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
     background: #e9ecef;
@@ -659,7 +654,6 @@
   .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
 
   p-calendar.p-calendar-clearable .p-inputtext {
@@ -937,7 +931,7 @@
   .p-dropdown:not(.p-disabled).p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
+    /* box-shadow: 0 0 0 0.2rem #75bee5; */
     border-color: #1992D4;
   }
   .p-dropdown.p-dropdown-clearable .p-dropdown-label {
@@ -1212,7 +1206,6 @@
   .p-inputtext:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
   .p-inputtext.ng-dirty.ng-invalid {
@@ -1368,7 +1361,6 @@
   .p-listbox.p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
 
@@ -1388,7 +1380,6 @@
   .p-multiselect:not(.p-disabled).p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
   .p-multiselect .p-multiselect-label {
@@ -1472,7 +1463,6 @@
   .p-multiselect-panel .p-multiselect-header .p-multiselect-close:focus-visible {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-multiselect-panel .p-multiselect-items {
     padding: 0.75rem 0;
@@ -1592,7 +1582,6 @@
   .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
   .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
@@ -1650,7 +1639,6 @@
   .p-rating .p-rating-item.p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: #1992D4;
   }
   .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
@@ -1997,7 +1985,6 @@
   .p-button:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #75bee5;
   }
   .p-button .p-button-label {
     transition-duration: 0.2s;
@@ -2503,7 +2490,6 @@
   }
   .p-button.p-button-link:not(:disabled):focus {
     background: transparent;
-    box-shadow: 0 0 0 0.2rem #75bee5;
     border-color: transparent;
   }
   .p-button.p-button-link:not(:disabled):active {
