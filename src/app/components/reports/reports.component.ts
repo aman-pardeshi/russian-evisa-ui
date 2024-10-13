@@ -14,6 +14,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { LoaderComponent } from '../Shared/loader/loader.component';
 import { TableModule } from 'primeng/table';
 import { ApplicationService } from 'src/app/services/application.service';
+import { AdminService } from 'src/app/services/admin.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-reports',
@@ -31,6 +33,7 @@ import { ApplicationService } from 'src/app/services/application.service';
   ],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
+  providers: [MessageService],
 })
 export class ReportsComponent implements OnInit {
   reportTypes: any[] = [];
@@ -39,12 +42,20 @@ export class ReportsComponent implements OnInit {
   categorization: any[] = [];
   reportSearchForm: FormGroup;
 
-  reportValues: any[] = [];
+  submittedApplicationReportList: any[] = [];
+  appliedVisaReportList: any[] = [];
+  processedVisaReportList: any[] = [];
+  accountReportsList: any[] = [];
+  incompleteApplicationsReportListL: any[] = [];
+
+  header: any[] = [];
 
   constructor(
     private applicationService: ApplicationService,
     private formsBuilder: FormBuilder,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private adminService: AdminService,
+    private messageService: MessageService
   ) {
     this.initForm();
   }
@@ -79,9 +90,6 @@ export class ReportsComponent implements OnInit {
   initForm() {
     this.reportSearchForm = this.formsBuilder.group({
       reportType: ['', Validators.required],
-      nationality: [''],
-      status: [''],
-      categorization: [''],
       startDate: [''],
       endDate: [''],
     });
@@ -89,12 +97,218 @@ export class ReportsComponent implements OnInit {
 
   onSearch() {
     this.spinner.show();
+    this.header = [];
+    this.submittedApplicationReportList = [];
+    this.appliedVisaReportList = [];
+    this.processedVisaReportList = [];
+    this.accountReportsList = [];
+    this.incompleteApplicationsReportListL = [];
 
-    const searchParams = {};
+    const searchParams = {
+      startDate: this.reportSearchForm.get('startDate').value,
+      endDate: this.reportSearchForm.get('endDate').value,
+    };
 
-    this.applicationService.getReport(searchParams).subscribe((response) => {
-      this.reportValues = response.data;
-      this.spinner.hide();
-    });
+    // debugger;
+    switch (this.reportSearchForm.get('reportType')?.value?.value) {
+      case 'Application Submitted':
+        this.header = [
+          'S.No.',
+          'Application ID',
+          'Name',
+          'Passport Number',
+          'Nationality',
+          'Visa Fee',
+          'Service Fee',
+          'Payment Reference Number',
+          'Submitted on',
+          'Current Stage',
+        ];
+
+        this.adminService.getSubmittedApplicationReport(searchParams).subscribe(
+          (response) => {
+            console.log(response);
+            if (response?.reports?.length > 0) {
+              this.submittedApplicationReportList = response?.reports;
+              this.spinner.hide();
+            } else {
+              this.spinner.hide();
+              this.messageService.add({
+                severity: 'error',
+                detail: 'No Application Present',
+              });
+            }
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error?.error?.message,
+            });
+
+            this.spinner.hide();
+          }
+        );
+
+        break;
+
+      case 'Applied Visa':
+        this.header = [
+          'S.No.',
+          'Application ID',
+          'Name',
+          'Passport Number',
+          'Nationality',
+          'Visa Fee',
+          'Service Fee',
+          'Payment Reference Number',
+          'Visa Applied on',
+          'Visa Applied by',
+          'Current Stage',
+        ];
+
+        this.adminService.getAppliedVisaReport(searchParams).subscribe(
+          (response) => {
+            console.log(response);
+            if (response?.reports?.length > 0) {
+              this.appliedVisaReportList = response?.reports;
+              this.spinner.hide();
+            } else {
+              this.spinner.hide();
+              this.messageService.add({
+                severity: 'error',
+                detail: 'No Application Present',
+              });
+            }
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error?.error?.message,
+            });
+
+            this.spinner.hide();
+          }
+        );
+
+        break;
+      case 'Processed Visa':
+        this.header = [
+          'S.No.',
+          'Application ID',
+          'Name',
+          'Passport Number',
+          'Nationality',
+          'Visa Fee',
+          'Service Fee',
+          'Payment Reference Number',
+          'Approved/Rejected on',
+          'Approved/Rejected by',
+          'Current stage',
+        ];
+
+        this.adminService.getProcessedVisaReport(searchParams).subscribe(
+          (response) => {
+            console.log(response);
+            if (response?.reports?.length > 0) {
+              this.processedVisaReportList = response?.reports;
+              this.spinner.hide();
+            } else {
+              this.spinner.hide();
+              this.messageService.add({
+                severity: 'error',
+                detail: 'No Application Present',
+              });
+            }
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error?.error?.message,
+            });
+
+            this.spinner.hide();
+          }
+        );
+        break;
+      case 'Account Report':
+        this.header = [
+          'S.No.',
+          'Email Address',
+          'Name',
+          'Created on',
+          'Phone number (if applicable)',
+          'Number of applications submitted',
+          'Number of incomplete applications',
+        ];
+
+        this.adminService.getAccountsReport(searchParams).subscribe(
+          (response) => {
+            console.log(response);
+            if (response?.accounts_reports?.length > 0) {
+              this.accountReportsList = response?.accounts_reports;
+              this.spinner.hide();
+            } else {
+              this.spinner.hide();
+              this.messageService.add({
+                severity: 'error',
+                detail: 'No Application Present',
+              });
+            }
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error?.error?.message,
+            });
+
+            this.spinner.hide();
+          }
+        );
+        break;
+      case 'Incomplete Application':
+        this.header = [
+          'S.No.',
+          'Application ID',
+          'Name',
+          'Passport Number',
+          'Nationality',
+          'Account Email Address',
+        ];
+
+        this.adminService
+          .getImcompleteApplicationReport(searchParams)
+          .subscribe(
+            (response) => {
+              console.log(response);
+              if (response?.incomplete_applications_reports?.length > 0) {
+                this.incompleteApplicationsReportListL =
+                  response?.incomplete_applications_reports;
+                this.spinner.hide();
+              } else {
+                this.spinner.hide();
+                this.messageService.add({
+                  severity: 'error',
+                  detail: 'No Application Present',
+                });
+              }
+            },
+            (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error?.error?.message,
+              });
+
+              this.spinner.hide();
+            }
+          );
+        break;
+      default:
+        return;
+    }
   }
 }

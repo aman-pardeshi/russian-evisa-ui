@@ -45,32 +45,32 @@ export class AdminService {
   // Reports APIs
   getSubmittedApplicationReport(params: any) {
     return this.http.post<any>(
-      this.serverUrl + '/report/submitted_applications',
+      this.serverUrl + '/reports/submitted_applications',
       params
     );
   }
 
   getAppliedVisaReport(params: any) {
-    return this.http.post<any>(this.serverUrl + '/report/applied_visa', params);
+    return this.http.post<any>(this.serverUrl + '/reports/applied_visa', params);
   }
 
   getProcessedVisaReport(params: any) {
     return this.http.post<any>(
-      this.serverUrl + '/report/processed_visa',
+      this.serverUrl + '/reports/processed_visa',
       params
     );
   }
 
   getAccountsReport(params: any) {
     return this.http.post<any>(
-      this.serverUrl + '/report/accounts_report',
+      this.serverUrl + '/reports/accounts_report',
       params
     );
   }
 
   getImcompleteApplicationReport(params: any) {
     return this.http.post<any>(
-      this.serverUrl + '/report/incomplete_applications',
+      this.serverUrl + '/reports/incomplete_applications',
       params
     );
   }

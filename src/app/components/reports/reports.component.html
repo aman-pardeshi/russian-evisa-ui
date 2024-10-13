@@ -68,7 +68,14 @@
   </div>
 </div>
 
-<div *ngIf="reportValues.length > 0" class="card">
+<div
+  *ngIf="
+    submittedApplicationReportList.length > 0 &&
+    this.reportSearchForm.get('reportType')?.value?.value ===
+      'Application Submitted'
+  "
+  class="card"
+>
   <div class="flex justify-content-center gap-3 mb-3">
     <p-button
       label="Export PDF"
@@ -83,31 +90,258 @@
     />
   </div>
   <p-table
-    [value]="reportValues"
+    [value]="submittedApplicationReportList"
     styleClass="p-datatable-striped"
     [paginator]="true"
     [tableStyle]="{ 'min-width': '50rem' }"
     [rows]="10"
     [rowsPerPageOptions]="[10, 20]"
+    [resizable]="false"
+    [scrollable]="true"
   >
     <ng-template pTemplate="header">
       <tr>
-        <th>Application No.</th>
-        <th>Name</th>
-        <th>Passport No.</th>
-        <th>Nationality</th>
-        <th>Fees</th>
-        <th>Status</th>
+        <th *ngFor="let item of header; index as i" style="min-width: 100px">
+          {{ item }}
+        </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
       <tr>
-        <td>{{ product.applicationNumber }}</td>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ product.submission_id }}</td>
+        <td>{{ product.first_name + ' ' + product.last_name }}</td>
+        <td>{{ product.passport_number }}</td>
+        <td>{{ product.country }}</td>
+        <td>{{ product.visa_fee }}</td>
+        <td>{{ product.service_fee }}</td>
+        <td>{{ product.payment_reference_number }}</td>
+        <td>{{ product.submitted_on }}</td>
+        <td class="capitalize">{{ product.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div
+  *ngIf="
+    appliedVisaReportList.length > 0 &&
+    this.reportSearchForm.get('reportType')?.value?.value === 'Applied Visa'
+  "
+  class="card"
+>
+  <div class="flex justify-content-center gap-3 mb-3">
+    <p-button
+      label="Export PDF"
+      icon="pi pi-file-pdf"
+      styleClass="p-button-outlined"
+    />
+
+    <p-button
+      label="Export Excel"
+      icon="pi pi-file-excel"
+      styleClass="p-button-outlined"
+    />
+  </div>
+  <p-table
+    [value]="appliedVisaReportList"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [resizable]="false"
+    [scrollable]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let item of header; index as i" style="min-width: 100px">
+          {{ item }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ product.submission_id }}</td>
+        <td>{{ product.first_name + ' ' + product.last_name }}</td>
+        <td>{{ product.passport_number }}</td>
+        <td>{{ product.country }}</td>
+        <td>{{ product.visa_fee }}</td>
+        <td>{{ product.service_fee }}</td>
+        <td>{{ product.payment_reference_number }}</td>
+        <td>{{ product.visa_applied_at }}</td>
+        <td>{{ product.visa_applied_by }}</td>
+        <td class="capitalize">{{ product.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div
+  *ngIf="
+    processedVisaReportList.length > 0 &&
+    this.reportSearchForm.get('reportType')?.value?.value === 'Processed Visa'
+  "
+  class="card"
+>
+  <div class="flex justify-content-center gap-3 mb-3">
+    <p-button
+      label="Export PDF"
+      icon="pi pi-file-pdf"
+      styleClass="p-button-outlined"
+    />
+
+    <p-button
+      label="Export Excel"
+      icon="pi pi-file-excel"
+      styleClass="p-button-outlined"
+    />
+  </div>
+  <p-table
+    [value]="processedVisaReportList"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [resizable]="false"
+    [scrollable]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let item of header; index as i" style="min-width: 100px">
+          {{ item }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ product.submission_id }}</td>
+        <td>{{ product.first_name + ' ' + product.last_name }}</td>
+        <td>{{ product.passport_number }}</td>
+        <td>{{ product.country }}</td>
+        <td>{{ product.visa_fee }}</td>
+        <td>{{ product.service_fee }}</td>
+        <td>{{ product.payment_reference_number }}</td>
+        <td>
+          {{
+            product.status === 'approved'
+              ? product.approved_at
+              : product.rejected_at
+          }}
+        </td>
+        <td>
+          {{
+            product.status === 'approved'
+              ? product.approved_by?.name
+              : product.rejected_by?.name
+          }}
+        </td>
+        <td class="capitalize">{{ product.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div
+  *ngIf="
+    accountReportsList.length > 0 &&
+    this.reportSearchForm.get('reportType')?.value?.value === 'Account Report'
+  "
+  class="card"
+>
+  <div class="flex justify-content-center gap-3 mb-3">
+    <p-button
+      label="Export PDF"
+      icon="pi pi-file-pdf"
+      styleClass="p-button-outlined"
+    />
+
+    <p-button
+      label="Export Excel"
+      icon="pi pi-file-excel"
+      styleClass="p-button-outlined"
+    />
+  </div>
+  <p-table
+    [value]="accountReportsList"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [resizable]="false"
+    [scrollable]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let item of header; index as i" style="min-width: 100px">
+          {{ item }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ product.email }}</td>
         <td>{{ product.name }}</td>
-        <td>{{ product.passportNumber }}</td>
-        <td>{{ product.nationality }}</td>
-        <td>{{ product.fees }}</td>
-        <td>{{ product.status }}</td>
+        <td>{{ product.created_at }}</td>
+        <td>{{ product.mobile_number }}</td>
+        <td>{{ product.submitted_applications }}</td>
+        <td>{{ product.incomplete_applications }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div
+  *ngIf="
+    incompleteApplicationsReportListL.length > 0 &&
+    this.reportSearchForm.get('reportType')?.value?.value ===
+      'Incomplete Application'
+  "
+  class="card"
+>
+  <div class="flex justify-content-center gap-3 mb-3">
+    <p-button
+      label="Export PDF"
+      icon="pi pi-file-pdf"
+      styleClass="p-button-outlined"
+    />
+
+    <p-button
+      label="Export Excel"
+      icon="pi pi-file-excel"
+      styleClass="p-button-outlined"
+    />
+  </div>
+  <p-table
+    [value]="incompleteApplicationsReportListL"
+    styleClass="p-datatable-striped"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20]"
+    [resizable]="false"
+    [scrollable]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let item of header; index as i" style="min-width: 100px">
+          {{ item }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ product.submission_id }}</td>
+        <td>{{ product.first_name + ' ' + product.last_name }}</td>
+        <td>{{ product.passport_number }}</td>
+        <td>{{ product.country }}</td>
+        <td>{{ product.group_email }}</td>
       </tr>
     </ng-template>
   </p-table>
