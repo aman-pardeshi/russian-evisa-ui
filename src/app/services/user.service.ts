@@ -12,4 +12,12 @@ export class UserService {
   loginUser(details: any) {
     return this.http.post<any>(this.serverUrl + `/sessions`, details);
   }
+
+  sendOtp(details: any) {
+    return this.http.post<any>(this.serverUrl + `/users/send_otp`, details)
+  }
+
+  signUpUser(details: any) {
+    return this.http.post<any>(this.serverUrl + `/users`, details);
+  }
 }
