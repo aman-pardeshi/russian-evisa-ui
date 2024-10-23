@@ -29,5 +29,9 @@ export class PublicTopbarComponent {
       label: 'Additional Services',
       routerLink: '/additional-services',
     },
+    {
+      label: 'FAQ',
+      routerLink: '/faq'
+    }
   ];
 }

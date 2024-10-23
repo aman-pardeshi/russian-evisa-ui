@@ -25,6 +25,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { TimelineModule } from 'primeng/timeline';
+import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 
 @Component({
   selector: 'app-process-applications',
@@ -124,6 +125,47 @@ export class ProcessApplicationsComponent {
     this.applicationSearchParams = new ApplicationSearchRequest();
     this.applicationSearchParams.searchBy =
       this.applicationSearchForm.get('searchBy')?.value?.value;
+
+    this.applicationsList = [];
+
+    switch (this.applicationSearchParams.searchBy) {
+      case 'applicationId':
+        this.applicationSearchParams.applicationId =
+          this.applicationSearchForm.get('applicationId').value;
+        break;
+
+      case 'firstName':
+        this.applicationSearchParams.firstName =
+          this.applicationSearchForm.get('firstName').value;
+        break;
+
+      case 'lastName':
+        this.applicationSearchParams.lastName =
+          this.applicationSearchForm.get('lastName').value;
+        break;
+
+      case 'passport':
+        this.applicationSearchParams.passport =
+          this.applicationSearchForm.get('passport').value;
+        break;
+
+      case 'date':
+        this.applicationSearchParams.fromDate = this.applicationSearchForm.get(
+          'fromDate'
+        ).value
+          ? getDateInDDMMYYY(this.applicationSearchForm.get('fromDate').value)
+          : '';
+        this.applicationSearchParams.toDate = this.applicationSearchForm.get(
+          'toDate'
+        ).value
+          ? getDateInDDMMYYY(this.applicationSearchForm.get('toDate').value)
+          : '';
+        break;
+
+      default:
+        break;
+    }
+
     this.adminService
       .getSubmittedApplications(this.applicationSearchParams)
       .subscribe(
@@ -132,7 +174,6 @@ export class ProcessApplicationsComponent {
             this.applicationsList = mapArrayFromSnakeToCamel(
               response?.admin_applications
             );
-            console.log(this.applicationsList);
           } else {
             this.messageService.add({
               severity: 'error',
@@ -153,16 +194,16 @@ export class ProcessApplicationsComponent {
 
   getSeverity(value: string) {
     switch (value) {
-      case 'Approved':
+      case 'approved':
         return 'success';
 
-      case 'Pending':
+      case 'applied':
         return 'warning';
 
-      case 'Rejected':
+      case 'rejected':
         return 'danger';
 
-      case 'On-Hold':
+      case 'submitted':
         return 'info';
 
       default:
@@ -172,18 +213,26 @@ export class ProcessApplicationsComponent {
 
   handleApplicationOpen(application: any) {
     this.showApplicationDetailsDialog = true;
+
     this.currentApplicationDetails = {
-      firstName: application.firstName,
-      lastName: application.lastName,
-      gender: 'Male',
-      dateOfBirth: '04 Jun, 1992',
+      firstName: application?.firstName,
+      lastName: application?.lastName,
+      gender: application?.gender,
+      dateOfBirth: getDateInFormat(new Date(application?.dateOfBirth)),
       passportNumber: application.passportNumber,
-      passportPlaceOfIssue: 'Mumbai',
-      passportExpiryDate: '15 Sept, 2040',
-      passportDateOfIssue: '01 Sept, 2020',
-      contactNo: '+91 9856432120',
-      referenceId: application.referenceId,
+      passportPlaceOfIssue: application.passportPlaceOfIssue,
+      passportExpiryDate: getDateInFormat(
+        new Date(application?.passportExpiryDate)
+      ),
+      passportDateOfIssue: getDateInFormat(
+        new Date(application?.passportDateOfIssue)
+      ),
+      contactNo: `${application?.countryCode} ${application?.mobile}`,
+      submissionId: application?.submissionId,
       status: application.status,
+      photo: application?.photo?.url,
+      passportFront: application?.passportPhotoFront?.url,
+      passportBack: application?.passportPhotoBack?.url,
     };
 
     this.selectedApplicationHistory = application.applicationHistories;

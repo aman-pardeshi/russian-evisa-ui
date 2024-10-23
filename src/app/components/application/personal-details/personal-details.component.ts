@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -24,7 +27,11 @@ import { InputIconModule } from 'primeng/inputicon';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
-import { getDateInFormat } from '../../Shared/utils';
+import {
+  getDateInDDMMYYY,
+  getDateInFormat,
+  getDateInYYYYMMDD,
+} from '../../Shared/utils';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { LoaderComponent } from '../../Shared/loader/loader.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -34,12 +41,25 @@ import { PersonalDetailsRequest } from 'src/app/model/personal-details-request';
 import { PassportDetailRequest } from 'src/app/model/passport-detail-request';
 import { mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { FileUploadRequest } from 'src/app/model/files-upload-request';
+import { map, Observable, of } from 'rxjs';
 // import * as Tesseract from 'tesseract.js';
 
 interface City {
   name: string;
   code: string;
   countryCode: string;
+}
+
+export function asyncEmailValidator(
+  control: AbstractControl
+): Observable<ValidationErrors | null> {
+  return of(control.value).pipe(
+    // delay(2000), // Simulate a delay for async validation
+    map((email) => {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return emailRegex.test(email) ? null : { invalidEmail: true };
+    })
+  );
 }
 
 @Component({
@@ -81,6 +101,7 @@ export class PersonalDetailsComponent implements OnInit {
   genderList: any[] = [];
   maxDate: Date;
   minDate: Date;
+  secondMinDate: Date;
   passportExpDate: Date;
   formSubmitted: boolean = false;
   active: number = 0;
@@ -94,6 +115,9 @@ export class PersonalDetailsComponent implements OnInit {
   passportDetailsRequest: PassportDetailRequest;
   submitedApplicationDetails: any;
   photoFile: File | null = null;
+  preFetchedPhoto: string | null = null;
+  preFetchedPassportFront: string | null = null;
+  preFetchedPassportBack: string | null = null;
   passportFrontFile: File | null = null;
   passportBackFile: File | null = null;
   fileUploadRequest: FileUploadRequest;
@@ -111,37 +135,46 @@ export class PersonalDetailsComponent implements OnInit {
       this.referenceId = params.id;
     });
 
-    console.log(this.referenceId);
     this.initForm();
-    this.fetchApplicationDetails();
   }
 
   ngOnInit() {
+    this.passportExpDate = new Date();
+    this.minDate = new Date();
+    this.secondMinDate = new Date();
+    this.secondMinDate.setDate(this.passportExpDate.getDate() + 1);
+    this.maxDate = new Date();
+    this.passportExpDate.setDate(this.passportExpDate.getDate() + 180);
     this.fetchFormsOptions();
+    this.fetchApplicationDetails();
   }
 
   nextPage() {}
 
   initForm() {
     this.applicantDetailsForm = this.formsBuilder.group({
-      firstName: [''],
-      lastName: [''],
-      gender: [''],
-      dateOfBirth: [''],
-      placeOfBirth: [''],
-      country: [''],
-      countryCode: [''],
-      contactNo: [undefined],
-      email: [''],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      gender: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      placeOfBirth: ['', Validators.required],
+      country: ['', Validators.required],
+      countryCode: ['', Validators.required],
+      contactNo: [undefined, Validators.required],
+      email: [
+        '',
+        [Validators.required, Validators.email],
+        [asyncEmailValidator],
+      ],
     });
 
     this.applicantPassportDetailsForm = this.formsBuilder.group({
-      passportNumber: [''],
-      passportExpiryDate: [''],
-      passportDateOfIssue: [''],
-      passportPlaceOfIssue: [''],
-      intentedDateOfEntry: [''],
-      isOtherNationality: [''],
+      passportNumber: ['', Validators.required],
+      passportExpiryDate: ['', Validators.required],
+      passportDateOfIssue: ['', Validators.required],
+      passportPlaceOfIssue: ['', Validators.required],
+      intentedDateOfEntry: ['', Validators.required],
+      isOtherNationality: ['', Validators.required],
       otherNationality: [''],
       yearOfAcquisition: [undefined],
     });
@@ -161,8 +194,6 @@ export class PersonalDetailsComponent implements OnInit {
           );
 
           this.updateFormFields();
-
-          console.log(this.submitedApplicationDetails);
         }
       },
       (error) => {
@@ -182,24 +213,74 @@ export class PersonalDetailsComponent implements OnInit {
     this.applicantDetailsForm.patchValue({
       firstName: this.submitedApplicationDetails.firstName,
       lastName: this.submitedApplicationDetails.lastName,
-      gender: this.submitedApplicationDetails.gender,
-      dateOfBirth: new Date(this.submitedApplicationDetails.dateOfBirth),
+      gender: this.submitedApplicationDetails.gender
+        ? this.genderList.filter(
+            (x) => this.submitedApplicationDetails.gender === x.value
+          )[0]
+        : null,
+      dateOfBirth: this.submitedApplicationDetails?.dateOfBirth
+        ? new Date(this.submitedApplicationDetails?.dateOfBirth)
+        : null,
       placeOfBirth: this.submitedApplicationDetails.placeOfBirth,
-      country: this.submitedApplicationDetails.country,
-      countryCode: this.submitedApplicationDetails.countryCode,
+      country: this.submitedApplicationDetails.country
+        ? this.nationalityList.filter(
+            (x) => x.label === this.submitedApplicationDetails.country
+          )[0]
+        : null,
+      countryCode: this.submitedApplicationDetails.countryCode
+        ? this.countries?.filter(
+            (x) =>
+              x.countryCode === this.submitedApplicationDetails?.countryCode
+          )[0]
+        : null,
       contactNo: this.submitedApplicationDetails.mobile,
       email:
         this.submitedApplicationDetails.email ||
         this.submitedApplicationDetails.groupEmail,
     });
 
-    console.log(this.applicantDetailsForm);
+    this.applicantPassportDetailsForm.patchValue({
+      passportNumber: this.submitedApplicationDetails?.passportNumber,
+      passportExpiryDate: this.submitedApplicationDetails?.passportExpiryDate
+        ? new Date(this.submitedApplicationDetails?.passportExpiryDate)
+        : null,
+      passportDateOfIssue: this.submitedApplicationDetails?.passportDateOfIssue
+        ? new Date(this.submitedApplicationDetails?.passportDateOfIssue)
+        : null,
+      passportPlaceOfIssue:
+        this.submitedApplicationDetails?.passportPlaceOfIssue,
+      intentedDateOfEntry: this.submitedApplicationDetails?.intentedDateOfEntry
+        ? new Date(this.submitedApplicationDetails?.intentedDateOfEntry)
+        : null,
+      isOtherNationality: this.submitedApplicationDetails?.isOtherNationality,
+      otherNationality: this.submitedApplicationDetails?.otherNationality
+        ? this.nationalityList.filter(
+            (x) => x.label === this.submitedApplicationDetails.otherNationality
+          )[0]
+        : null,
+      yearOfAcquisition:
+        this.submitedApplicationDetails?.yearOfAcquistion || null,
+    });
+
+    if (this.submitedApplicationDetails?.photo?.url) {
+      this.preFetchedPhoto = this.submitedApplicationDetails?.photo?.url;
+    }
+
+    if (this.submitedApplicationDetails?.passportPhotoFront?.url) {
+      this.preFetchedPassportFront =
+        this.submitedApplicationDetails?.passportPhotoFront?.url;
+    }
+
+    if (this.submitedApplicationDetails?.passportPhotoBack?.url) {
+      this.preFetchedPassportBack =
+        this.submitedApplicationDetails?.passportPhotoBack?.url;
+    }
   }
 
   fetchFormsOptions() {
     this.genderList.push(
-      { label: 'Male', value: 'M' },
-      { label: 'Female', value: 'F' }
+      { label: 'Male', value: 'Male' },
+      { label: 'Female', value: 'Female' }
     );
 
     this.serviceFee = [
@@ -218,7 +299,6 @@ export class PersonalDetailsComponent implements OnInit {
       this.applicantDetailsForm
         .get('countryCode')
         .patchValue(this.countries[0]);
-      // console.log(this.countries);
     });
 
     this.applicationService.getNationalityList().subscribe((response) => {
@@ -226,20 +306,19 @@ export class PersonalDetailsComponent implements OnInit {
       this.applicantDetailsForm
         .get('countryCode')
         .patchValue(this.countries[0]);
-      // console.log(this.countries);
     });
   }
 
   formatDate(date: string) {
-    if (date === '') {
+    if (date === '' || !date) {
       return '-';
     }
+    // debugger
     return getDateInFormat(new Date(date));
   }
 
   handlePersonalDetailsSubmit(nextFunction: any) {
     this.spinner.show();
-    console.log('elp-Handle Next', nextFunction);
     this.personalDetailsRequest = new PersonalDetailsRequest();
     this.personalDetailsRequest.referenceId = this.referenceId;
     this.personalDetailsRequest.firstName =
@@ -248,8 +327,9 @@ export class PersonalDetailsComponent implements OnInit {
       this.applicantDetailsForm.get('lastName').value;
     this.personalDetailsRequest.gender =
       this.applicantDetailsForm.get('gender').value?.label;
-    this.personalDetailsRequest.dateOfBirth =
-      this.applicantDetailsForm.get('dateOfBirth').value;
+    this.personalDetailsRequest.dateOfBirth = getDateInYYYYMMDD(
+      this.applicantDetailsForm.get('dateOfBirth').value
+    );
     this.personalDetailsRequest.placeOfBirth =
       this.applicantDetailsForm.get('placeOfBirth').value;
     this.personalDetailsRequest.country =
@@ -261,13 +341,10 @@ export class PersonalDetailsComponent implements OnInit {
     this.personalDetailsRequest.email =
       this.applicantDetailsForm.get('email').value;
 
-    console.log(this.personalDetailsRequest);
-
     this.applicationService
       .submitPersonalDetails(this.personalDetailsRequest)
       .subscribe(
         (response) => {
-          console.log(mapObjectFromSnakeToCamel(response.data, {}));
           this.spinner.hide();
           if (response.status === 200) {
             this.messageService.add({
@@ -300,18 +377,21 @@ export class PersonalDetailsComponent implements OnInit {
     this.passportDetailsRequest.referenceId = this.referenceId;
     this.passportDetailsRequest.passportNumber =
       this.applicantPassportDetailsForm.get('passportNumber').value;
-    this.passportDetailsRequest.passportExpiryDate =
-      this.applicantPassportDetailsForm.get('passportExpiryDate').value;
-    this.passportDetailsRequest.passportDateOfIssue =
-      this.applicantPassportDetailsForm.get('passportDateOfIssue').value;
+    this.passportDetailsRequest.passportExpiryDate = getDateInYYYYMMDD(
+      this.applicantPassportDetailsForm.get('passportExpiryDate').value
+    );
+    this.passportDetailsRequest.passportDateOfIssue = getDateInYYYYMMDD(
+      this.applicantPassportDetailsForm.get('passportDateOfIssue').value
+    );
     this.passportDetailsRequest.passportPlaceOfIssue =
       this.applicantPassportDetailsForm.get('passportPlaceOfIssue').value;
-    this.passportDetailsRequest.intentedDateOfEntry =
-      this.applicantPassportDetailsForm.get('intentedDateOfEntry').value;
+    this.passportDetailsRequest.intentedDateOfEntry = getDateInYYYYMMDD(
+      this.applicantPassportDetailsForm.get('intentedDateOfEntry').value
+    );
     this.passportDetailsRequest.isOtherNationality =
       this.applicantPassportDetailsForm.get('isOtherNationality').value;
     this.passportDetailsRequest.otherNationality =
-      this.applicantPassportDetailsForm.get('otherNationality').value;
+      this.applicantPassportDetailsForm.get('otherNationality').value?.label;
     this.passportDetailsRequest.yearOfAcquisition =
       this.applicantPassportDetailsForm.get('yearOfAcquisition').value;
 
@@ -413,7 +493,6 @@ export class PersonalDetailsComponent implements OnInit {
         this.spinner.hide();
       }
     );
-    console.log(this.fileUploadRequest);
   }
 
   processPayment() {

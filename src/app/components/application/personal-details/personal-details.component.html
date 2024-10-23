@@ -189,6 +189,25 @@
                             class="w-full"
                             [style]="{ width: '100%' }"
                           />
+                          <div
+                            *ngIf="
+                              applicantDetailsForm.get('email')?.invalid &&
+                              applicantDetailsForm.get('email')?.dirty
+                            "
+                            class="text-red-400 mt-1 ml-2"
+                          >
+                            <small
+                              *ngIf="applicantDetailsForm.get('email')?.errors"
+                            >
+                              {{
+                                applicantDetailsForm.get('email')?.value !==
+                                  '' &&
+                                applicantDetailsForm.get('email')?.errors
+                                  ? 'Invalid Email Address'
+                                  : 'Email is required'
+                              }}
+                            </small>
+                          </div>
                         </div>
 
                         <div class="field">
@@ -254,6 +273,29 @@
                               id="mobileNumber"
                             />
                           </div>
+                          <div
+                            *ngIf="
+                              (applicantDetailsForm.get('contactNo')?.invalid &&
+                                applicantDetailsForm.get('contactNo')?.dirty) ||
+                              (applicantDetailsForm.get('countryCode')
+                                ?.invalid &&
+                                applicantDetailsForm.get('countryCode')?.dirty)
+                            "
+                            class="text-red-400 mt-1 ml-2"
+                          >
+                            <small
+                              *ngIf="
+                                applicantDetailsForm.get('contactNo')?.errors ||
+                                applicantDetailsForm.get('countryCode')?.errors
+                              "
+                            >
+                              {{
+                                applicantDetailsForm.get('countryCode')?.errors
+                                  ? 'Country code is required'
+                                  : 'Contact number is required'
+                              }}
+                            </small>
+                          </div>
                         </div>
                       </div>
 
@@ -268,6 +310,19 @@
                     label="Next"
                     icon="pi pi-arrow-right"
                     iconPos="right"
+                    [disabled]="
+                      !(
+                        applicantDetailsForm.controls['firstName'].valid &&
+                        applicantDetailsForm.controls['lastName'].valid &&
+                        applicantDetailsForm.controls['gender'].valid &&
+                        applicantDetailsForm.controls['dateOfBirth'].valid &&
+                        applicantDetailsForm.controls['placeOfBirth'].valid &&
+                        applicantDetailsForm.controls['country'].valid &&
+                        applicantDetailsForm.controls['countryCode'].valid &&
+                        applicantDetailsForm.controls['contactNo'].valid &&
+                        applicantDetailsForm.controls['email'].valid
+                      )
+                    "
                   />
                 </div>
               </ng-template>
@@ -358,6 +413,7 @@
                             [yearNavigator]="true"
                             yearRange="1930:2050"
                             formControlName="passportDateOfIssue"
+                            [maxDate]="maxDate"
                           ></p-calendar>
                         </div>
 
@@ -408,9 +464,7 @@
                             [showIcon]="true"
                             [style]="{ width: '100%' }"
                             placeholder="dd/mm/yyyy"
-                            rPCalendarMask
-                            [defaultDate]="passportExpDate"
-                            [minDate]="passportExpDate"
+                            [minDate]="secondMinDate"
                             formControlName="intentedDateOfEntry"
                           ></p-calendar>
                         </div>
@@ -524,6 +578,27 @@
                     label="Next"
                     icon="pi pi-arrow-right"
                     iconPos="right"
+                    [disabled]="
+                      !(
+                        applicantPassportDetailsForm.controls['passportNumber']
+                          .valid &&
+                        applicantPassportDetailsForm.controls[
+                          'passportExpiryDate'
+                        ].valid &&
+                        applicantPassportDetailsForm.controls[
+                          'passportDateOfIssue'
+                        ].valid &&
+                        applicantPassportDetailsForm.controls[
+                          'passportPlaceOfIssue'
+                        ].valid &&
+                        applicantPassportDetailsForm.controls[
+                          'intentedDateOfEntry'
+                        ].valid &&
+                        applicantPassportDetailsForm.controls[
+                          'isOtherNationality'
+                        ].valid
+                      )
+                    "
                   />
                 </div>
               </ng-template>
@@ -567,7 +642,14 @@
                   <div class="flex gap-3 align-items-center mb-3">
                     <div class="w-9rem">Photo</div>
 
-                    <div class="w-12rem">
+                    <div class="w-15rem">
+                      <img
+                        [src]="photoFile?.objectURL || preFetchedPhoto"
+                        *ngIf="photoFile || preFetchedPhoto"
+                        width="100%"
+                        class="passport-img"
+                      />
+
                       <p-fileUpload
                         name="photo"
                         mode="basic"
@@ -584,7 +666,17 @@
                   </div>
                   <div class="flex gap-3 align-items-center mb-3">
                     <div class="w-9rem">Passport Front Side</div>
-                    <div class="w-12rem">
+                    <div class="w-15rem">
+                      <img
+                        [src]="
+                          passportFrontFile?.objectURL ||
+                          preFetchedPassportFront
+                        "
+                        *ngIf="passportFrontFile || preFetchedPassportFront"
+                        width="100%"
+                        class="passport-img"
+                      />
+
                       <p-fileUpload
                         name="passport"
                         mode="basic"
@@ -601,7 +693,15 @@
                   </div>
                   <div class="flex gap-3 align-items-center">
                     <div class="w-9rem">Passport Back Side</div>
-                    <div class="w-12rem">
+                    <div class="w-15rem">
+                      <img
+                        [src]="
+                          passportBackFile?.objectURL || preFetchedPassportBack
+                        "
+                        *ngIf="passportBackFile || preFetchedPassportBack"
+                        width="100%"
+                        class="passport-img"
+                      />
                       <p-fileUpload
                         name="passport"
                         mode="basic"
@@ -629,6 +729,9 @@
                     label="Next"
                     icon="pi pi-arrow-right"
                     iconPos="right"
+                    [disabled]="
+                      !(photoFile && passportFrontFile && passportBackFile)
+                    "
                   />
                 </div>
               </ng-template>
@@ -734,7 +837,7 @@
                           <small>Contact Number</small>
                           <div class="font-bold text-xl">
                             {{ submitedApplicationDetails?.countryCode }}
-                            {{ submitedApplicationDetails?.contactNo || '-' }}
+                            {{ submitedApplicationDetails?.mobile || '-' }}
                           </div>
                         </div>
                       </div>
@@ -753,10 +856,7 @@
                         <div class="flex flex-column">
                           <small>Passport Number</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantPassportDetailsForm.get('passportNumber')
-                                ?.value
-                            }}
+                            {{ submitedApplicationDetails?.passportNumber }}
                           </div>
                         </div>
 
@@ -764,9 +864,7 @@
                           <small>Passport Place of Issue</small>
                           <div class="font-bold text-xl">
                             {{
-                              applicantPassportDetailsForm.get(
-                                'passportPlaceOfIssue'
-                              )?.value
+                              submitedApplicationDetails?.passportPlaceOfIssue
                             }}
                           </div>
                         </div>
@@ -776,9 +874,7 @@
                           <div class="font-bold text-xl">
                             {{
                               formatDate(
-                                applicantPassportDetailsForm.get(
-                                  'passportDateOfIssue'
-                                )?.value
+                                submitedApplicationDetails?.passportDateOfIssue
                               )
                             }}
                           </div>
@@ -789,9 +885,7 @@
                           <div class="font-bold text-xl">
                             {{
                               formatDate(
-                                applicantPassportDetailsForm.get(
-                                  'passportExpiryDate'
-                                )?.value
+                                submitedApplicationDetails?.passportExpiryDate
                               )
                             }}
                           </div>
@@ -802,9 +896,7 @@
                           <div class="font-bold text-xl">
                             {{
                               formatDate(
-                                applicantPassportDetailsForm.get(
-                                  'intentedDateOfEntry'
-                                )?.value
+                                submitedApplicationDetails?.intentedDateOfEntry
                               )
                             }}
                           </div>
@@ -814,9 +906,8 @@
                           <small>Do you have any other Nationality?</small>
                           <div class="font-bold text-xl">
                             {{
-                              applicantPassportDetailsForm.get(
-                                'isOtherNationality'
-                              )?.value === true
+                              submitedApplicationDetails?.isOtherNationality ===
+                              true
                                 ? 'Yes'
                                 : 'No'
                             }}
@@ -825,37 +916,21 @@
 
                         <div
                           class="flex flex-column"
-                          *ngIf="
-                            applicantPassportDetailsForm.get(
-                              'isOtherNationality'
-                            ).value
-                          "
+                          *ngIf="submitedApplicationDetails?.isOtherNationality"
                         >
                           <small>Other Nationality</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantPassportDetailsForm.get(
-                                'otherNationality'
-                              )?.value.label
-                            }}
+                            {{ submitedApplicationDetails?.otherNationality }}
                           </div>
                         </div>
 
                         <div
                           class="flex flex-column"
-                          *ngIf="
-                            applicantPassportDetailsForm.get(
-                              'isOtherNationality'
-                            ).value
-                          "
+                          *ngIf="submitedApplicationDetails?.isOtherNationality"
                         >
                           <small>Year of Acquisition</small>
                           <div class="font-bold text-xl">
-                            {{
-                              applicantPassportDetailsForm.get(
-                                'yearOfAcquisition'
-                              )?.value
-                            }}
+                            {{ submitedApplicationDetails?.yearOfAcquistion }}
                           </div>
                         </div>
                       </div>

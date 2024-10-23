@@ -20,3 +20,19 @@ export const getDateInFormat = (givenDate: Date) => {
 
   return `${month} ${date}, ${year}`;
 };
+
+export const getDateInDDMMYYY = (searchFromDate: Date) => {
+  const year = searchFromDate.getFullYear();
+  const month = (searchFromDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = searchFromDate.getDate().toString().padStart(2, '0');
+
+  return `${day}-${month}-${year}`;
+};
+
+export const getDateInYYYYMMDD = (searchFromDate: Date) => {
+  const year = searchFromDate.getFullYear();
+  const month = (searchFromDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = searchFromDate.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};

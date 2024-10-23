@@ -116,7 +116,7 @@
     </form>
   </div>
 
-  <div class="card" *ngIf="applicationsList">
+  <div class="card" *ngIf="applicationsList?.length > 0">
     <p-table
       [value]="applicationsList"
       [tableStyle]="{ 'min-width': '50rem' }"
@@ -184,6 +184,7 @@
         [severity]="getSeverity(currentApplicationDetails.status)"
         [value]="currentApplicationDetails.status"
         [rounded]="true"
+        styleClass="capitalize"
       />
     </div>
   </ng-template>
@@ -347,7 +348,7 @@
     </div>
   </div>
 
-  <div class="flex justify-content-center mb-3 gap-3">
+  <div class="flex justify-content-center mt-3 mb-3 gap-3">
     <p-button
       label="Approve"
       [disabled]="currentApplicationDetails?.status === 'Approved'"
@@ -358,7 +359,7 @@
     <p-button
       label="Reject"
       [disabled]="currentApplicationDetails?.status === 'Rejected'"
-      (click)="handleReject()"
+      (click)="showRejectionConfirmationDialog = true"
     ></p-button>
   </div>
 </p-dialog>
@@ -395,6 +396,32 @@
 
     <div class="flex gap-3 justify-content-center mb-3">
       <p-button label="Submit" (click)="handleApprove()"></p-button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showRejectionConfirmationDialog"
+  [modal]="true"
+  header="Applicant Details"
+>
+  <ng-template pTemplate="header">
+    <div class="flex gap-3 bg-white" style="border-radius: 14px">
+      <div class="text-2xl font-bold">Add Rejection Note</div>
+    </div>
+  </ng-template>
+
+  <div>
+    <div class="flex gap-3 align-items-center mb-3">
+      <div class="w-9rem">Approval Document</div>
+
+      <div class="w-20rem">
+        <input type="text" pInputText [(ngModel)]="rejectionNote" class="w-full" />
+      </div>
+    </div>
+
+    <div class="flex gap-3 justify-content-center mb-3">
+      <p-button label="Submit" (click)="handleReject()"></p-button>
     </div>
   </div>
 </p-dialog>

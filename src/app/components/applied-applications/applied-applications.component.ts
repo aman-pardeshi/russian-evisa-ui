@@ -23,7 +23,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { TimelineModule } from 'primeng/timeline';
-import { getDateInFormat } from '../Shared/utils';
+import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
@@ -102,9 +102,48 @@ export class AppliedApplicationsComponent {
 
   onSearch() {
     this.spinner.show();
+    this.applicationsList = []
     this.applicationSearchParams = new ApplicationSearchRequest();
     this.applicationSearchParams.searchBy =
       this.applicationSearchForm.get('searchBy')?.value?.value;
+
+    switch (this.applicationSearchParams.searchBy) {
+      case 'applicationId':
+        this.applicationSearchParams.applicationId =
+          this.applicationSearchForm.get('applicationId').value;
+        break;
+
+      case 'firstName':
+        this.applicationSearchParams.firstName =
+          this.applicationSearchForm.get('firstName').value;
+        break;
+
+      case 'lastName':
+        this.applicationSearchParams.lastName =
+          this.applicationSearchForm.get('lastName').value;
+        break;
+
+      case 'passport':
+        this.applicationSearchParams.passport =
+          this.applicationSearchForm.get('passport').value;
+        break;
+
+      case 'date':
+        this.applicationSearchParams.fromDate = this.applicationSearchForm.get(
+          'fromDate'
+        ).value
+          ? getDateInDDMMYYY(this.applicationSearchForm.get('fromDate').value)
+          : '';
+        this.applicationSearchParams.toDate = this.applicationSearchForm.get(
+          'toDate'
+        ).value
+          ? getDateInDDMMYYY(this.applicationSearchForm.get('toDate').value)
+          : '';
+        break;
+
+      default:
+        break;
+    }  
 
     this.adminService
       .getAppliedApplication(this.applicationSearchParams)
@@ -114,7 +153,6 @@ export class AppliedApplicationsComponent {
             this.applicationsList = mapArrayFromSnakeToCamel(
               response.admin_applications
             );
-            console.log(this.applicationsList);
             this.spinner.hide();
           } else {
             this.spinner.hide();
@@ -170,7 +208,6 @@ export class AppliedApplicationsComponent {
     };
 
     this.selectedApplicationHistory = application.applicationHistories;
-    console.log(application);
   }
 
   handleApprove() {

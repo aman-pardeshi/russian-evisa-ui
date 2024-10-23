@@ -1,0 +1,29 @@
+.country-container {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .country-subcontainer {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid #dedede;
+    padding: 0.8rem;
+    border-radius: 10rem;
+
+    .country-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .flag {
+      width: 38px;
+      height: 38px;
+      border-radius: 10rem;
+      border: 1px solid #cecece;
+      object-fit: cover;
+    }
+  }
+}

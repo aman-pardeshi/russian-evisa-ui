@@ -1,10 +1,10 @@
 export class PassportDetailRequest {
   referenceId: string;
   passportNumber: string;
-  passportExpiryDate: Date;
-  passportDateOfIssue: Date;
+  passportExpiryDate: string;
+  passportDateOfIssue: string;
   passportPlaceOfIssue: string;
-  intentedDateOfEntry: Date;
+  intentedDateOfEntry: string;
   isOtherNationality: string;
   otherNationality: string;
   yearOfAcquisition: string;

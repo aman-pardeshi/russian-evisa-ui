@@ -1,7 +1,7 @@
 <div class="container">
   <!-- <p-toast /> -->
 
-  <div class="wrapper mt-5" style="min-height:47vh">
+  <div class="wrapper mt-5" style="min-height: 47vh">
     <div class="subcontainer">
       <div class="card applications-container" *ngIf="applications.length > 0">
         <h2>Incomplete Application</h2>
@@ -13,13 +13,35 @@
             class="application"
           >
             <!-- (onClick)="createNewApplication()" -->
-            <h3 class="mb-0">Application {{ i + 1 }}</h3>
+            <div class="profile-img">
+              <i class="pi pi-user text-7xl"></i>
+            </div>
 
-            <p-button
-              label="Continue"
-              iconPos="left"
-              [routerLink]="['/application/apply/', item.id]"
-            />
+            <div
+              class="flex flex-column justify-content-center align-items-center"
+            >
+              <div class="p-text-secondary mb-1">Get your visa by</div>
+              <div class="font-bold text-2xl flex gap-2 align-items-center">
+                <i
+                  class="pi pi-check-circle text-xl"
+                  style="color: slateblue"
+                ></i>
+
+                {{ visaApprovalDate }}
+              </div>
+            </div>
+
+            <a
+              [routerLink]="['/application/apply/', item.reference_id]"
+              class="continue-btn"
+            >
+              <i class="pi pi-forward" style="color: slateblue"></i>
+              Continue Application
+            </a>
+
+            <button class="delete-btn">
+              <i class="pi pi-trash"></i>
+            </button>
           </div>
         </div>
       </div>

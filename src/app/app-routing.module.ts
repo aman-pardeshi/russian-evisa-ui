@@ -11,6 +11,8 @@ import { AdditionalServicesComponent } from './components/additional-services/ad
 import { PublicLayoutComponent } from './components/public-layout/public-layout.component';
 import { AppliedApplicationsComponent } from './components/applied-applications/applied-applications.component';
 import { TotalApplicationsComponent } from './components/total-applications/total-applications.component';
+import { FaqComponent } from './components/faq/faq.component';
+import { EligibleCountriesComponent } from './components/eligible-countries/eligible-countries.component';
 
 const routes: Routes = [
   {
@@ -43,6 +45,14 @@ const routes: Routes = [
       {
         path: 'additional-services',
         component: AdditionalServicesComponent,
+      },
+      {
+        path: 'faq',
+        component: FaqComponent,
+      },
+      {
+        path: 'eligible-countries',
+        component: EligibleCountriesComponent,
       },
     ],
   },

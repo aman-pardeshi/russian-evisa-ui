@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   signUpForm: FormGroup;
   loginRequest: LoginRequest;
-  isSignin: boolean = false;
+  isSignin: boolean = true;
 
   showOtpDialogue: boolean = false;
   oneTimePassword: number | undefined;
@@ -98,7 +98,6 @@ export class LoginComponent implements OnInit {
     this.loginRequest.password = this.loginForm.get('password').value;
     this.userService.loginUser(this.loginRequest).subscribe(
       (response) => {
-        console.log(response);
         if (response.data && response?.data?.role === 'applicant') {
           this.spinner.hide();
           this.messageService.add({
@@ -128,7 +127,6 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
         this.spinner.hide();
         this.messageService.add({
           severity: 'error',

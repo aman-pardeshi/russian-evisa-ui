@@ -116,7 +116,7 @@
     </form>
   </div>
 
-  <div class="card" *ngIf="applicationsList">
+  <div class="card" *ngIf="applicationsList?.length > 0">
     <p-table
       [value]="applicationsList"
       [tableStyle]="{ 'min-width': '50rem' }"
@@ -184,6 +184,7 @@
         [severity]="getSeverity(currentApplicationDetails.status)"
         [value]="currentApplicationDetails.status"
         [rounded]="true"
+        styleClass="capitalize"
       />
     </div>
   </ng-template>

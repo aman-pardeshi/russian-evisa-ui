@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ApplicationService } from 'src/app/services/application.service';
 import { LoaderComponent } from '../Shared/loader/loader.component';
+import { getDateInFormat } from '../Shared/utils';
 
 @Component({
   selector: 'app-application',
@@ -23,6 +24,8 @@ import { LoaderComponent } from '../Shared/loader/loader.component';
 })
 export class ApplicationComponent implements OnInit {
   applications: any[] = [];
+  visaApprovalDate: string = ''
+
 
   constructor(
     private router: Router,
@@ -33,7 +36,6 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.applicationService.getAllApplications().subscribe(
       (response) => {
-        console.log('response', response.data);
         if (response.data.length > 0) {
           this.applications = response.data;
         }
@@ -42,6 +44,10 @@ export class ApplicationComponent implements OnInit {
         console.error('error', err);
       }
     );
+
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 5);
+    this.visaApprovalDate = getDateInFormat(newDate);
   }
 
   createNewApplication() {

@@ -1,0 +1,28 @@
+<div class="min-h-screen">
+  <div class="landing-wrapper">
+    <div class="bg-no-repeat bg-cover bg-bottom wrapper" style="min-height: 90vh">
+      <div
+        class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between py-5 overflow-hidden"
+      >
+        <h1 class="font-bold mt-0 mb-3 hero-section-heading">
+          Eligible Countries for Russian eVisa Application
+        </h1>
+      </div>
+
+      <div>
+        The Russian eVisa program allows travelers from the countries listed below to apply for their visas online, making the process fast and convenient. If your country is listed, you are eligible to apply for a Russian eVisa and enjoy a simplified application process for your trip.
+      </div>
+
+      <div>
+        Below is the full list of eligible nationalities:
+      </div>
+
+      <div class="country-container">
+        <div *ngFor="let country of eligibleCountries" class="country-subcontainer">
+          <img [src]="country?.flagUrl" alt="" class="flag">
+          <div class="country-name">{{country?.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

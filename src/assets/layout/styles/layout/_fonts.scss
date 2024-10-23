@@ -25,3 +25,10 @@
     url('../../fonts/lato-v17-latin-ext_latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
     url('../../fonts/lato-v17-latin-ext_latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+
+// Poppins 500
+@font-face {
+  font-family: "Poppins-500";
+  src: url("../../fonts/Poppins-Medium_500.ttf");
+  font-weight: 500;
+}

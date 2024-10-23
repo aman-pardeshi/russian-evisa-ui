@@ -16,6 +16,9 @@ import { TableModule } from 'primeng/table';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { MessageService } from 'primeng/api';
+import { getDateInDDMMYYY } from '../Shared/utils';
+// import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 @Component({
   selector: 'app-reports',
@@ -105,8 +108,12 @@ export class ReportsComponent implements OnInit {
     this.incompleteApplicationsReportListL = [];
 
     const searchParams = {
-      startDate: this.reportSearchForm.get('startDate').value,
-      endDate: this.reportSearchForm.get('endDate').value,
+      startDate: this.reportSearchForm.get('startDate').value
+        ? getDateInDDMMYYY(this.reportSearchForm.get('startDate').value)
+        : '',
+      endDate: this.reportSearchForm.get('endDate').value
+        ? getDateInDDMMYYY(this.reportSearchForm.get('endDate').value)
+        : '',
     };
 
     // debugger;
@@ -127,7 +134,6 @@ export class ReportsComponent implements OnInit {
 
         this.adminService.getSubmittedApplicationReport(searchParams).subscribe(
           (response) => {
-            console.log(response);
             if (response?.reports?.length > 0) {
               this.submittedApplicationReportList = response?.reports;
               this.spinner.hide();
@@ -169,7 +175,6 @@ export class ReportsComponent implements OnInit {
 
         this.adminService.getAppliedVisaReport(searchParams).subscribe(
           (response) => {
-            console.log(response);
             if (response?.reports?.length > 0) {
               this.appliedVisaReportList = response?.reports;
               this.spinner.hide();
@@ -210,7 +215,6 @@ export class ReportsComponent implements OnInit {
 
         this.adminService.getProcessedVisaReport(searchParams).subscribe(
           (response) => {
-            console.log(response);
             if (response?.reports?.length > 0) {
               this.processedVisaReportList = response?.reports;
               this.spinner.hide();
@@ -246,7 +250,6 @@ export class ReportsComponent implements OnInit {
 
         this.adminService.getAccountsReport(searchParams).subscribe(
           (response) => {
-            console.log(response);
             if (response?.accounts_reports?.length > 0) {
               this.accountReportsList = response?.accounts_reports;
               this.spinner.hide();
@@ -283,7 +286,6 @@ export class ReportsComponent implements OnInit {
           .getImcompleteApplicationReport(searchParams)
           .subscribe(
             (response) => {
-              console.log(response);
               if (response?.incomplete_applications_reports?.length > 0) {
                 this.incompleteApplicationsReportListL =
                   response?.incomplete_applications_reports;
@@ -310,5 +312,128 @@ export class ReportsComponent implements OnInit {
       default:
         return;
     }
+  }
+
+  exportExcel() {
+    // this.spinner.show()
+    let excelData = [];
+    let data: any[];
+
+    const fromDate = getDateInDDMMYYY(
+      this.reportSearchForm.get('startDate').value
+    );
+
+    const toDate = getDateInDDMMYYY(this.reportSearchForm.get('endDate').value);
+
+    switch (this.reportSearchForm.get('reportType')?.value?.value) {
+      case 'Application Submitted':
+        excelData = this.submittedApplicationReportList;
+        break;
+
+      case 'Applied Visa':
+        excelData = this.appliedVisaReportList;
+        break;
+
+      case 'Processed Visa':
+        excelData = this.processedVisaReportList;
+        break;
+
+      case 'Account Report':
+        excelData = this.accountReportsList;
+        break;
+
+      case 'Incomplete Application':
+        excelData = this.incompleteApplicationsReportListL;
+        break;
+
+      default:
+        return;
+    }
+
+    data = excelData;
+
+    const extractedData = data.map(
+      (obj: { [s: string]: unknown } | ArrayLike<unknown>) => Object.values(obj)
+    );
+
+    for (let count = 0; count < extractedData.length; count++) {
+      extractedData[count].unshift(count + 1);
+    }
+
+    // const workbook = new Workbook();
+    // const worksheet = workbook.addWorksheet('Reports Data');
+
+    // const reportPeriod = worksheet.addRow([
+    //   'Report Period : ' + ' From ' + fromDate + ' To ' + toDate,
+    // ]);
+    // reportPeriod.font = { bold: true };
+
+    // const headerRow = worksheet.addRow(this.header);
+    // headerRow.font = { bold: true };
+
+    // headerRow.eachCell((cell, number) => {
+    //   cell.fill = {
+    //     type: 'pattern',
+    //     pattern: 'solid',
+    //     fgColor: { argb: 'd8d8d8' },
+    //     bgColor: { argb: 'FF0000FF' },
+    //   };
+    //   cell.border = {
+    //     top: { style: 'thin' },
+    //     left: { style: 'thin' },
+    //     bottom: { style: 'thin' },
+    //     right: { style: 'thin' },
+    //   };
+    // });
+
+    // extractedData.forEach((d: any) => {
+    //   const row = worksheet.addRow(d);
+    //   //   row.eachCell((cell, number) => {
+    //   //      row.eachCell({ includeEmpty: true }, function(cell, number) => {
+
+    //   row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+    //     cell.border = {
+    //       top: { style: 'thin' },
+    //       left: { style: 'thin' },
+    //       bottom: { style: 'thin' },
+    //       right: { style: 'thin' },
+    //     };
+    //   });
+    // });
+
+    // worksheet.getColumn(1).width = 33;
+    // worksheet.getColumn(2).width = 30;
+    // worksheet.getColumn(3).width = 25;
+    // worksheet.getColumn(4).width = 35;
+    // worksheet.getColumn(5).width = 35;
+    // worksheet.getColumn(6).width = 32;
+    // worksheet.getColumn(7).width = 35;
+    // worksheet.getColumn(8).width = 35;
+    // worksheet.getColumn(9).width = 25;
+    // worksheet.getColumn(10).width = 30;
+    // worksheet.getColumn(11).width = 30;
+    // worksheet.getColumn(12).width = 30;
+
+    // const currDate = new Date();
+    // const formattedDate = currDate
+    //   .toLocaleDateString('en-GB', {
+    //     day: 'numeric',
+    //     month: 'short',
+    //     year: 'numeric',
+    //   })
+    //   .replace(/ /g, '-');
+
+    // workbook.xlsx.writeBuffer().then((data) => {
+    //   const blob = new Blob([data], {
+    //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    //   });
+    //   fs.saveAs(
+    //     blob,
+    //     this.reportSearchForm.get('reportType')?.value?.value +
+    //       '_' +
+    //       formattedDate +
+    //       '.xlsx'
+    //   );
+    // });
   }
 }

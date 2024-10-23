@@ -1,0 +1,160 @@
+.hero-section-heading {
+  font-family: 'Poppins-500';
+  color: #000;
+  font-size: 3rem;
+}
+
+.blue-bg {
+  background: #eff7fd;
+}
+
+.home-section-heading {
+  font-family: 'Poppins-500';
+  color: #000;
+  font-size: 2rem;
+}
+
+.steps-section-card {
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  z-index: 100;
+  height: 100%;
+}
+
+.card-number {
+  display: flex;
+  .hash {
+    position: absolute;
+    left: -2%;
+    top: calc(50% - 90px);
+    color: rgba(238, 127, 63, 0.1);
+    font-size: 130px;
+    font-weight: 800;
+  }
+
+  .number {
+    position: absolute;
+    left: 0%;
+    top: calc(50% - 95px);
+    font-size: 146px;
+    font-weight: 800;
+    color: #ee7f3f;
+  }
+}
+
+.card {
+  // width: 280px;
+  // height: 150px;
+  color: #32a6ff;
+  margin-bottom: 0;
+  background: #e3ebf1;
+  border-radius: 1.5rem;
+  // box-shadow: rgb(0, 0, 0, 0.4) 5px 10px 50px, rgb(0, 0, 0, 0.7) -5px 0px 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  padding: 1rem 1.5rem;
+}
+
+.time-text {
+  font-size: 1.2rem;
+  margin-top: 0px;
+  // margin-left: 15px;
+  font-weight: 600;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.tips-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: 25px;
+  padding: 1rem;
+  margin-right: 1rem;
+
+  .profile {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10rem;
+    }
+
+    .reviewer-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+  }
+
+  .review {
+    margin-top: 1rem;
+    background: #fafafa;
+    padding: 10px 24px;
+    border-radius: 1rem;
+    line-height: 24px;
+    color: #4d4d4d;
+  }
+}
+
+.pop-up-container {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 101;
+
+  .pop-up-card {
+    // width: auto;
+    // height: 150px;
+    background: rgb(17, 4, 134);
+    border-radius: 2rem;
+    display: flex;
+    color: white;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    background: linear-gradient(to right, rgb(20, 30, 48), rgb(36, 59, 85));
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    padding: 15px;
+  }
+
+  .time-text {
+    font-size: 22px;
+    margin-top: 0px;
+    margin-bottom: 0.5rem;
+    // line-height: 1rem;
+    font-weight: 600;
+  }
+
+  .time-sub-text {
+    font-size: 15px;
+  }
+
+  .day-text {
+    font-size: 16px;
+    margin-top: 0px;
+    font-weight: 500;
+    margin-bottom: 0;
+    line-height: 1.5rem;
+    // letter-spacing: 0.1rem;
+  }
+
+  .duration {
+    color: rgb(234 179 8 / 1);
+  }
+}

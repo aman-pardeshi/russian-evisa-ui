@@ -117,7 +117,7 @@
     </form>
   </div>
 
-  <div class="card mb-3" *ngIf="applicationsList">
+  <div class="card mb-3" *ngIf="applicationsList?.length > 0">
     <!-- <form [formGroup]="applicationFilterForm">
       <div class="flex justify-content-between align-items-center mb-3">
         <div class="flex gap-3">
@@ -250,6 +250,7 @@
         [severity]="getSeverity(currentApplicationDetails.status)"
         [value]="currentApplicationDetails.status"
         [rounded]="true"
+        styleClass="capitalize"
       />
     </div>
   </ng-template>
@@ -327,7 +328,7 @@
           <div class="flex flex-column">
             <small>Application ID</small>
             <div class="font-bold text-xl">
-              {{ currentApplicationDetails?.applicationId }}
+              {{ currentApplicationDetails?.submissionId }}
             </div>
           </div>
         </div>
@@ -380,7 +381,10 @@
       <div class="w-6">
         <p-timeline [value]="selectedApplicationHistory">
           <ng-template pTemplate="opposite" let-event>
-            <small class="p-text-secondary">{{ event.created_at }}</small>
+            <small class="p-text-secondary">
+              <div>{{ event.date }}</div>
+              <div>{{ event.time }}</div>
+            </small>
           </ng-template>
           <ng-template pTemplate="content" let-event>
             {{ event.description }}

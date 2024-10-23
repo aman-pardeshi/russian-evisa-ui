@@ -4,6 +4,6 @@ export class ApplicationSearchRequest {
   firstName: string;
   lastName: string;
   passport: string;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: string;
+  toDate: string;
 }

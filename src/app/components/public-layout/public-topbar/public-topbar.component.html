@@ -1,6 +1,9 @@
 <div class="layout-topbar bg-white">
   <div class="wrapper flex align-items-center">
-    <div>Russian eVisa</div>
+    <div class="flex gap-2 align-items-center">
+      <img src="/assets/demo/images/flags/ru.svg" class="russian-flag" />
+      <div class="home-section-heading">Russian eVisa</div>
+    </div>
 
     <ul class="topbar-menu">
       <li *ngFor="let item of tabs; let i = index">
@@ -29,8 +32,13 @@
     </ul>
 
     <div class="topbar-profile">
-      <p-button icon="pi pi-phone" label="Need Help?"></p-button>
+      <p-button
+        label="Apply Now"
+        routerLink="/login"
+        [rounded]="true"
+      ></p-button>
+
+      <p-button label="Login" routerLink="/login" [rounded]="true"> </p-button>
     </div>
   </div>
 </div>
-

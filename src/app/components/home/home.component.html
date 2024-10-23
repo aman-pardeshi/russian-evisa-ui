@@ -1,6 +1,6 @@
-<div class="surface-ground min-h-screen wrapper">
+<div class="">
   <div class="landing-wrapper">
-    <div [ngStyle]="backgroundStyle" class="bg-no-repeat bg-cover bg-bottom">
+    <div class="bg-no-repeat bg-cover bg-bottom wrapper" style="height: 90vh">
       <div
         class="flex align-items-center justify-content-between px-5 sm:px-8 py-6"
       ></div>
@@ -8,74 +8,100 @@
         class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between px-5 sm:px-8 py-8 overflow-hidden"
       >
         <div class="flex-1 fadein animation-duration-1000">
-          <h1 class="font-bold text-7xl mt-0 mb-5">Get Your Russian eVisa</h1>
-          <!-- <p class="text-3xl mb-5 line-height-3">
-            Minimal layout inspired by a beautiful city
-          </p> -->
+          <h1 class="font-bold mt-0 mb-3 hero-section-heading">
+            Russian eVisa Portal
+          </h1>
+          <p class="text-3xl mb-5 line-height-3">
+            Complete your eVisa application in under 5 minutes
+          </p>
           <button
             pButton
             pRipple
             label="Apply Now"
             routerLink="/login"
+            size="large"
+            [rounded]="true"
           ></button>
         </div>
         <div class="flex-1">
           <img
             alt="intro image"
-            src="assets/demo/images/landing/hero-img.png"
-            class="fadeinright animation-ease-in-out animation-duration-1000 w-full border-round-2xl shadow-2"
+            src="assets/demo/images/landing/russia.png"
+            class="fadeinright animation-ease-in-out animation-duration-1000 w-full border-round-3xl shadow-2"
           />
         </div>
       </div>
-      <div #stats class="py-8">
+    </div>
+
+    <div #stats class="py-8 blue-bg">
+      <div class="wrapper">
         <div class="flex flex-column align-items-center mb-7">
-          <h2 class="font-bold text-3xl my-0">
-            How to Apply for Your Russian e-Visa
+          <h2 class="font-bold home-section-heading my-1">
+            How to Apply for Your e-Visa
           </h2>
           <div>We’ve simplified the process for a smooth experience:</div>
         </div>
         <div class="flex flex-column xl:flex-row justify-content-center gap-5">
-          <div
-            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
-            style="border-radius: 14px"
-          >
-            <h3 class="mt-0 mb-3 font-bold text-4xl">
-              Complete the Application
-            </h3>
-            <p class="line-height-3 mb-5 text-color-secondary">
-              Provide basic details like your name, travel plans, and passport
-              information.
-            </p>
-          </div>
-          <div
-            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
-            style="border-radius: 14px"
-          >
-            <h3 class="mt-0 mb-3 font-bold text-4xl">Pay the Fee</h3>
-            <p class="line-height-3 mb-5 text-color-secondary">
-              Securely pay the e-visa processing fee online. Our service
-              includes expert review and 24/7 support.
-            </p>
+          <div class="w-full lg:w-4 flex align-items-center relative">
+            <div class="card-number">
+              <div class="hash">#</div>
+              <div class="number">1</div>
+            </div>
+            <div
+              class="surface-card py-4 px-5 ml-7 steps-section-card"
+              style="border-radius: 14px"
+            >
+              <h3 class="mt-0 mb-3 font-bold text-3xl">
+                Complete the Application
+              </h3>
+              <p class="line-height-3 text-color-secondary">
+                Provide basic details like your name, travel plans, and passport
+                information.
+              </p>
+            </div>
           </div>
 
-          <div
-            class="surface-card text-center py-7 px-5 shadow-2 w-full lg:w-4"
-            style="border-radius: 14px"
-          >
-            <h3 class="mt-0 mb-3 font-bold text-4xl">Receive Your e-Visa</h3>
-            <p class="line-height-3 mb-5 text-color-secondary">
-              Get your approved e-visa via email within 4-6 days. Print it and
-              your travel purpose aligns with those permitted by the
-              e-Visapresent it at the Russian border.
-            </p>
+          <div class="w-full lg:w-4 flex align-items-center relative">
+            <div class="card-number">
+              <div class="hash">#</div>
+              <div class="number">2</div>
+            </div>
+            <div
+              class="surface-card py-4 px-5 ml-7 steps-section-card"
+              style="border-radius: 14px"
+            >
+              <h3 class="mt-0 mb-3 font-bold text-3xl">Pay the Fee</h3>
+              <p class="line-height-3 text-color-secondary">
+                Securely pay the e-visa processing fee online. Our service
+                includes expert review and 24/7 support.
+              </p>
+            </div>
+          </div>
+
+          <div class="w-full lg:w-4 flex align-items-center relative">
+            <div class="card-number">
+              <div class="hash">#</div>
+              <div class="number">3</div>
+            </div>
+
+            <div
+              class="surface-card py-4 px-5 ml-7 steps-section-card"
+              style="border-radius: 14px"
+            >
+              <h3 class="mt-0 mb-3 font-bold text-3xl">Receive Your e-Visa</h3>
+              <p class="line-height-3 text-color-secondary">
+                Get your approved e-visa via email within 4-6 days. Print it and
+                your travel purpose aligns with those permitted by the e-Visa,
+                present it at the Russian border.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
     <div #features class="px-5 sm:px-8 py-8 surface-card">
-      <h3 class="mt-0 mb-5 font-bold text-3xl text-900">
-        Three easy steps to obtain your E visa
-      </h3>
+      <h3 class="mt-0 mb-5 home-section-heading">Why Choose Us?</h3>
       <div class="flex flex-column lg:flex-row justify-content-center gap-5">
         <div class="w-full lg:w-4">
           <div
@@ -89,7 +115,7 @@
             />
           </div>
           <h3 class="mt-0 mb-3 font-bold text-2xl">
-            Fill your online application
+            5 minute application process
           </h3>
           <p class="line-height-3 text-color-secondary">
             Fill in your details, travel information, and passport details.
@@ -108,10 +134,29 @@
               class="h-5rem sm:h-8rem"
             />
           </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">Pay the fee</h3>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">Document Verification</h3>
           <p class="line-height-3 text-color-secondary">
             After submitting your application, proceed to the payment section.
             Pay the required fee securely using our trusted payment gateway.
+          </p>
+        </div>
+        <div class="w-full lg:w-4">
+          <div
+            class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
+            style="border-radius: 14px"
+          >
+            <img
+              alt="intro image"
+              src="assets/demo/images/landing/received-evisa.png"
+              class="h-4rem sm:h-8rem"
+            />
+          </div>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">Timely Notifications</h3>
+          <p class="line-height-3 text-color-secondary">
+            Once you've submitted your application, you'll receive a
+            confirmation email. Your approved visa document will be sent to you
+            via email within the specified processing time. Be sure to check
+            your inbox regularly, including the spam or junk folder.
           </p>
         </div>
         <div class="w-full lg:w-4">
@@ -121,11 +166,11 @@
           >
             <img
               alt="intro image"
-              src="assets/demo/images/landing/received-evisa.png"
+              src="assets/demo/images/landing/24-hours-call-icon.svg"
               class="h-5rem sm:h-8rem"
             />
           </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">Received eVisa</h3>
+          <h3 class="mt-0 mb-3 font-bold text-2xl">24/7 Support</h3>
           <p class="line-height-3 text-color-secondary">
             Once you've submitted your application, you'll receive a
             confirmation email. Your approved visa document will be sent to you
@@ -135,103 +180,151 @@
         </div>
       </div>
     </div>
+
     <br />
-    <div #pricing class="px-5 sm:px-8 py-8 surface-card gap-5">
-      <h3 class="mt-0 mb-5 font-bold text-3xl text-900">
-        Russia e-Visa Application Checklist
-      </h3>
-      <div class="shadow-2 surface-card p-5 border-round-2xl">
-        <div class="mb-3 font-bold">
-          Before starting your application, make sure:
-        </div>
-        <ul class="list-none p-0 m-0">
-          <li class="flex align-items-center mb-3">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>You are a citizen of an e-Visa eligible country.</span>
-          </li>
-          <li class="flex align-items-center">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Your stay in Russia will be 16 days or less.</span>
-          </li>
-        </ul>
+
+    <div class="blue-bg py-8">
+      <div class="wrapper">
+        <a href="/eligible-countries" class="mt-0 mb-0 home-section-heading">
+          Check the list of eligible countries for Russian e-visa here.
+        </a>
       </div>
     </div>
-    <!-- <div
-      class="px-5 sm:px-8 py-8 bg-gray-900 flex flex-column md:flex-row md:align-items-start gap-5"
-      style="border-top-left-radius: 14px; border-top-right-radius: 14px"
-    >
-      <div class="flex align-items-center flex-1">
-        <img
-          alt="intro image"
-          src="assets/demo/images/landing/logo-v.svg"
-          class="w-4rem"
-        />
-        <span class="text-white text-5xl font-bold ml-2">Verona</span>
+
+    <div #pricing class="px-5 sm:px-8 py-8 surface-card gap-5">
+      <h3 class="mt-0 mb-5 home-section-heading">
+        Tips for a Sucessful Application
+      </h3>
+
+      <div class="tips-container">
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Re-read before submitting application</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Track application status regularly.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Apply well in advance.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Check passport expiration early</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Verify nationality eligibility.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Ensure clear, correct uploads</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Align travel dates accurately.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Choose correct visa type.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Confirm successful payment.</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <p class="time-text">
+            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+            <span>Submit all required documents.</span>
+          </p>
+        </div>
       </div>
-      <div class="flex-1">
-        <div class="text-xl text-gray-600 mb-4">LATEST</div>
-        <ul class="list-none p-0 m-0">
-          <li class="mb-3">
-            <a class="cursor-pointer text-white text-xl">Ultima</a>
-          </li>
-          <li class="mb-3">
-            <a class="cursor-pointer text-white text-xl">Apollo</a>
-          </li>
-          <li class="mb-3">
-            <a class="cursor-pointer text-white text-xl">Sakai</a>
-          </li>
-          <li class="mb-3">
-            <a class="cursor-pointer text-white text-xl">Diamond</a>
-          </li>
-          <li>
-            <a class="cursor-pointer text-white text-xl">Poseidon</a>
-          </li>
-        </ul>
+    </div>
+
+    <div class="py-8 blue-bg">
+      <div class="wrapper">
+        <h3 class="mt-0 mb-5 home-section-heading">What are customers say</h3>
+
+        <p-carousel
+          [value]="testimonials"
+          [numVisible]="3"
+          [numScroll]="1"
+          [circular]="true"
+          styleClass="mb-3"
+          [responsiveOptions]="carouselResponsiveOptions"
+        >
+          <ng-template let-product pTemplate="item">
+            <div class="testimonial-card">
+              <div class="profile">
+                <div>
+                  <img [src]="product.reviewer_profile" class="profile-img" />
+                </div>
+
+                <div>
+                  <div class="reviewer-name">{{ product.reviewer_name }}</div>
+                  <div>{{ product.country }}</div>
+                </div>
+              </div>
+
+              <div class="review">{{ product.review }}</div>
+            </div>
+          </ng-template>
+        </p-carousel>
       </div>
-      <div class="flex-1">
-        <div class="text-xl text-gray-600 mb-4">DEMOS</div>
-        <ul class="list-none p-0 m-0">
-          <li class="mb-3">
-            <a
-              href="https://www.primefaces.org/primeng"
-              class="cursor-pointer text-white text-xl"
-              >PrimeNG</a
-            >
-          </li>
-          <li class="mb-3">
-            <a
-              href="https://www.primefaces.org/showcase"
-              class="cursor-pointer text-white text-xl"
-              >PrimeFaces</a
-            >
-          </li>
-          <li class="mb-3">
-            <a
-              href="https://www.primefaces.org/primereact"
-              class="cursor-pointer text-white text-xl"
-              >PrimeReact</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://www.primefaces.org/primevue"
-              class="cursor-pointer text-white text-xl"
-              >PrimeVue</a
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="flex flex-1 gap-4">
-        <a href="http://github.com/primefaces">
-          <i class="pi pi-github text-white text-5xl"></i>
-        </a>
-        <a href="https://discord.gg/gzKFYnpmCY">
-          <i class="pi pi-discord text-white text-5xl"></i>
-        </a>
-        <a href="http://twitter/primeng">
-          <i class="pi pi-twitter text-white text-5xl"></i>
-        </a>
-      </div>
-    </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="pop-up-container" *ngIf="showContinueApplicationPopUp">
+  <div class="pop-up-card">
+    <div class="flex gap-3">
+      <p class="time-text"><span>Continue with your visa application</span></p>
+      <i
+        class="pi pi-times cursor-pointer"
+        (click)="showContinueApplicationPopUp = false"
+      ></i>
+    </div>
+    <p class="day-text">
+      Get Visa by <span class="font-bold"> {{ visaApprovalDate }}</span>
+    </p>
+    <p class="day-text">Apply within <span class="duration">5 minutes</span></p>
+
+    <div class="flex mt-3">
+      <button
+        pButton
+        pRipple
+        label="Continue"
+        routerLink="/application"
+        [rounded]="true"
+      ></button>
+    </div>
   </div>
 </div>
