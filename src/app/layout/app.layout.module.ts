@@ -23,6 +23,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DropdownModule } from 'primeng/dropdown';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ButtonModule } from 'primeng/button';
     TooltipModule,
     AppConfigModule,
     ButtonModule,
+    ToastModule
   ],
   exports: [AppLayoutComponent],
 })

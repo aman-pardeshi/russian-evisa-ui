@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AppLayoutModule } from './layout/app.layout.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/token-inceptor';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   imports: [AppLayoutModule, AppRoutingModule],
@@ -12,6 +13,7 @@ import { TokenInterceptor } from './services/token-inceptor';
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

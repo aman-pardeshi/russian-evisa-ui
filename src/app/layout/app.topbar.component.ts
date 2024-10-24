@@ -1,58 +1,78 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { LayoutService } from "./service/app.layout.service";
+import { MenuItem, MessageService } from 'primeng/api';
+import { LayoutService } from './service/app.layout.service';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+  selector: 'app-topbar',
+  templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent {
+  menu: MenuItem[] = [];
 
-    menu: MenuItem[] = [];
+  @ViewChild('searchinput') searchInput!: ElementRef;
 
-    @ViewChild('searchinput') searchInput!: ElementRef;
+  @ViewChild('menubutton') menuButton!: ElementRef;
 
-    @ViewChild('menubutton') menuButton!: ElementRef;
+  searchActive: boolean = false;
 
-    searchActive: boolean = false;
+  constructor(
+    public layoutService: LayoutService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
-    constructor(public layoutService: LayoutService) {}
+  onMenuButtonClick() {
+    this.layoutService.onMenuToggle();
+  }
 
-    onMenuButtonClick() {
-        this.layoutService.onMenuToggle();
-    }
+  activateSearch() {
+    this.searchActive = true;
+    setTimeout(() => {
+      this.searchInput.nativeElement.focus();
+    }, 100);
+  }
 
-    activateSearch() {
-        this.searchActive = true;
-        setTimeout(() => {
-            this.searchInput.nativeElement.focus();
-        }, 100);
-    }
+  deactivateSearch() {
+    this.searchActive = false;
+  }
 
-    deactivateSearch() {
-        this.searchActive = false;
-    }
+  removeTab(event: MouseEvent, item: MenuItem, index: number) {
+    this.layoutService.onTabClose(item, index);
+    event.preventDefault();
+  }
 
-    removeTab(event: MouseEvent, item: MenuItem, index: number) {
-        this.layoutService.onTabClose(item, index);
-        event.preventDefault();
-    }
+  get layoutTheme(): string {
+    return this.layoutService.config().layoutTheme;
+  }
 
-    get layoutTheme(): string {
-        return this.layoutService.config().layoutTheme;
-    }
+  get colorScheme(): string {
+    return this.layoutService.config().colorScheme;
+  }
 
-    get colorScheme(): string {
-        return this.layoutService.config().colorScheme;
-    }
+  get logo(): string {
+    const path = 'assets/layout/images/logo-';
+    const logo =
+      this.layoutTheme === 'primaryColor' &&
+      !(this.layoutService.config().theme == 'yellow')
+        ? 'light.png'
+        : this.colorScheme === 'light'
+        ? 'dark.png'
+        : 'light.png';
+    return path + logo;
+  }
 
-    get logo(): string {
-        const path = 'assets/layout/images/logo-';
-        const logo = (this.layoutTheme === 'primaryColor'  && !(this.layoutService.config().theme  == "yellow")) ? 'light.png' : (this.colorScheme === 'light' ? 'dark.png' : 'light.png');
-        return path + logo;
-    }
+  get tabs(): MenuItem[] {
+    return this.layoutService.tabs;
+  }
 
-    get tabs(): MenuItem[] {
-        return this.layoutService.tabs;
-    }
+  handleLogOut() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Logged out successfully',
+    });
+    localStorage.removeItem('userDetails');
+    this.router.navigate(['/']);
+  }
 }

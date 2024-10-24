@@ -19,13 +19,17 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
-import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import {
+  mapArrayFromSnakeToCamel,
+  mapObjectFromSnakeToCamel,
+} from 'src/app/utils/switchObjectCase';
 import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @Component({
   selector: 'app-process-applications',
@@ -47,10 +51,11 @@ import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
     DividerModule,
     ToastModule,
     TimelineModule,
+    ConfirmPopupModule,
   ],
   templateUrl: './process-applications.component.html',
   styleUrl: './process-applications.component.scss',
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class ProcessApplicationsComponent {
   searchBy: string = 'date';
@@ -81,7 +86,8 @@ export class ProcessApplicationsComponent {
     private applicationService: ApplicationService,
     private spinner: NgxSpinnerService,
     private messageService: MessageService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private confirmationService: ConfirmationService
   ) {
     this.initForm();
   }
@@ -215,6 +221,7 @@ export class ProcessApplicationsComponent {
     this.showApplicationDetailsDialog = true;
 
     this.currentApplicationDetails = {
+      id: application?.id,
       firstName: application?.firstName,
       lastName: application?.lastName,
       gender: application?.gender,
@@ -233,10 +240,10 @@ export class ProcessApplicationsComponent {
       photo: application?.photo?.url,
       passportFront: application?.passportPhotoFront?.url,
       passportBack: application?.passportPhotoBack?.url,
+      referenceId: application?.referenceId,
     };
 
     this.selectedApplicationHistory = application.applicationHistories;
-    console.log(application);
   }
 
   handleApplyVisa() {
@@ -246,18 +253,26 @@ export class ProcessApplicationsComponent {
       referenceId: this.currentApplicationDetails.referenceId,
     };
 
-    console.log(params, this.currentApplicationDetails);
-
     this.adminService.applyVisaForApplication(params).subscribe(
       (response) => {
-        console.log(response);
         this.spinner.hide();
+        this.handleApplicationOpen(
+          mapObjectFromSnakeToCamel(response?.admin_application, {})
+        );
+        this.applicationsList = this.applicationsList.filter(
+          (application) => application.id !== this.currentApplicationDetails.id
+        );
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Visa Applied Successfully',
+        });
       },
       (error) => {
         this.spinner.hide();
         this.messageService.add({
           severity: 'error',
-          detail: 'Something went wrong',
+          detail: error?.error?.message,
         });
       }
     );
@@ -271,5 +286,24 @@ export class ProcessApplicationsComponent {
 
   onFilterChange() {
     this.searchBy = this.applicationSearchForm.get('searchBy')?.value?.value;
+  }
+
+  confirmPopup(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.handleApplyVisa();
+      },
+      reject: () => {
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Rejected',
+        //   detail: 'You have rejected',
+        //   life: 3000,
+        // });
+      },
+    });
   }
 }

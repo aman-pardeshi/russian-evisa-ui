@@ -262,7 +262,7 @@
           <div class="flex flex-column">
             <small>Application ID</small>
             <div class="font-bold text-xl">
-              {{ currentApplicationDetails?.applicationId }}
+              {{ currentApplicationDetails?.submissionId }}
             </div>
           </div>
         </div>
@@ -275,38 +275,71 @@
       <div class="mb-3 font-semibold text-xl">Documents</div>
 
       <div class="flex justify-content-between">
-        1. Passport
+        1. Photo
 
         <div class="flex gap-3">
-          <p-button
+          <!-- <p-button
             label="View"
             icon="pi pi-eye"
             styleClass="p-button-outlined p-button-secondary"
-          ></p-button>
+          ></p-button> -->
 
-          <p-button
-            label="Download"
-            icon="pi pi-download"
-            styleClass="p-button-outlined p-button-secondary"
-          ></p-button>
+          <a
+            [href]="currentApplicationDetails?.photo"
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+          >
+            <i class="pi pi-download"></i>
+            <span class="font-bold">Download</span>
+          </a>
         </div>
       </div>
 
       <div class="flex justify-content-between">
-        2. Personal Photo
+        2. Passport Front
 
         <div class="flex gap-3">
-          <p-button
+          <!-- <p-button
             label="View"
             icon="pi pi-eye"
             styleClass="p-button-outlined p-button-secondary"
-          ></p-button>
+          ></p-button> -->
 
-          <p-button
-            label="Download"
-            icon="pi pi-download"
+          <a
+            [href]="currentApplicationDetails?.passportFront"
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+          >
+            <i class="pi pi-download"></i>
+            <span class="font-bold">Download</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="flex justify-content-between">
+        2. Passport Back
+
+        <div class="flex gap-3">
+          <!-- <p-button
+            label="View"
+            icon="pi pi-eye"
             styleClass="p-button-outlined p-button-secondary"
-          ></p-button>
+          ></p-button> -->
+
+          <a
+            [href]="currentApplicationDetails?.passportBack"
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+          >
+            <i class="pi pi-download"></i>
+            <span class="font-bold">Download</span>
+          </a>
         </div>
       </div>
     </div>

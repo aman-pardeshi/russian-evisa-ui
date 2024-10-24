@@ -21,7 +21,7 @@ import { MessageService } from 'primeng/api';
 import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
-import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import { mapArrayFromSnakeToCamel, mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -102,7 +102,7 @@ export class AppliedApplicationsComponent {
 
   onSearch() {
     this.spinner.show();
-    this.applicationsList = []
+    this.applicationsList = [];
     this.applicationSearchParams = new ApplicationSearchRequest();
     this.applicationSearchParams.searchBy =
       this.applicationSearchForm.get('searchBy')?.value?.value;
@@ -143,7 +143,7 @@ export class AppliedApplicationsComponent {
 
       default:
         break;
-    }  
+    }
 
     this.adminService
       .getAppliedApplication(this.applicationSearchParams)
@@ -174,16 +174,16 @@ export class AppliedApplicationsComponent {
 
   getSeverity(value: string) {
     switch (value) {
-      case 'Approved':
+      case 'approved':
         return 'success';
 
-      case 'Pending':
+      case 'applied':
         return 'warning';
 
-      case 'Rejected':
+      case 'rejected':
         return 'danger';
 
-      case 'On-Hold':
+      case 'submitted':
         return 'info';
 
       default:
@@ -194,17 +194,26 @@ export class AppliedApplicationsComponent {
   handleApplicationOpen(application: any) {
     this.showApplicationDetailsDialog = true;
     this.currentApplicationDetails = {
-      firstName: application.firstName,
-      lastName: application.lastName,
-      gender: 'Male',
-      dateOfBirth: '04 Jun, 1992',
+      id: application?.id,
+      firstName: application?.firstName,
+      lastName: application?.lastName,
+      gender: application?.gender,
+      dateOfBirth: getDateInFormat(new Date(application?.dateOfBirth)),
       passportNumber: application.passportNumber,
-      passportPlaceOfIssue: 'Mumbai',
-      passportExpiryDate: '15 Sept, 2040',
-      passportDateOfIssue: '01 Sept, 2020',
-      contactNo: '+91 9856432120',
-      referenceId: application.referenceId,
+      passportPlaceOfIssue: application.passportPlaceOfIssue,
+      passportExpiryDate: getDateInFormat(
+        new Date(application?.passportExpiryDate)
+      ),
+      passportDateOfIssue: getDateInFormat(
+        new Date(application?.passportDateOfIssue)
+      ),
+      contactNo: `${application?.countryCode} ${application?.mobile}`,
+      submissionId: application?.submissionId,
       status: application.status,
+      photo: application?.photo?.url,
+      passportFront: application?.passportPhotoFront?.url,
+      passportBack: application?.passportPhotoBack?.url,
+      referenceId: application?.referenceId,
     };
 
     this.selectedApplicationHistory = application.applicationHistories;
@@ -229,6 +238,14 @@ export class AppliedApplicationsComponent {
             summary: 'Success',
             detail: 'Applicaion Approved Successfully',
           });
+          this.showApprovalConfirmationDialog = false
+          this.handleApplicationOpen(
+            mapObjectFromSnakeToCamel(response?.admin_application, {})
+          );
+          this.applicationsList = this.applicationsList.filter(
+            (application) =>
+              application.id !== this.currentApplicationDetails.id
+          );
         }
       },
       (error) => {
@@ -261,6 +278,14 @@ export class AppliedApplicationsComponent {
             summary: 'Success',
             detail: 'Applicaion Rejected Successfully',
           });
+          this.showRejectionConfirmationDialog = false;
+          this.handleApplicationOpen(
+            mapObjectFromSnakeToCamel(response?.admin_application, {})
+          );
+          this.applicationsList = this.applicationsList.filter(
+            (application) =>
+              application.id !== this.currentApplicationDetails.id
+          );
         }
       },
       (error) => {

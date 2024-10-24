@@ -24,7 +24,7 @@ import { ApplicationSearchRequest } from 'src/app/model/application-search-reque
 import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { DividerModule } from 'primeng/divider';
 import { TimelineModule } from 'primeng/timeline';
-import { getDateInDDMMYYY } from '../Shared/utils';
+import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 
 @Component({
   selector: 'app-total-applications',
@@ -186,19 +186,25 @@ export class TotalApplicationsComponent {
   handleApplicationOpen(application: any) {
     this.showApplicationDetailsDialog = true;
     this.currentApplicationDetails = {
-      firstName: application.firstName,
-      lastName: application.lastName,
-      gender: 'Male',
-      dateOfBirth: '04 Jun, 1992',
+      firstName: application?.firstName,
+      lastName: application?.lastName,
+      gender: application?.gender,
+      dateOfBirth: getDateInFormat(new Date(application?.dateOfBirth)),
       passportNumber: application.passportNumber,
-      passportPlaceOfIssue: 'Mumbai',
-      passportExpiryDate: '15 Sept, 2040',
-      passportDateOfIssue: '01 Sept, 2020',
-      contactNo: '+91 9856432120',
-      referenceId: application.referenceId,
+      passportPlaceOfIssue: application.passportPlaceOfIssue,
+      passportExpiryDate: getDateInFormat(
+        new Date(application?.passportExpiryDate)
+      ),
+      passportDateOfIssue: getDateInFormat(
+        new Date(application?.passportDateOfIssue)
+      ),
+      contactNo: `${application?.countryCode} ${application?.mobile}`,
+      submissionId: application?.submissionId,
       status: application.status,
+      photo: application?.photo?.url,
+      passportFront: application?.passportPhotoFront?.url,
+      passportBack: application?.passportPhotoBack?.url,
     };
     this.selectedApplicationHistory = application.applicationHistories;
-    console.log(application);
   }
 }

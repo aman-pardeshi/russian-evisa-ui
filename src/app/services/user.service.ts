@@ -20,4 +20,7 @@ export class UserService {
   signUpUser(details: any) {
     return this.http.post<any>(this.serverUrl + `/users`, details);
   }
+
+  logOutUser() {
+  }
 }

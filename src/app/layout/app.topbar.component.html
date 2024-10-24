@@ -1,10 +1,6 @@
-<div class="layout-topbar">
-  <div class="wrapper flex align-items-center">
-    <div>
-      Russian eVisa
-    </div>
-
-    <ul class="topbar-menu">
+<div class="admin-layout-topbar">
+  <div class="wrapper flex align-items-center justify-content-end">
+    <!-- <ul class="topbar-menu">
       <li *ngFor="let item of tabs; let i = index">
         <a
           [routerLink]="item.routerLink"
@@ -28,10 +24,7 @@
           <span>{{ item.label }}</span>
         </a>
       </li>
-      <!-- <li *ngIf="!tabs || tabs.length === 0" class="topbar-menu-empty">
-        Use (cmd + click) to open a tab
-      </li> -->
-    </ul>
+    </ul> -->
 
     <!-- <div
       class="topbar-search"
@@ -60,8 +53,18 @@
       </div>
     </div> -->
 
-    <div class="topbar-profile">
-      <p-button icon="pi pi-phone" label="Need Help?"></p-button>
+    <div class="new-user-profile">
+      <div class="profile-container">
+        <div class="dropdown">
+          <button class="dropbtn profile-container">
+            <i class="pi pi-user text-xl" style="color: #708090"></i>
+          </button>
+          <div class="dropdown-content">
+            <div href="#" class="option" (click)="handleLogOut()">Log out</div>
+          </div>
+        </div>
+        <!-- <img src="/assets/demo/images/icons/user.png" alt="" class="profile"> -->
+      </div>
     </div>
   </div>
 </div>
