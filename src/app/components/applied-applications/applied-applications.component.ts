@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -24,7 +24,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { mapArrayFromSnakeToCamel, mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-applied-applications',
@@ -52,6 +52,7 @@ import { FileUploadModule } from 'primeng/fileupload';
   providers: [MessageService],
 })
 export class AppliedApplicationsComponent {
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
   searchBy: string = 'date';
   applicationSearchForm: FormGroup;
   applicationSearchParams: ApplicationSearchRequest;
@@ -238,7 +239,7 @@ export class AppliedApplicationsComponent {
             summary: 'Success',
             detail: 'Applicaion Approved Successfully',
           });
-          this.showApprovalConfirmationDialog = false
+          this.showApprovalConfirmationDialog = false;
           this.handleApplicationOpen(
             mapObjectFromSnakeToCamel(response?.admin_application, {})
           );
@@ -304,5 +305,11 @@ export class AppliedApplicationsComponent {
   onFileSelect(event: any) {
     const file = event.files[0];
     this.approvalDocument = file;
+  }
+
+  clearApprovalDocument() {
+    this.approvalDocument = null
+    this.fileUpload?.clear();
+    this.showApprovalConfirmationDialog = true;
   }
 }

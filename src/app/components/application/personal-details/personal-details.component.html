@@ -596,7 +596,16 @@
                         ].valid &&
                         applicantPassportDetailsForm.controls[
                           'isOtherNationality'
-                        ].valid
+                        ].valid &&
+                        (applicantPassportDetailsForm.get('isOtherNationality')
+                          .value === true
+                          ? applicantPassportDetailsForm.controls[
+                              'otherNationality'
+                            ].valid &&
+                            applicantPassportDetailsForm.controls[
+                              'yearOfAcquisition'
+                            ].valid
+                          : true)
                       )
                     "
                   />

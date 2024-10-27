@@ -386,7 +386,7 @@
       label="Approve"
       [disabled]="currentApplicationDetails?.status !== 'applied'"
       severity="success"
-      (click)="showApprovalConfirmationDialog = true"
+      (click)="clearApprovalDocument()"
     ></p-button>
 
     <p-button
@@ -414,14 +414,16 @@
 
       <div class="w-12rem">
         <p-fileUpload
+          #fileUpload
           name="photo"
           mode="basic"
           chooseIcon="pi pi-upload"
-          maxFileSize="1000000"
+          maxFileSize="5000000"
           (onSelect)="onFileSelect($event)"
           [auto]="false"
           chooseLabel="Upload"
           styleClass="w-full"
+          showCancelButton="true"
         >
         </p-fileUpload>
       </div>
@@ -450,7 +452,7 @@
 
   <div>
     <div class="flex gap-3 align-items-center mb-3">
-      <div class="w-9rem">Approval Document</div>
+      <div class="w-9rem">Rejection Note</div>
 
       <div class="w-20rem">
         <input

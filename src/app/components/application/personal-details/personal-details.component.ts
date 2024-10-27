@@ -175,8 +175,8 @@ export class PersonalDetailsComponent implements OnInit {
       passportPlaceOfIssue: ['', Validators.required],
       intentedDateOfEntry: ['', Validators.required],
       isOtherNationality: ['', Validators.required],
-      otherNationality: [''],
-      yearOfAcquisition: [undefined],
+      otherNationality: ['', Validators.required],
+      yearOfAcquisition: [undefined, Validators.required],
     });
   }
 

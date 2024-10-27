@@ -17,7 +17,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
 import { MessageService } from 'primeng/api';
 import { getDateInDDMMYYY } from '../Shared/utils';
-// import { Workbook } from 'exceljs';
+import * as XLSX from 'xlsx';
 import * as fs from 'file-saver';
 
 @Component({
@@ -49,7 +49,7 @@ export class ReportsComponent implements OnInit {
   appliedVisaReportList: any[] = [];
   processedVisaReportList: any[] = [];
   accountReportsList: any[] = [];
-  incompleteApplicationsReportListL: any[] = [];
+  incompleteApplicationsReportList: any[] = [];
 
   header: any[] = [];
 
@@ -93,8 +93,8 @@ export class ReportsComponent implements OnInit {
   initForm() {
     this.reportSearchForm = this.formsBuilder.group({
       reportType: ['', Validators.required],
-      startDate: [''],
-      endDate: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
     });
   }
 
@@ -105,7 +105,7 @@ export class ReportsComponent implements OnInit {
     this.appliedVisaReportList = [];
     this.processedVisaReportList = [];
     this.accountReportsList = [];
-    this.incompleteApplicationsReportListL = [];
+    this.incompleteApplicationsReportList = [];
 
     const searchParams = {
       startDate: this.reportSearchForm.get('startDate').value
@@ -287,7 +287,7 @@ export class ReportsComponent implements OnInit {
           .subscribe(
             (response) => {
               if (response?.incomplete_applications_reports?.length > 0) {
-                this.incompleteApplicationsReportListL =
+                this.incompleteApplicationsReportList =
                   response?.incomplete_applications_reports;
                 this.spinner.hide();
               } else {
@@ -327,23 +327,69 @@ export class ReportsComponent implements OnInit {
 
     switch (this.reportSearchForm.get('reportType')?.value?.value) {
       case 'Application Submitted':
-        excelData = this.submittedApplicationReportList;
+        excelData = this.submittedApplicationReportList.map((x) => ({
+          applicationId: x.submission_id,
+          name: x.first_name + ' ' + x.last_name,
+          passportNumber: x.passport_number,
+          nationality: x.country,
+          visaFee: x.visa_fee,
+          serviceFee: x.service_fee,
+          paymentReferenceNumber: x.payment_reference_number,
+          submittedOn: x.submitted_on,
+          currentStage: x.status,
+        }));
         break;
 
       case 'Applied Visa':
-        excelData = this.appliedVisaReportList;
+        excelData = this.appliedVisaReportList.map((x) => ({
+          applicationId: x.submission_id,
+          name: x.first_name + ' ' + x.last_name,
+          passportNumber: x.passport_number,
+          nationality: x.country,
+          visaFee: x.visa_fee,
+          serviceFee: x.service_fee,
+          paymentReferenceNumber: x.payment_reference_number,
+          visaAppliedOn: x.visa_applied_at,
+          visaAppliedBy: x.visa_applied_by?.name,
+          currentStage: x.status,
+        }));
         break;
 
       case 'Processed Visa':
-        excelData = this.processedVisaReportList;
+        excelData = this.processedVisaReportList.map((x) => ({
+          applicationId: x.submission_id,
+          name: x.first_name + ' ' + x.last_name,
+          passportNumber: x.passport_number,
+          nationality: x.country,
+          visaFee: x.visa_fee,
+          serviceFee: x.service_fee,
+          paymentReferenceNumber: x.payment_reference_number,
+          approvedAt: x.status === 'approved' ? x.approved_at : x.rejected_at,
+          approvedBy:
+            x.status === 'approved' ? x.approved_by?.name : x.rejected_by?.name,
+          currentStage: x.status,
+        }));
         break;
 
       case 'Account Report':
-        excelData = this.accountReportsList;
+        excelData = this.accountReportsList.map((x) => ({
+          email: x.email,
+          name: x.name,
+          createdOn: x.created_at,
+          number: x.mobile_number,
+          numberOfApplicationSubmitted: x.submitted_applications,
+          numberOfIncompleteApplications: x.incomplete_applications,
+        }));
         break;
 
       case 'Incomplete Application':
-        excelData = this.incompleteApplicationsReportListL;
+        excelData = this.incompleteApplicationsReportList.map((x) => ({
+          applicationId: x.submission_id,
+          name: x.first_name + ' ' + x.last_name,
+          passportNumber: x.passport_number,
+          nationality: x.country,
+          accountEmailAddress: x.group_email,
+        }));
         break;
 
       default:
@@ -356,84 +402,24 @@ export class ReportsComponent implements OnInit {
       (obj: { [s: string]: unknown } | ArrayLike<unknown>) => Object.values(obj)
     );
 
+    debugger;
+
     for (let count = 0; count < extractedData.length; count++) {
       extractedData[count].unshift(count + 1);
     }
 
-    // const workbook = new Workbook();
-    // const worksheet = workbook.addWorksheet('Reports Data');
-
-    // const reportPeriod = worksheet.addRow([
-    //   'Report Period : ' + ' From ' + fromDate + ' To ' + toDate,
-    // ]);
-    // reportPeriod.font = { bold: true };
-
-    // const headerRow = worksheet.addRow(this.header);
-    // headerRow.font = { bold: true };
-
-    // headerRow.eachCell((cell, number) => {
-    //   cell.fill = {
-    //     type: 'pattern',
-    //     pattern: 'solid',
-    //     fgColor: { argb: 'd8d8d8' },
-    //     bgColor: { argb: 'FF0000FF' },
-    //   };
-    //   cell.border = {
-    //     top: { style: 'thin' },
-    //     left: { style: 'thin' },
-    //     bottom: { style: 'thin' },
-    //     right: { style: 'thin' },
-    //   };
-    // });
-
-    // extractedData.forEach((d: any) => {
-    //   const row = worksheet.addRow(d);
-    //   //   row.eachCell((cell, number) => {
-    //   //      row.eachCell({ includeEmpty: true }, function(cell, number) => {
-
-    //   row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
-    //     cell.border = {
-    //       top: { style: 'thin' },
-    //       left: { style: 'thin' },
-    //       bottom: { style: 'thin' },
-    //       right: { style: 'thin' },
-    //     };
-    //   });
-    // });
-
-    // worksheet.getColumn(1).width = 33;
-    // worksheet.getColumn(2).width = 30;
-    // worksheet.getColumn(3).width = 25;
-    // worksheet.getColumn(4).width = 35;
-    // worksheet.getColumn(5).width = 35;
-    // worksheet.getColumn(6).width = 32;
-    // worksheet.getColumn(7).width = 35;
-    // worksheet.getColumn(8).width = 35;
-    // worksheet.getColumn(9).width = 25;
-    // worksheet.getColumn(10).width = 30;
-    // worksheet.getColumn(11).width = 30;
-    // worksheet.getColumn(12).width = 30;
-
-    // const currDate = new Date();
-    // const formattedDate = currDate
-    //   .toLocaleDateString('en-GB', {
-    //     day: 'numeric',
-    //     month: 'short',
-    //     year: 'numeric',
-    //   })
-    //   .replace(/ /g, '-');
-
-    // workbook.xlsx.writeBuffer().then((data) => {
-    //   const blob = new Blob([data], {
-    //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    //   });
-    //   fs.saveAs(
-    //     blob,
-    //     this.reportSearchForm.get('reportType')?.value?.value +
-    //       '_' +
-    //       formattedDate +
-    //       '.xlsx'
-    //   );
-    // });
+    const dataWithHeaders = [
+      this.header,
+      ...extractedData.map((item) => Object.values(item)),
+    ];
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(dataWithHeaders);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ['data'],
+    };
+    XLSX.writeFile(
+      workbook,
+      `${this.reportSearchForm.get('reportType')?.value?.value}.xlsx`
+    );
   }
 }

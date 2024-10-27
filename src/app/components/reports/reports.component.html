@@ -62,7 +62,13 @@
         (click)="onSearch()"
         label="Generate Report"
         icon="pi pi-search"
-        [disabled]="!reportSearchForm.get('reportType').valid"
+        [disabled]="
+          !(
+            reportSearchForm.get('reportType').valid &&
+            reportSearchForm.get('startDate').valid &&
+            reportSearchForm.get('endDate').valid
+          )
+        "
       />
     </form>
   </div>
@@ -173,7 +179,7 @@
         <td>{{ product.service_fee }}</td>
         <td>{{ product.payment_reference_number }}</td>
         <td>{{ product.visa_applied_at }}</td>
-        <td>{{ product.visa_applied_by }}</td>
+        <td>{{ product.visa_applied_by?.name }}</td>
         <td class="capitalize">{{ product.status }}</td>
       </tr>
     </ng-template>
@@ -302,7 +308,7 @@
 
 <div
   *ngIf="
-    incompleteApplicationsReportListL.length > 0 &&
+    incompleteApplicationsReportList.length > 0 &&
     this.reportSearchForm.get('reportType')?.value?.value ===
       'Incomplete Application'
   "
@@ -323,7 +329,7 @@
     />
   </div>
   <p-table
-    [value]="incompleteApplicationsReportListL"
+    [value]="incompleteApplicationsReportList"
     styleClass="p-datatable-striped"
     [paginator]="true"
     [tableStyle]="{ 'min-width': '50rem' }"
