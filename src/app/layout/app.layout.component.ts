@@ -119,7 +119,6 @@ export class AppLayoutComponent implements OnDestroy {
     const user = localStorage.getItem('userDetails');
 
     if (!user) {
-      // debugger
       this.messageService.add({
         severity: 'error',
         detail: 'You are not authorised to view this page',

@@ -116,7 +116,6 @@ export class ReportsComponent implements OnInit {
         : '',
     };
 
-    // debugger;
     switch (this.reportSearchForm.get('reportType')?.value?.value) {
       case 'Application Submitted':
         this.header = [
@@ -401,8 +400,6 @@ export class ReportsComponent implements OnInit {
     const extractedData = data.map(
       (obj: { [s: string]: unknown } | ArrayLike<unknown>) => Object.values(obj)
     );
-
-    debugger;
 
     for (let count = 0; count < extractedData.length; count++) {
       extractedData[count].unshift(count + 1);

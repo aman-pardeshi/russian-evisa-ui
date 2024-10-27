@@ -205,8 +205,6 @@ export class LoginComponent implements OnInit {
         password: this.signUpForm.get('password').value,
       };
 
-      // debugger
-
       this.userService.signUpUser(userParams).subscribe(
         (response) => {
           if (response.data && response?.data?.role === 'applicant') {

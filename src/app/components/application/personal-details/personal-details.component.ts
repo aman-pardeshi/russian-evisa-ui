@@ -313,7 +313,6 @@ export class PersonalDetailsComponent implements OnInit {
     if (date === '' || !date) {
       return '-';
     }
-    // debugger
     return getDateInFormat(new Date(date));
   }
 
