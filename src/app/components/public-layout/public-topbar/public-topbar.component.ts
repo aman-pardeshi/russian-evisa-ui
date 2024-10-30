@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-public-topbar',
@@ -11,7 +13,17 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './public-topbar.component.html',
   styleUrl: './public-topbar.component.scss',
 })
-export class PublicTopbarComponent {
+export class PublicTopbarComponent implements OnInit {
+  userDetailsForm: any | null = null;
+  showUserIcon: boolean = false;
+  private subscription!: Subscription;
+
+  constructor(
+    private router: Router,
+    private messageService: MessageService,
+    private userService: UserService
+  ) {}
+
   tabs: MenuItem[] = [
     {
       label: 'Home',
@@ -31,7 +43,35 @@ export class PublicTopbarComponent {
     },
     {
       label: 'FAQ',
-      routerLink: '/faq'
-    }
+      routerLink: '/faq',
+    },
   ];
+
+  ngOnInit(): void {
+    this.subscription = this.userService.isUserLoggedIn$.subscribe(
+      (isLoggedIn) => {
+        this.showUserIcon = isLoggedIn;
+      }
+    );
+
+    const { userData } = this.userService.getUserDetails;
+    this.userDetailsForm = userData
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  handleLogOut() {
+    this.userService.setUserLoggedIn(false);
+    this.router.navigate(['/']);
+  }
+
+  handleApplyRedirection() {
+    if (this.showUserIcon) {
+      this.router.navigate(['/application']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }

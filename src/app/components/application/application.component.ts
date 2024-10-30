@@ -24,8 +24,7 @@ import { getDateInFormat } from '../Shared/utils';
 })
 export class ApplicationComponent implements OnInit {
   applications: any[] = [];
-  visaApprovalDate: string = ''
-
+  visaApprovalDate: string = '';
 
   constructor(
     private router: Router,
@@ -34,13 +33,16 @@ export class ApplicationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.spinner.show();
     this.applicationService.getAllApplications().subscribe(
       (response) => {
         if (response.data.length > 0) {
           this.applications = response.data;
         }
+        this.spinner.hide();
       },
       (err) => {
+        this.spinner.hide();
         console.error('error', err);
       }
     );

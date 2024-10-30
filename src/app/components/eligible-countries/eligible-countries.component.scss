@@ -13,6 +13,10 @@
     padding: 0.8rem;
     border-radius: 10rem;
 
+    &:hover {
+      border: 1px solid #aeaeae;
+    }
+
     .country-name {
       font-weight: 700;
       font-size: 1.2rem;

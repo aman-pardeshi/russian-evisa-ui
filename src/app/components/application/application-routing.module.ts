@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PersonalDetailsComponent } from './personal-details/personal-details.component';
 import { ApplicationComponent } from './application.component';
+import { TrackStatusComponent } from '../track-status/track-status.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,10 @@ import { ApplicationComponent } from './application.component';
       {
         path: 'apply/:id',
         component: PersonalDetailsComponent,
+      },
+      {
+        path: 'track-status',
+        component: TrackStatusComponent,
       },
     ]),
   ],

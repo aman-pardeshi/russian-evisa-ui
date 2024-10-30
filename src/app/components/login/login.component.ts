@@ -1,3 +1,4 @@
+declare var google: any;
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
@@ -24,6 +25,7 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { MessagesModule } from 'primeng/messages';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-login',
@@ -49,16 +51,12 @@ import { MessagesModule } from 'primeng/messages';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  signUpForm: FormGroup;
+
   loginRequest: LoginRequest;
   isSignin: boolean = true;
 
-  showOtpDialogue: boolean = false;
-  oneTimePassword: number | undefined;
-  messages: Message[] | undefined;
-  generatedOtp: number;
-  timerSubscription: Subscription;
-  timeLeft: number = 60;
+  private clientId = environment.googleClientId;
+  private sdkLoaded: boolean = false;
 
   constructor(
     private layoutService: LayoutService,
@@ -70,18 +68,57 @@ export class LoginComponent implements OnInit {
     private googleAuthService: GoogleAuthService
   ) {
     this.initForm();
+    this.loadGoogleSDK();
   }
 
-  ngOnInit(): void {}
+  private loadGoogleSDK(): void {
+    if (!this.sdkLoaded) {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        this.sdkLoaded = true;
+        this.initializeGoogleLogin();
+      };
+      document.body.appendChild(script);
+    }
+  }
+
+  private initializeGoogleLogin() {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: this.clientId,
+        callback: this.handleGoogleCredentialResponse.bind(this),
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById('google-signin-button'),
+        {
+          theme: 'filled-blue',
+          size: 'large',
+          shape: 'rectangle',
+          width: '100%',
+        }
+      );
+    }
+  }
+
+  ngOnInit(): void {
+    this.loadGoogleSDK();
+    google.accounts.id.renderButton(
+      document.getElementById('google-signin-button'),
+      {
+        theme: 'filled-blue',
+        size: 'large',
+        shape: 'rectangle',
+        width: 350,
+      }
+    );
+  }
 
   initForm() {
     this.loginForm = this.formsBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-
-    this.signUpForm = this.formsBuilder.group({
-      name: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
@@ -98,7 +135,7 @@ export class LoginComponent implements OnInit {
     this.loginRequest.password = this.loginForm.get('password').value;
     this.userService.loginUser(this.loginRequest).subscribe(
       (response) => {
-        if (response.data && response?.data?.role === 'applicant') {
+        if (response.data && response?.data?.role === 'admin') {
           this.spinner.hide();
           this.messageService.add({
             severity: 'success',
@@ -110,20 +147,22 @@ export class LoginComponent implements OnInit {
             userData: response?.data,
           });
           localStorage.setItem('userDetails', serializedUserData);
-          this.router.navigate(['/application']);
-        } else if (response.data && response?.data?.role === 'admin') {
-          this.spinner.hide();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Logged in successfully',
-          });
-          const serializedUserData = JSON.stringify({
-            authToken: response?.token,
-            userData: response?.data,
-          });
-          localStorage.setItem('userDetails', serializedUserData);
+          this.userService.setUserLoggedIn(true);
           this.router.navigate(['/dashboard']);
+        } else {
+          this.spinner.hide();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Logged in successfully',
+          });
+          const serializedUserData = JSON.stringify({
+            authToken: response?.token,
+            userData: response?.data,
+          });
+          localStorage.setItem('userDetails', serializedUserData);
+          this.userService.setUserLoggedIn(true);
+          this.router.navigate(['/application']);
         }
       },
       (error) => {
@@ -145,113 +184,60 @@ export class LoginComponent implements OnInit {
 
   verifyOtp() {}
 
-  startTimer(): void {
-    this.timeLeft = 600;
-    this.timerSubscription = interval(1000).subscribe(() => {
-      if (this.timeLeft > 0) {
-        this.timeLeft--;
-      } else {
-        this.timerSubscription.unsubscribe();
-      }
-    });
-  }
+  handleGoogleCredentialResponse(response: any) {
+    if (response) {
+      const payload = this.decodeToken(response.credential);
 
-  displayTime(seconds: number): string {
-    const minutes: number = Math.floor(seconds / 60);
-    const remainingSeconds: number = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-  }
-
-  sendOtp() {
-    this.spinner.show();
-    this.generatedOtp = Math.floor(100000 + Math.random() * 900000);
-
-    const otpRequest = {
-      email: this.signUpForm.get('email').value,
-      otp: this.generatedOtp.toString(),
-    };
-
-    this.spinner.hide();
-    this.startTimer();
-    this.showOtpDialogue = true;
-
-    console.log('OTP => ', otpRequest.otp);
-
-    this.userService.sendOtp(otpRequest).subscribe(
-      (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'OTP Send successfully',
-        });
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-  }
-
-  handleOtpSubmit() {
-    this.spinner.show();
-    // this.isFormEdited = false;
-    if (
-      this.generatedOtp &&
-      this.generatedOtp === +this.oneTimePassword &&
-      this.timeLeft > 0
-    ) {
-      const userParams = {
-        name: this.signUpForm.get('name')?.value,
-        email: this.signUpForm.get('email')?.value,
-        password: this.signUpForm.get('password').value,
-      };
-
-      this.userService.signUpUser(userParams).subscribe(
+      this.spinner.show();
+      this.userService.signInWithGoogle(payload).subscribe(
         (response) => {
-          if (response.data && response?.data?.role === 'applicant') {
+          console.log(response);
+          if (response.data && response?.data?.role !== 'admin') {
             this.spinner.hide();
-            this.showOtpDialogue = false;
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'Sign Up successfully',
+              detail: 'Logged in successfully',
             });
+
             const serializedUserData = JSON.stringify({
               authToken: response?.token,
               userData: response?.data,
             });
             localStorage.setItem('userDetails', serializedUserData);
+            this.userService.setUserLoggedIn(true);
             this.router.navigate(['/application']);
-          } else {
-            this.spinner.hide();
-            this.messages = [
-              {
-                severity: 'error',
-                detail: 'Something went wrong',
-              },
-            ];
           }
         },
-        (err) => {
-          console.error(err);
-          this.messages = [
-            {
-              severity: 'error',
-              detail: 'Something went wrong',
-            },
-          ];
+        (error) => {
+          console.log(error);
+          this.spinner.hide();
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error?.error?.message,
+          });
         }
       );
-    } else if (this.timeLeft === 0) {
-      this.messages = [
-        {
-          severity: 'error',
-          detail: 'Timer has expired. Please resend new OTP',
-        },
-      ];
-    } else {
-      this.messages = [{ severity: 'error', detail: 'Incorrect OTP' }];
     }
-
-    this.spinner.hide();
   }
+
+  private decodeToken(token: string) {
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+
+    return {
+      google_response: {
+        accessToken: '',
+        profileObj: {
+          googleId: decodedToken?.sub,
+          imageUrl: decodedToken?.picture,
+          email: decodedToken?.email,
+          name: decodedToken?.name,
+          givenName: decodedToken?.given_name,
+        },
+      },
+    };
+  }
+
+  googleSign() {}
 }

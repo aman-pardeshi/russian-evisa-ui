@@ -1,0 +1,96 @@
+<div class="">
+  <div class="landing-wrapper py-3">
+    <div style="height: 90vh">
+      <div class="wrapper">
+        <h1 class="font-bold mt-0 mb-3 hero-section-heading">
+          Profile Details
+        </h1>
+
+        <div class="blue-card">
+          <form [formGroup]="userDetailsForm">
+            <div class="flex gap-3">
+              <div class="w-6">
+                <div class="field flex flex-column">
+                  <label for="email" class="font-bold"
+                    >Name<span class="text-red-400">*</span></label
+                  >
+
+                  <div class="p-input-icon-left">
+                    <i class="pi pi-user"></i>
+                    <input
+                      id="name"
+                      type="text"
+                      pInputText
+                      placeholder="Name"
+                      class="w-full"
+                      formControlName="name"
+                      autocomplete
+                    />
+                  </div>
+                </div>
+
+                <div class="field flex flex-column">
+                  <label for="email" class="font-bold"
+                    >Email<span class="text-red-400">*</span></label
+                  >
+
+                  <div class="p-input-icon-left">
+                    <i class="pi pi-envelope"></i>
+                    <input
+                      id="email"
+                      type="text"
+                      pInputText
+                      placeholder="Email"
+                      class="w-full"
+                      formControlName="email"
+                      autocomplete
+                    />
+                  </div>
+                </div>
+
+                <div class="field flex flex-column">
+                  <label for="addressLine1" class="font-bold"
+                    >Contact Number<span class="text-red-400">*</span></label
+                  >
+
+                  <div class="p-input-icon-left">
+                    <i class="pi pi-phone"></i>
+                    <input
+                      type="text"
+                      pInputText
+                      id="contact"
+                      placeholder="Contact Number"
+                      class="w-full"
+                      formControlName="contact"
+                      autocomplete
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-6 flex justify-content-center align-items-center">
+                <div class="profile-container">
+                  <img
+                    [src]="profileImage || prefetchProfileImage"
+                    class="profile-img"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <p-button
+              label="Update"
+              styleClass="mt-3"
+              [disabled]="
+                !(
+                  userDetailsForm.get('email').valid &&
+                  userDetailsForm.get('name').valid
+                )
+              "
+            ></p-button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

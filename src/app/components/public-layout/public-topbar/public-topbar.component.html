@@ -1,9 +1,9 @@
 <div class="layout-topbar bg-white">
   <div class="wrapper flex align-items-center">
-    <div class="flex gap-2 align-items-center">
+    <a class="flex gap-2 align-items-center" href="/">
       <img src="/assets/demo/images/flags/ru.svg" class="russian-flag" />
       <div class="home-section-heading">Russian eVisa</div>
-    </div>
+    </a>
 
     <ul class="topbar-menu">
       <li *ngFor="let item of tabs; let i = index">
@@ -34,11 +34,44 @@
     <div class="topbar-profile">
       <p-button
         label="Apply Now"
-        routerLink="/login"
+        (click)="handleApplyRedirection()"
         [rounded]="true"
       ></p-button>
 
-      <p-button label="Login" routerLink="/login" [rounded]="true"> </p-button>
+      <div class="new-user-profile" *ngIf="showUserIcon; else renderLoginbtn">
+        <div class="profile-container">
+          <div class="dropdown">
+            <button class="dropbtn profile-container">
+              <img
+                [src]="userDetailsForm?.profile?.url"
+                alt=""
+                *ngIf="userDetailsForm?.profile; else noprofile"
+                class="profile"
+              />
+              <ng-template #noprofile>
+                <i class="pi pi-user text-xl" style="color: #708090"></i>
+              </ng-template>
+            </button>
+            <div class="dropdown-content">
+              <div class="option">
+                <a href="/user/profile"> Profile</a>
+              </div>
+              <div class="option">
+                <a href="/application/track-status"> Track Status</a>
+              </div>
+              <div class="option" (click)="handleLogOut()">
+                <a href="/"> Log out</a>
+              </div>
+            </div>
+          </div>
+          <!-- <img src="/assets/demo/images/icons/user.png" alt="" class="profile"> -->
+        </div>
+      </div>
+
+      <ng-template #renderLoginbtn>
+        <p-button label="Login" routerLink="/login" [rounded]="true">
+        </p-button>
+      </ng-template>
     </div>
   </div>
 </div>

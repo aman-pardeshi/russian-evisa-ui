@@ -1,0 +1,23 @@
+.hero-section-heading {
+  font-family: 'Poppins-500';
+  color: #000;
+  font-size: 2em;
+}
+
+.blue-card {
+  padding: 1.5rem;
+  background: #eff7fd;
+  border-radius: 1rem;
+}
+
+.profile-container {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 1rem;
+  }
+}

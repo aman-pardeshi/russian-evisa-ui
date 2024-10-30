@@ -54,16 +54,23 @@ export class ApplicationService {
     );
   }
 
-
   getApplicationDetails(params: any) {
     return this.http.post<any>(
-      this.serverUrl + '/evisa_applications/get_application_details', params
+      this.serverUrl + '/evisa_applications/get_application_details',
+      params
     );
   }
 
   submitApplication(params: any) {
     return this.http.post<any>(
       this.serverUrl + '/evisa_applications/update_status',
+      params
+    );
+  }
+
+  getApplicationStatus(params: any) {
+    return this.http.post<any>(
+      this.serverUrl + '/evisa_applications/track_status',
       params
     );
   }

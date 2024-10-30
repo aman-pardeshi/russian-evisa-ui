@@ -41,7 +41,9 @@ import { PersonalDetailsRequest } from 'src/app/model/personal-details-request';
 import { PassportDetailRequest } from 'src/app/model/passport-detail-request';
 import { mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { FileUploadRequest } from 'src/app/model/files-upload-request';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, Subject } from 'rxjs';
+import { WebcamImage, WebcamModule } from 'ngx-webcam';
+import { DialogModule } from 'primeng/dialog';
 // import * as Tesseract from 'tesseract.js';
 
 interface City {
@@ -88,12 +90,20 @@ export function asyncEmailValidator(
     NgxSpinnerModule,
     LoaderComponent,
     SelectButtonModule,
+    WebcamModule,
+    DialogModule,
   ],
   templateUrl: './personal-details.component.html',
   styleUrl: './personal-details.component.scss',
   providers: [MessageService],
 })
 export class PersonalDetailsComponent implements OnInit {
+  public webcamImage: WebcamImage | null = null;
+  public trigger: Subject<void> = new Subject<void>();
+  showWebCamModal: boolean = false;
+  showPassportFrontCaptureModal: boolean = false;
+  showPassportBackCaptureModal: boolean = false;
+
   applicantDetailsForm: FormGroup;
   applicantPassportDetailsForm: FormGroup;
   countries: City[] | undefined;
@@ -118,6 +128,9 @@ export class PersonalDetailsComponent implements OnInit {
   preFetchedPhoto: string | null = null;
   preFetchedPassportFront: string | null = null;
   preFetchedPassportBack: string | null = null;
+  capturedPhoto: WebcamImage | null = null;
+  capturedPassportFront: WebcamImage | null = null;
+  capturedPassportBack: WebcamImage | null = null;
   passportFrontFile: File | null = null;
   passportBackFile: File | null = null;
   fileUploadRequest: FileUploadRequest;
@@ -147,6 +160,35 @@ export class PersonalDetailsComponent implements OnInit {
     this.passportExpDate.setDate(this.passportExpDate.getDate() + 180);
     this.fetchFormsOptions();
     this.fetchApplicationDetails();
+  }
+
+  public triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  public handleImage(webcamImage: WebcamImage): void {
+    this.capturedPhoto = webcamImage;
+    this.showWebCamModal = false;
+
+    console.log('image', this.capturedPhoto);
+  }
+
+  public handlePassportFrontImage(webcamImage: WebcamImage): void {
+    this.capturedPassportFront = webcamImage;
+    this.showPassportFrontCaptureModal = false;
+
+    console.log('image', this.capturedPhoto);
+  }
+
+  public handlePassportBackImage(webcamImage: WebcamImage): void {
+    this.capturedPassportBack = webcamImage;
+    this.showPassportBackCaptureModal = false;
+
+    console.log('image', this.capturedPhoto);
+  }
+
+  public get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
   }
 
   nextPage() {}
@@ -457,12 +499,25 @@ export class PersonalDetailsComponent implements OnInit {
     if (this.photoFile) {
       formData.append('photo', this.photoFile); // Correct file input
     }
+    if (this.capturedPhoto) {
+      const blob = this.base64ToBlob(this.capturedPhoto.imageAsBase64);
+      formData.append('photo', blob, 'photo.jpg');
+    }
     if (this.passportFrontFile) {
       formData.append('passportFront', this.passportFrontFile); // Correct file input
+    }
+    if (this.capturedPassportFront) {
+      const blob = this.base64ToBlob(this.capturedPassportFront.imageAsBase64);
+      formData.append('passportFront', blob, 'passport-front.jpg');
     }
 
     if (this.passportBackFile) {
       formData.append('passportBack', this.passportBackFile); // Correct file input
+    }
+
+    if (this.capturedPassportBack) {
+      const blob = this.base64ToBlob(this.capturedPassportBack.imageAsBase64);
+      formData.append('passportBack', blob, 'passport-back.jpg');
     }
 
     this.applicationService.uploadDocuments(formData).subscribe(
@@ -527,5 +582,14 @@ export class PersonalDetailsComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
+
+  private base64ToBlob(base64: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = Array.from(byteCharacters, (char) =>
+      char.charCodeAt(0)
+    );
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'image/jpeg' });
   }
 }

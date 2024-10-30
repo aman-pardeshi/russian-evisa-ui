@@ -39,7 +39,30 @@
 
 .sidemsg-container {
   width: 20rem;
-  height: calc(100vh - 6rem);
+  height: 51rem;
+  position: relative;
+
+  .safe-container {
+    background: #419487;
+    padding: 1rem;
+    color: #fff;
+    font-size: 1.2rem;
+    border-radius: 1rem;
+    font-weight: 700;
+    position: absolute;
+    bottom: 1rem;
+  }
+
+  .msg-container {
+    padding: 1rem;
+    border-radius: 14px;
+    box-shadow: inset 0px 3px 4px rgba(0, 0, 0, 0.1);
+    background: var(--surface-ground);
+    .title {
+      padding: 6px 0;
+      border-bottom: 0.1rem solid #cecece;
+    }
+  }
 }
 
 .form-container {
@@ -76,28 +99,27 @@
   margin-bottom: 1rem;
 }
 
-.safe-container {
-  background: #419487;
-  padding: 1rem;
-  color: #fff;
-  font-size: 1.2rem;
-  border-radius: 1rem;
-  font-weight: 700;
-  position: absolute;
-  bottom: 2rem;
-}
-
-.msg-container {
-  padding: 1rem;
-  border-radius: 14px;
-  box-shadow: inset 0px 3px 4px rgba(0, 0, 0, 0.1);
-  background: var(--surface-ground);
-  .title {
-    padding: 6px 0;
-    border-bottom: 0.1rem solid #cecece;
-  }
-}
-
 .passport-img {
   border-radius: 0.8rem;
+}
+
+.camera {
+  margin: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.edit-btn {
+  padding: 4px 8px;
+  border-radius: 10rem;
+  color: #32a6ff;
+  background: #e3ebf1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.bg-blue {
+  background: #eff7fd;
 }

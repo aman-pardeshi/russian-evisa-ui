@@ -1,3 +1,15 @@
+.hero-section-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  .img-container {
+    width: 40%;
+  }
+}
+
 .hero-section-heading {
   font-family: 'Poppins-500';
   color: #000;
@@ -43,7 +55,7 @@
   }
 }
 
-.card {
+.tip-card {
   // width: 280px;
   // height: 150px;
   color: #32a6ff;
@@ -69,7 +81,7 @@
   display: flex;
   gap: 0.2rem;
   align-items: center;
-  white-space: nowrap;
+  // white-space: nowrap;
 }
 
 .tips-container {
@@ -157,4 +169,19 @@
   .duration {
     color: rgb(234 179 8 / 1);
   }
+}
+
+.half-width-card {
+  width: 50%;
+}
+
+.blue-card {
+  padding: 1rem 1.5rem;
+  background: #eff7fd;
+  border-radius: 1.5rem;
+}
+
+.card {
+  margin-bottom: 0;
+  width: 33%;
 }

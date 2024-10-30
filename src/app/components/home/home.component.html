@@ -1,12 +1,7 @@
 <div class="">
   <div class="landing-wrapper">
     <div class="bg-no-repeat bg-cover bg-bottom wrapper" style="height: 90vh">
-      <div
-        class="flex align-items-center justify-content-between px-5 sm:px-8 py-6"
-      ></div>
-      <div
-        class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between px-5 sm:px-8 py-8 overflow-hidden"
-      >
+      <div class="hero-section-container">
         <div class="flex-1 fadein animation-duration-1000">
           <h1 class="font-bold mt-0 mb-3 hero-section-heading">
             Russian eVisa Portal
@@ -18,12 +13,12 @@
             pButton
             pRipple
             label="Apply Now"
-            routerLink="/login"
             size="large"
             [rounded]="true"
+            (click)="handleApplyRedirection()"
           ></button>
         </div>
-        <div class="flex-1">
+        <div class="img-container">
           <img
             alt="intro image"
             src="assets/demo/images/landing/russia.png"
@@ -100,83 +95,227 @@
       </div>
     </div>
 
-    <div #features class="px-5 sm:px-8 py-8 surface-card">
-      <h3 class="mt-0 mb-5 home-section-heading">Why Choose Us?</h3>
-      <div class="flex flex-column lg:flex-row justify-content-center gap-5">
-        <div class="w-full lg:w-4">
-          <div
-            class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5"
-            style="border-radius: 14px; border-top-left-radius: 5rem"
-          >
-            <img
-              alt="intro image"
-              src="assets/demo/images/landing/application.png"
-              class="h-5rem sm:h-8rem"
-            />
+    <div class="py-8 surface-card">
+      <div class="wrapper">
+        <div class="flex gap-6">
+          <div class="half-width-card">
+            <h3 class="mt-0 mb-5 home-section-heading">
+              What is a Russia e-Visa?
+            </h3>
+
+            <p>
+              A Russia e-Visa is an electronic travel authorization that allows
+              foreign citizens to visit specific regions in Russia, such as
+              Kaliningrad, St. Petersburg, and the Far East, without the need
+              for a traditional visa. It simplifies the process by allowing
+              applicants to complete the entire process online, from submitting
+              necessary documents like passport copies to receiving the visa,
+              eliminating the need for a visit to a Russian embassy or
+              consulate.
+            </p>
           </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">
-            5 minute application process
+
+          <div class="half-width-card">
+            <h3 class="mt-0 mb-5 home-section-heading">
+              Types of Russia e-Visas
+            </h3>
+
+            <p>
+              <b>Tourist e-Visa</b>
+              For travelers visiting Russia for tourism purposes. This visa
+              allows you to explore Russia's cultural landmarks, historical
+              sites, and natural beauty.
+            </p>
+
+            <p>
+              <b>Business e-Visa</b>
+              For those traveling to Russia for business-related activities,
+              such as attending meetings, conferences, or negotiations.
+            </p>
+
+            <p>
+              <b>Humanitarian e-Visa</b>
+              For individuals involved in cultural, sports, scientific, or
+              technical events, fostering international cooperation in these
+              fields.
+            </p>
+          </div>
+        </div>
+
+        <div class="blue-card mt-4">
+          <h3 class="mt-0 mb-5 home-section-heading">
+            Eligibility for Russian e-Visa
           </h3>
-          <p class="line-height-3 text-color-secondary">
-            Fill in your details, travel information, and passport details.
-            Double-check to ensure all information is accurate and up to date
-            before submitting.
+
+          <p>
+            Not all countries are eligible for a Russian e-Visa, including the
+            U.S., Canada, and the U.K., due to political or diplomatic reasons.
+            Eligibility depends on your nationality and the specific region of
+            Russia you plan to visit. Some countries may qualify for all three
+            types of e-Visas, while others may be eligible for only one or two.
+            It’s crucial to check the specific eligibility criteria for your
+            nationality before applying.
           </p>
         </div>
-        <div class="w-full lg:w-4">
-          <div
-            class="bg-green-50 p-6 flex align-items-center justify-content-center mb-5"
-            style="border-radius: 14px"
-          >
-            <img
-              alt="intro image"
-              src="assets/demo/images/landing/pay-fees.png"
-              class="h-5rem sm:h-8rem"
-            />
-          </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">Document Verification</h3>
-          <p class="line-height-3 text-color-secondary">
-            After submitting your application, proceed to the payment section.
-            Pay the required fee securely using our trusted payment gateway.
+      </div>
+    </div>
+
+    <div class="py-8 blue-bg">
+      <div class="wrapper">
+        <div>
+          <h3 class="mt-0 mb-5 home-section-heading">
+            Russian e-Visa Requirements
+          </h3>
+
+          <p>
+            <b>Completed Online Application Form</b><br />
+            Ensure all information is accurate and complete.
+          </p>
+
+          <p>
+            <b>Valid Passport</b><br />
+            Your passport must be valid for at least 6 months from the date of
+            your application and should have at least one blank page for border
+            stamps.
+          </p>
+
+          <p>
+            <b>Payment of the e-Visa Fee</b><br />
+            The processing fee can be paid online using a debit/credit card or
+            PayPal. This fee covers the expert review of your application,
+            corrections of any errors, and 24/7 support.
+          </p>
+
+          <p>
+            <b>Additional Documents</b><br />
+            While you can upload these later, ensure you have a recent
+            passport-sized photo, health insurance covering your stay in Russia,
+            and an active email address for receiving notifications
           </p>
         </div>
-        <div class="w-full lg:w-4">
-          <div
-            class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
-            style="border-radius: 14px"
-          >
-            <img
-              alt="intro image"
-              src="assets/demo/images/landing/received-evisa.png"
-              class="h-4rem sm:h-8rem"
-            />
+
+        <div class="flex mt-4 gap-3">
+          <div class="card">
+            <p>
+              <b>Tourist Visa</b><br />
+              For short-term leisure travel.
+            </p>
           </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">Timely Notifications</h3>
-          <p class="line-height-3 text-color-secondary">
-            Once you've submitted your application, you'll receive a
-            confirmation email. Your approved visa document will be sent to you
-            via email within the specified processing time. Be sure to check
-            your inbox regularly, including the spam or junk folder.
-          </p>
+
+          <div class="card">
+            <p>
+              <b>Work Visa</b><br />
+              For individuals employed by Russian companies.
+            </p>
+          </div>
+
+          <div class="card">
+            <p>
+              <b>Business Visa</b><br />
+              For those conducting business in Russia.
+            </p>
+          </div>
         </div>
-        <div class="w-full lg:w-4">
-          <div
-            class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
-            style="border-radius: 14px; border-bottom-right-radius: 5rem"
-          >
-            <img
-              alt="intro image"
-              src="assets/demo/images/landing/24-hours-call-icon.svg"
-              class="h-5rem sm:h-8rem"
-            />
+
+        <div class="flex mt-4 gap-3">
+          <div class="card">
+            <p>
+              <b>Transit Visa</b><br />
+              For travelers passing through Russia to another destination.
+            </p>
           </div>
-          <h3 class="mt-0 mb-3 font-bold text-2xl">24/7 Support</h3>
-          <p class="line-height-3 text-color-secondary">
-            Once you've submitted your application, you'll receive a
-            confirmation email. Your approved visa document will be sent to you
-            via email within the specified processing time. Be sure to check
-            your inbox regularly, including the spam or junk folder.
-          </p>
+
+          <div class="card">
+            <p>
+              <b>Study Visa</b><br />
+              For students attending educational institutions in Russia
+            </p>
+          </div>
+
+          <div style="width: 33%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div #features class="py-8 surface-card">
+      <div class="wrapper">
+        <h3 class="mt-0 mb-5 home-section-heading">Why Choose Us?</h3>
+        <div class="flex flex-column lg:flex-row justify-content-center gap-5">
+          <div class="w-full lg:w-4">
+            <div
+              class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5"
+              style="border-radius: 14px; border-top-left-radius: 5rem"
+            >
+              <img
+                alt="intro image"
+                src="assets/demo/images/landing/application.png"
+                class="h-5rem sm:h-8rem"
+              />
+            </div>
+            <h3 class="mt-0 mb-3 font-bold text-2xl">
+              5 minute application process
+            </h3>
+            <p class="line-height-3 text-color-secondary">
+              Fill in your details, travel information, and passport details.
+              Double-check to ensure all information is accurate and up to date
+              before submitting.
+            </p>
+          </div>
+          <div class="w-full lg:w-4">
+            <div
+              class="bg-green-50 p-6 flex align-items-center justify-content-center mb-5"
+              style="border-radius: 14px"
+            >
+              <img
+                alt="intro image"
+                src="assets/demo/images/landing/pay-fees.png"
+                class="h-5rem sm:h-8rem"
+              />
+            </div>
+            <h3 class="mt-0 mb-3 font-bold text-2xl">Document Verification</h3>
+            <p class="line-height-3 text-color-secondary">
+              After submitting your application, proceed to the payment section.
+              Pay the required fee securely using our trusted payment gateway.
+            </p>
+          </div>
+          <div class="w-full lg:w-4">
+            <div
+              class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
+              style="border-radius: 14px"
+            >
+              <img
+                alt="intro image"
+                src="assets/demo/images/landing/received-evisa.png"
+                class="h-4rem sm:h-8rem"
+              />
+            </div>
+            <h3 class="mt-0 mb-3 font-bold text-2xl">Timely Notifications</h3>
+            <p class="line-height-3 text-color-secondary">
+              Once you've submitted your application, you'll receive a
+              confirmation email. Your approved visa document will be sent to
+              you via email within the specified processing time. Be sure to
+              check your inbox regularly, including the spam or junk folder.
+            </p>
+          </div>
+          <div class="w-full lg:w-4">
+            <div
+              class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5"
+              style="border-radius: 14px; border-bottom-right-radius: 5rem"
+            >
+              <img
+                alt="intro image"
+                src="assets/demo/images/landing/24-hours-call-icon.svg"
+                class="h-5rem sm:h-8rem"
+              />
+            </div>
+            <h3 class="mt-0 mb-3 font-bold text-2xl">24/7 Support</h3>
+            <p class="line-height-3 text-color-secondary">
+              Once you've submitted your application, you'll receive a
+              confirmation email. Your approved visa document will be sent to
+              you via email within the specified processing time. Be sure to
+              check your inbox regularly, including the spam or junk folder.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -191,80 +330,82 @@
       </div>
     </div>
 
-    <div #pricing class="px-5 sm:px-8 py-8 surface-card gap-5">
-      <h3 class="mt-0 mb-5 home-section-heading">
-        Tips for a Sucessful Application
-      </h3>
+    <div #pricing class="py-8 surface-card gap-5">
+      <div class="wrapper">
+        <h3 class="mt-0 mb-5 home-section-heading">
+          Tips for a Sucessful Application
+        </h3>
 
-      <div class="tips-container">
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Re-read before submitting application</span>
-          </p>
-        </div>
+        <div class="tips-container">
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Re-read before submitting application</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Track application status regularly.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Track application status regularly.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Apply well in advance.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Apply well in advance.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Check passport expiration early</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Check passport expiration early</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Verify nationality eligibility.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Verify nationality eligibility.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Ensure clear, correct uploads</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Ensure clear, correct uploads</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Align travel dates accurately.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Align travel dates accurately.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Choose correct visa type.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Choose correct visa type.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Confirm successful payment.</span>
-          </p>
-        </div>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Confirm successful payment.</span>
+            </p>
+          </div>
 
-        <div class="card">
-          <p class="time-text">
-            <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
-            <span>Submit all required documents.</span>
-          </p>
+          <div class="tip-card">
+            <p class="time-text">
+              <i class="pi pi-check-circle text-green-500 text-xl mr-2"></i>
+              <span>Submit all required documents.</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

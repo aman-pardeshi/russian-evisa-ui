@@ -1,0 +1,114 @@
+<p-toast />
+<div class="mb-3">
+  <div class="landing-wrapper">
+    <div class="bg-no-repeat bg-cover bg-bottom wrapper">
+      <h1 class="font-bold mt-4 mb-3 hero-section-heading">Track Status</h1>
+    </div>
+
+    <div class="flex justify-content-center">
+      <div class="card" [style]="{ maxWidth: '30rem' }">
+        <form [formGroup]="trackStatusForm">
+          <div class="flex justify-content-between mb-4">
+            <h4 class="mb-0">Track Status</h4>
+          </div>
+
+          <div class="field">
+            <label htmlFor="email" class="font-bold"
+              >Application ID<span class="text-red-400"
+                >*</span
+              ></label
+            >
+
+            <input
+              pInputText
+              id="email"
+              [style]="{ width: '100%' }"
+              formControlName="searchParameter"
+            />
+          </div>
+
+          <div class="field">
+            <label for="dateOfBirth" class="font-bold"
+              >Date of Birth<span class="text-red-400">*</span></label
+            >
+
+            <p-calendar
+              id="dateOfBirth"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [style]="{ width: '100%' }"
+              placeholder="dd/mm/yyyy"
+              dateFormat="dd/mm/yy"
+              [monthNavigator]="true"
+              [yearNavigator]="true"
+              yearRange="1930:2050"
+              formControlName="dateOfBirth"
+            ></p-calendar>
+          </div>
+        </form>
+        <div class="flex justify-content-center">
+          <button
+            pButton
+            label="Submit"
+            severity="info"
+            class="submit-btn w-full"
+            (click)="onSubmit()"
+            [disabled]="
+              !(
+                trackStatusForm.controls['searchParameter'].valid &&
+                trackStatusForm.controls['dateOfBirth'].valid
+              )
+            "
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card mt-3"
+      *ngFor="let application of trackStatusResponse"
+      [style]="{ 'max-width': '950px', margin: '0 auto' }"
+    >
+      <div class="flex justify-content-center">
+        <div class="card-surface">
+          <div class="mb-2">
+            <span class="font-bold">Applicant Name:</span>
+            {{ application.first_name + ' ' + application.last_name }}
+          </div>
+          <div class="mb-2">
+            <span class="font-bold">Application ID: </span
+            >{{ application.submission_id }}
+          </div>
+          <div>
+            <span class="font-bold">Passport Number: </span
+            >{{ application.passport_number }}
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 track-status-timeline">
+        <p-timeline [value]="application.application_histories">
+          <ng-template pTemplate="opposite" let-event class="mb-3">
+             <small class="p-text-secondary">
+              <div>{{ event.date }}</div>
+              <div>{{ event.time }}</div>
+            </small>
+          </ng-template>
+          <ng-template pTemplate="content" let-event>
+            {{ event.description }}
+          </ng-template>
+        </p-timeline>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>

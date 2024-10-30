@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bg-blue">
   <div class="flex gap-3 p-3">
     <div class="content-container">
       <p-toast />
@@ -9,7 +9,7 @@
             <p-stepperPanel>
               <ng-template
                 pTemplate="header"
-                let-onClick="onClick"
+                let-onClickPersonalDetails="onClick"
                 let-index="index"
               >
                 <div
@@ -17,7 +17,7 @@
                 >
                   <button
                     class="bg-transparent border-none inline-flex flex-column gap-2"
-                    (click)="onClick.emit()"
+                    (click)="onClickPersonalDetails.emit()"
                   >
                     <span
                       class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
@@ -651,78 +651,127 @@
                   <div class="flex gap-3 align-items-center mb-3">
                     <div class="w-9rem">Photo</div>
 
-                    <div class="w-15rem">
-                      <img
-                        [src]="photoFile?.objectURL || preFetchedPhoto"
-                        *ngIf="photoFile || preFetchedPhoto"
-                        width="100%"
-                        class="passport-img"
-                      />
+                    <div class="flex flex-column gap-3 align-items-center">
+                      <div class="w-16rem">
+                        <img
+                          [src]="
+                            photoFile?.objectURL ||
+                            capturedPhoto?.imageAsDataUrl ||
+                            preFetchedPhoto
+                          "
+                          *ngIf="photoFile || capturedPhoto || preFetchedPhoto"
+                          width="100%"
+                          class="passport-img"
+                        />
+                      </div>
 
-                      <p-fileUpload
-                        name="photo"
-                        mode="basic"
-                        chooseIcon="pi pi-upload"
-                        accept="image/*"
-                        maxFileSize="1000000"
-                        (onSelect)="onFileSelect($event, 'photo')"
-                        [auto]="false"
-                        chooseLabel="Upload"
-                        styleClass="w-full"
-                      >
-                      </p-fileUpload>
+                      <div class="flex gap-3">
+                        <p-fileUpload
+                          name="photo"
+                          mode="basic"
+                          chooseIcon="pi pi-upload"
+                          accept="image/*"
+                          maxFileSize="1000000"
+                          (onSelect)="onFileSelect($event, 'photo')"
+                          [auto]="false"
+                          chooseLabel="Upload"
+                          styleClass="w-full"
+                        >
+                        </p-fileUpload>
+
+                        <p-button
+                          (click)="showWebCamModal = true"
+                          label="Capture"
+                          icon="pi pi-camera"
+                          iconPos="left"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="flex gap-3 align-items-center mb-3">
                     <div class="w-9rem">Passport Front Side</div>
-                    <div class="w-15rem">
-                      <img
-                        [src]="
-                          passportFrontFile?.objectURL ||
-                          preFetchedPassportFront
-                        "
-                        *ngIf="passportFrontFile || preFetchedPassportFront"
-                        width="100%"
-                        class="passport-img"
-                      />
+                    <div class="flex flex-column gap-3 align-items-center">
+                      <div class="w-16rem">
+                        <img
+                          [src]="
+                            passportFrontFile?.objectURL ||
+                            capturedPassportFront?.imageAsDataUrl ||
+                            preFetchedPassportFront
+                          "
+                          *ngIf="
+                            passportFrontFile ||
+                            capturedPassportFront ||
+                            preFetchedPassportFront
+                          "
+                          width="100%"
+                          class="passport-img"
+                        />
+                      </div>
 
-                      <p-fileUpload
-                        name="passport"
-                        mode="basic"
-                        chooseIcon="pi pi-upload"
-                        accept="image/*"
-                        maxFileSize="1000000"
-                        (onSelect)="onFileSelect($event, 'passportFront')"
-                        [auto]="false"
-                        chooseLabel="Upload"
-                        styleClass="w-full"
-                      >
-                      </p-fileUpload>
+                      <div class="flex gap-3">
+                        <p-fileUpload
+                          name="passport"
+                          mode="basic"
+                          chooseIcon="pi pi-upload"
+                          accept="image/*"
+                          maxFileSize="1000000"
+                          (onSelect)="onFileSelect($event, 'passportFront')"
+                          [auto]="false"
+                          chooseLabel="Upload"
+                          styleClass="w-full"
+                        >
+                        </p-fileUpload>
+
+                        <p-button
+                          (click)="showPassportFrontCaptureModal = true"
+                          label="Capture"
+                          icon="pi pi-camera"
+                          iconPos="left"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="flex gap-3 align-items-center">
                     <div class="w-9rem">Passport Back Side</div>
-                    <div class="w-15rem">
-                      <img
-                        [src]="
-                          passportBackFile?.objectURL || preFetchedPassportBack
-                        "
-                        *ngIf="passportBackFile || preFetchedPassportBack"
-                        width="100%"
-                        class="passport-img"
-                      />
-                      <p-fileUpload
-                        name="passport"
-                        mode="basic"
-                        chooseIcon="pi pi-upload"
-                        accept="image/*"
-                        maxFileSize="1000000"
-                        (onSelect)="onFileSelect($event, 'passportBack')"
-                        [auto]="false"
-                        chooseLabel="Upload"
-                        styleClass="w-full"
-                      >
-                      </p-fileUpload>
+                    <div class="flex flex-column gap-3 align-items-center">
+                      <div class="w-16rem">
+                        <img
+                          [src]="
+                            passportBackFile?.objectURL ||
+                            capturedPassportBack?.imageAsDataUrl ||
+                            preFetchedPassportBack
+                          "
+                          *ngIf="
+                            passportBackFile ||
+                            capturedPassportBack ||
+                            preFetchedPassportBack
+                          "
+                          width="100%"
+                          class="passport-img"
+                        />
+                      </div>
+
+                      <div class="flex gap-3">
+                        <p-fileUpload
+                          name="passport"
+                          mode="basic"
+                          chooseIcon="pi pi-upload"
+                          accept="image/*"
+                          maxFileSize="1000000"
+                          (onSelect)="onFileSelect($event, 'passportBack')"
+                          [auto]="false"
+                          chooseLabel="Upload"
+                          styleClass="w-full"
+                        >
+                        </p-fileUpload>
+
+                        <p-button
+                          (click)="showPassportBackCaptureModal = true"
+                          label="Capture"
+                          icon="pi pi-camera"
+                          iconPos="left"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -739,7 +788,11 @@
                     icon="pi pi-arrow-right"
                     iconPos="right"
                     [disabled]="
-                      !(photoFile && passportFrontFile && passportBackFile)
+                      !(
+                        (photoFile || capturedPhoto) &&
+                        (passportFrontFile || capturedPassportFront) &&
+                        (passportBackFile || capturedPassportBack)
+                      )
                     "
                   />
                 </div>
@@ -782,7 +835,17 @@
               >
                 <div class="flex flex-column gap-2 pl-5">
                   <div>
-                    <div class="mt-3 mb-3 font-semibold">Personal Details</div>
+                    <div class="mt-3 mb-3 flex gap-2 align-items-center">
+                      <span class="font-semibold">Personal Details</span>
+
+                      <small
+                        class="edit-btn font-semibold"
+                        (click)="active = 0"
+                      >
+                        <i class="pi pi-pencil text-xs"></i>
+                        Edit
+                      </small>
+                    </div>
 
                     <div>
                       <div class="applicant-individual-details">
@@ -856,8 +919,15 @@
                   <p-divider />
 
                   <div>
-                    <div class="mt-3 mb-3 font-semibold">
+                    <div
+                      class="mt-3 mb-3 font-semibold flex gap-2 align-items-center"
+                    >
                       Passport & Travel Details
+
+                      <small class="edit-btn" (click)="active = 1">
+                        <i class="pi pi-pencil text-xs"></i>
+                        Edit
+                      </small>
                     </div>
 
                     <div>
@@ -950,8 +1020,8 @@
                   <div>
                     <div class="mt-3 mb-3 font-semibold">Documents</div>
 
-                    <div class="mb-3">
-                      <div class="w-6">
+                    <div class="flex gap-3">
+                      <div class="w-4">
                         <div class="mb-3">Photo</div>
 
                         <div>
@@ -962,10 +1032,8 @@
                           />
                         </div>
                       </div>
-                    </div>
 
-                    <div class="flex gap-3">
-                      <div class="w-6">
+                      <div class="w-4">
                         <div class="mb-3">Passport Front Side</div>
 
                         <div>
@@ -980,7 +1048,7 @@
                         </div>
                       </div>
 
-                      <div class="w-6">
+                      <div class="w-4">
                         <div class="mb-3">Passport Back Side</div>
 
                         <div>
@@ -1057,16 +1125,16 @@
                     <div class="" style="width: 15rem">
                       <div class="flex justify-content-between total-row">
                         <div class="">Visa Fee</div>
-                        <div class="font-bold">$50</div>
+                        <div class="font-bold">${{ +submitedApplicationDetails?.visaFee + +submitedApplicationDetails?.serviceFee }}</div>
                       </div>
-                      <div class="flex justify-content-between total-row mt-2">
+                      <!-- <div class="flex justify-content-between total-row mt-2">
                         <div class="">Service Fee</div>
                         <div class="font-bold">$10</div>
-                      </div>
+                      </div> -->
                       <p-divider />
                       <div class="flex justify-content-between total-row">
                         <div class="font-bold">Total</div>
-                        <div class="font-bold">$60</div>
+                        <div class="font-bold">${{ +submitedApplicationDetails?.visaFee + +submitedApplicationDetails?.serviceFee }}</div>
                       </div>
                     </div>
                   </div>
@@ -1188,3 +1256,69 @@
 >
   <app-loader></app-loader>
 </ngx-spinner>
+
+<p-dialog
+  [(visible)]="showWebCamModal"
+  [modal]="true"
+  header="Capture Picture"
+  (onHide)="showWebCamModal = false"
+>
+  <div class="camera">
+    <webcam
+      *ngIf="showWebCamModal"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+    >
+    </webcam>
+  </div>
+
+  <div class="mt-3 my-4 flex justify-content-center">
+    <p-button (click)="triggerSnapshot()" label="Capture"
+      >Capture Photo</p-button
+    >
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showPassportFrontCaptureModal"
+  [modal]="true"
+  header="Capture Picture"
+  (onHide)="showPassportFrontCaptureModal = false"
+>
+  <div class="camera">
+    <webcam
+      *ngIf="showPassportFrontCaptureModal"
+      [trigger]="triggerObservable"
+      (imageCapture)="handlePassportFrontImage($event)"
+    >
+    </webcam>
+  </div>
+
+  <div class="mt-3 my-4 flex justify-content-center">
+    <p-button (click)="triggerSnapshot()" label="Capture"
+      >Capture Photo</p-button
+    >
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showPassportBackCaptureModal"
+  [modal]="true"
+  header="Capture Picture"
+  (onHide)="showPassportBackCaptureModal = false"
+>
+  <div class="camera">
+    <webcam
+      *ngIf="showPassportBackCaptureModal"
+      [trigger]="triggerObservable"
+      (imageCapture)="handlePassportBackImage($event)"
+    >
+    </webcam>
+  </div>
+
+  <div class="mt-3 my-4 flex justify-content-center">
+    <p-button (click)="triggerSnapshot()" label="Capture"
+      >Capture Photo</p-button
+    >
+  </div>
+</p-dialog>

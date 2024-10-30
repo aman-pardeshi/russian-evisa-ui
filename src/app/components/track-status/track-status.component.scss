@@ -1,0 +1,23 @@
+.hero-section-heading {
+  font-family: 'Poppins-500';
+  color: #000;
+  font-size: 2rem;
+}
+
+.card-surface {
+  background: var(--surface-ground);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: inset 0px 3px 4px rgba(0, 0, 0, 0.1);
+}
+
+.track-status-timeline {
+  .p-timeline-event-content {
+    width: 100%;
+  }
+
+  .p-timeline-event-opposite {
+    flex: none;
+    width: 30%;
+  }
+}
