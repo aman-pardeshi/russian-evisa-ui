@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: url('./../../../assets/layout/images/bg3.jpg');
   background-color: #fff;
   background-position: center; /* Center the image */
@@ -24,8 +24,8 @@
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
-    height: calc(100% - 5rem);
-    padding: 0 5rem;
+    // height: calc(100% - 5rem);
+    padding: 5rem;
 
     width: 88%;
     max-width: 1500px;

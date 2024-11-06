@@ -7,6 +7,7 @@ import { ToastModule } from 'primeng/toast';
 import { ApplicationService } from 'src/app/services/application.service';
 import { LoaderComponent } from '../Shared/loader/loader.component';
 import { getDateInFormat } from '../Shared/utils';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-application',
@@ -21,6 +22,7 @@ import { getDateInFormat } from '../Shared/utils';
   ],
   templateUrl: './application.component.html',
   styleUrl: './application.component.scss',
+  providers: [MessageService],
 })
 export class ApplicationComponent implements OnInit {
   applications: any[] = [];
@@ -29,10 +31,9 @@ export class ApplicationComponent implements OnInit {
   constructor(
     private router: Router,
     private applicationService: ApplicationService,
-    private spinner: NgxSpinnerService
-  ) {}
-
-  ngOnInit() {
+    private spinner: NgxSpinnerService,
+    private messageService: MessageService
+  ) {
     this.spinner.show();
     this.applicationService.getAllApplications().subscribe(
       (response) => {
@@ -44,6 +45,11 @@ export class ApplicationComponent implements OnInit {
       (err) => {
         this.spinner.hide();
         console.error('error', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err?.error?.message,
+        });
       }
     );
 
@@ -51,6 +57,8 @@ export class ApplicationComponent implements OnInit {
     newDate.setDate(newDate.getDate() + 5);
     this.visaApprovalDate = getDateInFormat(newDate);
   }
+
+  ngOnInit() {}
 
   createNewApplication() {
     this.spinner.show();
@@ -65,6 +73,38 @@ export class ApplicationComponent implements OnInit {
       (error) => {
         console.error('error', error);
         this.spinner.hide();
+      }
+    );
+  }
+
+  handleDelete(id: string) {
+    this.spinner.show();
+
+    const params = {
+      referenceId: id,
+    };
+
+    this.applicationService.deleteApplication(params).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Application Deleted Successfully',
+        });
+
+        this.applications = this.applications.filter(
+          (x) => x.reference_id !== id
+        );
+      },
+      (error) => {
+        console.error('error', error);
+        this.spinner.hide();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
       }
     );
   }

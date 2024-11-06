@@ -1202,7 +1202,7 @@
       </div> -->
     </div>
     <div class="sidemsg-container card">
-      <div class="msg-container">
+      <div class="msg-container" *ngIf="active !== 4">
         <div class="title">
           <h5 class="mb-0">👋 Hey there!</h5>
         </div>
@@ -1215,7 +1215,7 @@
         </div>
       </div>
 
-      <div class="msg-container mt-3">
+      <div class="msg-container mt-3" *ngIf="active !== 4">
         <div class="title">
           <img src="/assets/demo/images/passport-img-3.png" width="100%" />
         </div>

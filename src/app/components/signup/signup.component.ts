@@ -209,7 +209,6 @@ export class SignupComponent {
             });
             localStorage.setItem('userDetails', serializedUserData);
             this.userService.setUserLoggedIn(true);
-
             this.router.navigate(['/application']);
           } else {
             this.spinner.hide();
@@ -252,7 +251,6 @@ export class SignupComponent {
       this.spinner.show();
       this.userService.signInWithGoogle(payload).subscribe(
         (response) => {
-          console.log(response);
           if (response.data && response?.data?.role !== 'admin') {
             this.spinner.hide();
             this.messageService.add({
@@ -271,7 +269,6 @@ export class SignupComponent {
           }
         },
         (error) => {
-          console.log(error);
           this.spinner.hide();
           this.messageService.add({
             severity: 'error',

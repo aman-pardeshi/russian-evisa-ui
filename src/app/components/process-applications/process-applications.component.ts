@@ -241,6 +241,8 @@ export class ProcessApplicationsComponent {
       passportFront: application?.passportPhotoFront?.url,
       passportBack: application?.passportPhotoBack?.url,
       referenceId: application?.referenceId,
+      serviceFee: application?.serviceFee,
+      visaFee: application?.visaFee
     };
 
     this.selectedApplicationHistory = application.applicationHistories;

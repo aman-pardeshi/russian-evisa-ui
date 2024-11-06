@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -16,6 +16,8 @@ import { ToastModule } from 'primeng/toast';
 import { LoaderComponent } from '../Shared/loader/loader.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { getDateInYYYYMMDD } from '../Shared/utils';
+import { Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-track-status',
@@ -30,45 +32,60 @@ import { getDateInYYYYMMDD } from '../Shared/utils';
     TimelineModule,
     NgxSpinnerModule,
     LoaderComponent,
+    DialogModule,
   ],
   templateUrl: './track-status.component.html',
   styleUrl: './track-status.component.scss',
   providers: [MessageService],
 })
-export class TrackStatusComponent {
+export class TrackStatusComponent implements OnInit {
   trackStatusForm: FormGroup;
+  applications: any[] = [];
   trackStatusResponse: any[] = [];
+  showTrackStatusModal: boolean = false;
+
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     private messageService: MessageService,
     private applicationService: ApplicationService
-  ) {
-    this.initForm();
-  }
+  ) {}
 
-  initForm() {
-    this.trackStatusForm = this.fb.group({
-      searchParameter: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-    });
-  }
-
-  onSubmit() {
+  ngOnInit() {
     this.spinner.show();
+    this.applicationService.getAllSubmittedApplications().subscribe(
+      (response) => {
+        if (response.data.length > 0) {
+          this.applications = response.data;
+        }
+        this.spinner.hide();
+      },
+      (err) => {
+        this.spinner.hide();
+        console.error('error', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err?.error?.message,
+        });
+      }
+    );
+  }
+
+  handleTrackStatus(applicationDetails: any) {
+    this.spinner.show();
+    this.trackStatusResponse = []
 
     const requestParams = {
-      referenceId: this.trackStatusForm.get('searchParameter').value,
-      dateOfBirth: getDateInYYYYMMDD(
-        this.trackStatusForm.get('dateOfBirth').value
-      ),
+      referenceId: applicationDetails?.reference_id,
     };
 
     this.applicationService.getApplicationStatus(requestParams).subscribe(
       (response) => {
         this.spinner.hide();
-        this.trackStatusResponse = response?.track_statuses
-        console.log(response);
+        this.trackStatusResponse = response?.track_statuses;
+        this.showTrackStatusModal = true
       },
       (error) => {
         console.error(error);
@@ -78,6 +95,23 @@ export class TrackStatusComponent {
           detail: error?.error?.message,
         });
 
+        this.spinner.hide();
+      }
+    );
+  }
+
+  createNewApplication() {
+    this.spinner.show();
+
+    this.applicationService.createApplication().subscribe(
+      (response) => {
+        if (response.reference_id) {
+          this.router.navigate(['/application/apply/', response.reference_id]);
+        }
+        this.spinner.hide();
+      },
+      (error) => {
+        console.error('error', error);
         this.spinner.hide();
       }
     );

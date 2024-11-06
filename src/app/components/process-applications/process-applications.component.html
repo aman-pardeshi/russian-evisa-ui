@@ -407,7 +407,6 @@
             <i class="pi pi-download"></i>
             <span class="font-bold">Download</span>
           </a>
-
         </div>
       </div>
     </div>
@@ -432,16 +431,25 @@
         <div class="" style="max-width: 15rem">
           <div class="flex justify-content-between total-row">
             <div class="">Visa Fee</div>
-            <div class="font-bold">$50</div>
+            <div class="font-bold">
+              ${{ currentApplicationDetails?.visaFee }}
+            </div>
           </div>
           <div class="flex justify-content-between total-row mt-2">
             <div class="">Service Fee</div>
-            <div class="font-bold">$10</div>
+            <div class="font-bold">
+              ${{ currentApplicationDetails?.serviceFee }}
+            </div>
           </div>
           <!-- <p-divider /> -->
           <div class="flex justify-content-between total-row mt-3">
             <div class="font-bold">Total</div>
-            <div class="font-bold">$60</div>
+            <div class="font-bold">
+              ${{
+                +currentApplicationDetails?.visaFee +
+                  +currentApplicationDetails?.serviceFee
+              }}
+            </div>
           </div>
         </div>
       </div>
@@ -454,8 +462,7 @@
       label="Apply Visa"
       [disabled]="currentApplicationDetails?.status === 'applied'"
       severity="success"
-       (click)="confirmPopup($event)" 
+      (click)="confirmPopup($event)"
     ></p-button>
   </div>
 </p-dialog>
-

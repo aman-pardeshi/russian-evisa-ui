@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-topbar',
@@ -19,7 +20,8 @@ export class AppTopBarComponent {
   constructor(
     public layoutService: LayoutService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService
   ) {}
 
   onMenuButtonClick() {
@@ -72,6 +74,7 @@ export class AppTopBarComponent {
       summary: 'Success',
       detail: 'Logged out successfully',
     });
+    this.userService.setUserLoggedIn(false);
     localStorage.removeItem('userDetails');
     this.router.navigate(['/']);
   }

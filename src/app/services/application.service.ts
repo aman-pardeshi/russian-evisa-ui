@@ -29,8 +29,21 @@ export class ApplicationService {
     );
   }
 
+  getAllSubmittedApplications() {
+    return this.http.get<any>(
+      this.serverUrl + '/evisa_applications/get_all_submitted_applications'
+    );
+  }
+
   createApplication() {
     return this.http.post<any>(this.serverUrl + '/evisa_applications', {});
+  }
+
+  deleteApplication(params: any) {
+    return this.http.post<any>(
+      this.serverUrl + '/evisa_applications/delete',
+      params
+    );
   }
 
   submitPersonalDetails(personalDetails: any) {

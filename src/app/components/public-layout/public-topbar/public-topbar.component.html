@@ -41,7 +41,9 @@
       <div class="new-user-profile" *ngIf="showUserIcon; else renderLoginbtn">
         <div class="profile-container">
           <div class="dropdown">
-            <button class="dropbtn profile-container">
+            <button
+              class="dropbtn flex justify-content-center align-items-center p-0"
+            >
               <img
                 [src]="userDetailsForm?.profile?.url"
                 alt=""

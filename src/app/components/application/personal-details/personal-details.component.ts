@@ -170,21 +170,16 @@ export class PersonalDetailsComponent implements OnInit {
     this.capturedPhoto = webcamImage;
     this.showWebCamModal = false;
 
-    console.log('image', this.capturedPhoto);
   }
 
   public handlePassportFrontImage(webcamImage: WebcamImage): void {
     this.capturedPassportFront = webcamImage;
     this.showPassportFrontCaptureModal = false;
-
-    console.log('image', this.capturedPhoto);
   }
 
   public handlePassportBackImage(webcamImage: WebcamImage): void {
     this.capturedPassportBack = webcamImage;
     this.showPassportBackCaptureModal = false;
-
-    console.log('image', this.capturedPhoto);
   }
 
   public get triggerObservable(): Observable<void> {

@@ -1,5 +1,5 @@
 <div class="container">
-  <!-- <p-toast /> -->
+  <p-toast />
 
   <div class="wrapper mt-5" style="min-height: 47vh">
     <div class="subcontainer">
@@ -39,7 +39,7 @@
               Continue Application
             </a>
 
-            <button class="delete-btn">
+            <button class="delete-btn" (click)="handleDelete(item?.reference_id)">
               <i class="pi pi-trash"></i>
             </button>
           </div>

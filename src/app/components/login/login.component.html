@@ -11,7 +11,7 @@
   <div class="subcontainer">
     <div class="sign-in-container">
       <h1 class="text-center">Sign in</h1>
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" autocomplete="off">
         <div class="field flex flex-column">
           <label for="email" class="font-bold"
             >Email<span class="text-red-400">*</span></label
@@ -26,7 +26,7 @@
               placeholder="Email"
               class="w-full"
               formControlName="email"
-              autocomplete
+               autocomplete="off"
             />
           </div>
         </div>
@@ -45,7 +45,7 @@
               placeholder="Password"
               class="w-full"
               formControlName="password"
-              autocomplete
+              autocomplete="off"
             />
           </div>
         </div>

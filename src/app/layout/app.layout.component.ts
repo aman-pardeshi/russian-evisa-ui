@@ -7,6 +7,7 @@ import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 import { LayoutService } from './service/app.layout.service';
 import { MessageService } from 'primeng/api';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-layout',
@@ -32,7 +33,8 @@ export class AppLayoutComponent implements OnDestroy {
     public layoutService: LayoutService,
     public renderer: Renderer2,
     public router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService
   ) {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
@@ -116,14 +118,14 @@ export class AppLayoutComponent implements OnDestroy {
   }
 
   checkUserCredentails() {
-    const user = localStorage.getItem('userDetails');
+    const userDetails = this.userService.getUserDetails;
 
-    if (!user) {
+    if (!userDetails || userDetails?.userData?.role !== 'admin') {
       this.messageService.add({
         severity: 'error',
         detail: 'You are not authorised to view this page',
       });
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login']);
     }
   }
 

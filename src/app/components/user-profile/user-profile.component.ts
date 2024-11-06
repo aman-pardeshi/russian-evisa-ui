@@ -63,6 +63,5 @@ export class UserProfileComponent implements OnInit {
     });
 
     this.prefetchProfileImage = userData?.profile?.url;
-    console.log(userData);
   }
 }
