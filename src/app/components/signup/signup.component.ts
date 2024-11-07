@@ -98,7 +98,7 @@ export class SignupComponent {
           theme: 'filled-blue',
           size: 'large',
           shape: 'rectangle',
-          width: '100%',
+          width: '390',
         }
       );
     }

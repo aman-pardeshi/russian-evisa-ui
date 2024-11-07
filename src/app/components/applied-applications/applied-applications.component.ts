@@ -21,7 +21,10 @@ import { MessageService } from 'primeng/api';
 import { ApplicationSearchRequest } from 'src/app/model/application-search-request';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AdminService } from 'src/app/services/admin.service';
-import { mapArrayFromSnakeToCamel, mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import {
+  mapArrayFromSnakeToCamel,
+  mapObjectFromSnakeToCamel,
+} from 'src/app/utils/switchObjectCase';
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
@@ -310,8 +313,32 @@ export class AppliedApplicationsComponent {
   }
 
   clearApprovalDocument() {
-    this.approvalDocument = null
+    this.approvalDocument = null;
     this.fileUpload?.clear();
     this.showApprovalConfirmationDialog = true;
+  }
+
+  downloadFile(url: string, fileType: string) {
+    const fileName = `${this.currentApplicationDetails?.firstName} ${this.currentApplicationDetails?.lastName} -  ${fileType}.png`;
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const anchor = document.createElement('a');
+        const imageData = window.URL.createObjectURL(blob);
+
+        anchor.href = imageData;
+        anchor.download = fileName;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        anchor.remove();
+      })
+      .catch((error) => console.error('Error downloading the file:', error));
   }
 }

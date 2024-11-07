@@ -242,7 +242,7 @@ export class ProcessApplicationsComponent {
       passportBack: application?.passportPhotoBack?.url,
       referenceId: application?.referenceId,
       serviceFee: application?.serviceFee,
-      visaFee: application?.visaFee
+      visaFee: application?.visaFee,
     };
 
     this.selectedApplicationHistory = application.applicationHistories;
@@ -307,5 +307,29 @@ export class ProcessApplicationsComponent {
         // });
       },
     });
+  }
+
+  downloadFile(url: string, fileType: string) {
+    const fileName = `${this.currentApplicationDetails?.firstName} ${this.currentApplicationDetails?.lastName} -  ${fileType}.png`;
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const anchor = document.createElement('a');
+        const imageData = window.URL.createObjectURL(blob);
+
+        anchor.href = imageData;
+        anchor.download = fileName;
+        anchor.click();
+
+        window.URL.revokeObjectURL(url);
+        anchor.remove();
+      })
+      .catch((error) => console.error('Error downloading the file:', error));
   }
 }

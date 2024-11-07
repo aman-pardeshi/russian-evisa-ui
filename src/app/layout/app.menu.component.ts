@@ -13,11 +13,11 @@ export class AppMenuComponent implements OnInit {
 
   ngOnInit() {
     this.model = [
-      {
-        label: 'Dashboard',
-        icon: 'pi pi-chart-bar',
-        routerLink: ['/dashboard'],
-      },
+      // {
+      //   label: 'Dashboard',
+      //   icon: 'pi pi-chart-bar',
+      //   routerLink: ['/dashboard'],
+      // },
       {
         label: 'Submitted Applications',
         icon: 'pi pi-check-circle',
@@ -38,11 +38,11 @@ export class AppMenuComponent implements OnInit {
         icon: 'pi pi-chart-pie',
         routerLink: ['/admin/reports'],
       },
-      {
-        label: 'Settings',
-        icon: 'pi pi-cog',
-        routerLink: ['/settings'],
-      },
+      // {
+      //   label: 'Settings',
+      //   icon: 'pi pi-cog',
+      //   routerLink: ['/settings'],
+      // },
       // {
       //   label: 'Login',
       //   icon: 'pi pi-google',

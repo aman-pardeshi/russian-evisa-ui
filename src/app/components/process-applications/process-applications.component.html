@@ -351,16 +351,14 @@
             styleClass="p-button-outlined p-button-secondary"
           ></p-button> -->
 
-          <a
-            [href]="currentApplicationDetails?.photo"
-            target="_blank"
+          <button
             rel="noopener noreferrer"
-            download
             class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+            (click)="downloadFile(currentApplicationDetails?.photo, 'photo')"
           >
             <i class="pi pi-download"></i>
             <span class="font-bold">Download</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -374,16 +372,18 @@
             styleClass="p-button-outlined p-button-secondary"
           ></p-button> -->
 
-          <a
-            [href]="currentApplicationDetails?.passportFront"
-            target="_blank"
-            rel="noopener noreferrer"
-            download
+          <button
             class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+            (click)="
+              downloadFile(
+                currentApplicationDetails?.passportFront,
+                'Passport Front'
+              )
+            "
           >
             <i class="pi pi-download"></i>
             <span class="font-bold">Download</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -397,16 +397,18 @@
             styleClass="p-button-outlined p-button-secondary"
           ></p-button> -->
 
-          <a
-            [href]="currentApplicationDetails?.passportBack"
-            target="_blank"
-            rel="noopener noreferrer"
-            download
+          <button
             class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
+            (click)="
+              downloadFile(
+                currentApplicationDetails?.passportBack,
+                'Passport Back'
+              )
+            "
           >
             <i class="pi pi-download"></i>
             <span class="font-bold">Download</span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
