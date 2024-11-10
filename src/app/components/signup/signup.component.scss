@@ -1,11 +1,12 @@
 .container {
   width: 100vw;
   min-height: 100vh;
-  background: url('./../../../assets/layout/images/bg3.jpg');
-  background-color: #fff;
-  background-position: center; /* Center the image */
+  background: #fff;
+  // background: url('./../../../assets/layout/images/bg3.jpg');
+  // background-color: #fff;
+  // background-position: center; /* Center the image */
 
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
 
   .header {
     width: 100%;
@@ -23,7 +24,7 @@
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
-    align-items: flex-start;
+    align-items: center;
     // height: calc(100% - 5rem);
     padding: 5rem;
 
