@@ -148,7 +148,7 @@ export class LoginComponent implements OnInit {
           });
           localStorage.setItem('userDetails', serializedUserData);
           this.userService.setUserLoggedIn(true);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/admin/submitted-applications']);
         } else {
           this.spinner.hide();
           this.messageService.add({

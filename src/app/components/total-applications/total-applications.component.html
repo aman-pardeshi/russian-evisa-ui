@@ -296,7 +296,7 @@
       </div>
 
       <div class="flex justify-content-between">
-        2. Passport Front
+        2. Passport
 
         <div class="flex gap-3">
           <!-- <p-button
@@ -320,16 +320,11 @@
         </div>
       </div>
 
-      <div class="flex justify-content-between">
+      <!-- <div class="flex justify-content-between">
         2. Passport Back
 
         <div class="flex gap-3">
-          <!-- <p-button
-            label="View"
-            icon="pi pi-eye"
-            styleClass="p-button-outlined p-button-secondary"
-          ></p-button> -->
-
+        
           <button
             class="p-button p-button-outlined p-button-secondary flex gap-2 align-items-center"
             (click)="
@@ -343,7 +338,7 @@
             <span class="font-bold">Download</span>
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
     <p-divider></p-divider>
     <div class="flex gap-3">
@@ -366,19 +361,25 @@
         <div class="" style="max-width: 15rem">
           <div class="flex justify-content-between total-row">
             <div class="">Visa Fee</div>
-            <div class="font-bold">${{ currentApplicationDetails?.visaFee }}</div>
+            <div class="font-bold">
+              ${{ currentApplicationDetails?.visaFee }}
+            </div>
           </div>
           <div class="flex justify-content-between total-row mt-2">
             <div class="">Service Fee</div>
-            <div class="font-bold">${{ currentApplicationDetails?.serviceFee }}</div>
+            <div class="font-bold">
+              ${{ currentApplicationDetails?.serviceFee }}
+            </div>
           </div>
           <!-- <p-divider /> -->
           <div class="flex justify-content-between total-row mt-3">
             <div class="font-bold">Total</div>
-            <div class="font-bold">${{
+            <div class="font-bold">
+              ${{
                 +currentApplicationDetails?.visaFee +
                   +currentApplicationDetails?.serviceFee
-              }}</div>
+              }}
+            </div>
           </div>
         </div>
       </div>

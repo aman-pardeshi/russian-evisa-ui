@@ -66,13 +66,13 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-      {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('./demo/components/dashboards/dashboards.module').then(
-            (m) => m.DashboardsModule
-          ),
-      },
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: () =>
+      //     import('./demo/components/dashboards/dashboards.module').then(
+      //       (m) => m.DashboardsModule
+      //     ),
+      // },
       {
         path: 'admin/submitted-applications',
         data: { breadcrumb: 'Applications' },
