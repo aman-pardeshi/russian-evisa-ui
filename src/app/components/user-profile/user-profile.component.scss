@@ -21,3 +21,20 @@
     border-radius: 1rem;
   }
 }
+
+.subcontainer {
+  display: flex;
+  gap: 1rem;
+
+  .section {
+    width: 50%;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+
+    .section {
+      width: 100%;
+    }
+  }
+}

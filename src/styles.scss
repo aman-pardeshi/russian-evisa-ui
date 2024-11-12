@@ -207,6 +207,11 @@ html {
 .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content {
   width: 100%;
   padding-left: 1rem;
+
+  @media (max-width: 600px) {
+    width: 90%;
+    padding-left: 0;
+  }
 }
 .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-separator {
   flex: 0 0 auto;
@@ -241,11 +246,30 @@ html {
 }
 
 .section-heading {
-  font-family: "Poppins-500";
+  font-family: 'Poppins-500';
   color: #000;
   font-size: 3rem;
 }
 
 .bg-blue {
   background: #eff7fd;
+}
+
+.mobile-number-container {
+  .p-dropdown .p-dropdown-trigger {
+    width: 2rem !important;
+  }
+
+  .p-inputtext {
+    padding: 0.75rem 0 0.75rem 0.75rem;
+  }
+}
+
+.webcam-wrapper {
+  @media (max-width: 600px) {
+    video {
+      width: 100% !important;
+      height: 300px !important;
+    }
+  }
 }

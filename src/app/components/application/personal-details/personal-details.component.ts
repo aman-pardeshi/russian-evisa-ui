@@ -269,7 +269,7 @@ export class PersonalDetailsComponent implements OnInit {
             (x) =>
               x.countryCode === this.submitedApplicationDetails?.countryCode
           )[0]
-        : null,
+        : this.countries[0],
       contactNo: this.submitedApplicationDetails.mobile,
       email:
         this.submitedApplicationDetails.email ||
@@ -344,6 +344,8 @@ export class PersonalDetailsComponent implements OnInit {
         .get('countryCode')
         .patchValue(this.countries[0]);
     });
+
+
   }
 
   formatDate(date: string) {

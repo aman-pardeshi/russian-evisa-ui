@@ -38,7 +38,7 @@
               </ng-template>
               <ng-template pTemplate="content" let-nextCallback="nextCallback">
                 <form [formGroup]="applicantDetailsForm">
-                  <div class="px-5">
+                  <div class="px-5-custom">
                     <div class="flex flex-column w-full">
                       <div class="mt-2 field-container">
                         <div class="field">
@@ -559,14 +559,14 @@
                             [useGrouping]="false"
                             class="w-full outline-none"
                             [style]="{ width: '100%' }"
-                            id="mobileNumber"
+                            id="yearOfAcquisition"
                           />
                         </div>
                       </div>
                     </div>
                   </form>
                 </div>
-                <div class="flex pt-4 justify-content-between">
+                <div class="flex pt-4 justify-content-between pl-5">
                   <p-button
                     (onClick)="prevCallback.emit()"
                     label="Back"
@@ -647,8 +647,8 @@
                 let-prevCallback="prevCallback"
                 let-nextCallback="nextCallback"
               >
-                <div class="px-5">
-                  <div class="flex gap-3 align-items-center mb-3">
+                <div class="px-5-custom">
+                  <div class="doc-container">
                     <div class="w-9rem">Photo</div>
 
                     <div class="flex flex-column gap-3 align-items-center">
@@ -688,8 +688,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="flex gap-3 align-items-center mb-3">
-                    <div class="w-9rem">Passport Front Side</div>
+
+                  <div class="doc-container">
+                    <div class="w-9rem">Passport</div>
                     <div class="flex flex-column gap-3 align-items-center">
                       <div class="w-16rem">
                         <img
@@ -731,7 +732,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="flex gap-3 align-items-center">
+                  <!-- <div class="flex gap-3 align-items-center">
                     <div class="w-9rem">Passport Back Side</div>
                     <div class="flex flex-column gap-3 align-items-center">
                       <div class="w-16rem">
@@ -773,9 +774,9 @@
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
-                <div class="flex pt-4 justify-content-between">
+                <div class="flex pt-4 justify-content-between pl-5">
                   <p-button
                     (onClick)="prevCallback.emit()"
                     label="Back"
@@ -790,8 +791,7 @@
                     [disabled]="
                       !(
                         (photoFile || capturedPhoto) &&
-                        (passportFrontFile || capturedPassportFront) &&
-                        (passportBackFile || capturedPassportBack)
+                        (passportFrontFile || capturedPassportFront)
                       )
                     "
                   />
@@ -1021,7 +1021,7 @@
                     <div class="mt-3 mb-3 font-semibold">Documents</div>
 
                     <div class="flex gap-3">
-                      <div class="w-4">
+                      <div class="w-6">
                         <div class="mb-3">Photo</div>
 
                         <div>
@@ -1033,8 +1033,8 @@
                         </div>
                       </div>
 
-                      <div class="w-4">
-                        <div class="mb-3">Passport Front Side</div>
+                      <div class="w-6">
+                        <div class="mb-3">Passport</div>
 
                         <div>
                           <img
@@ -1048,7 +1048,7 @@
                         </div>
                       </div>
 
-                      <div class="w-4">
+                      <!-- <div class="w-4">
                         <div class="mb-3">Passport Back Side</div>
 
                         <div>
@@ -1060,7 +1060,7 @@
                             class="passport-img"
                           />
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -1125,7 +1125,12 @@
                     <div class="" style="width: 15rem">
                       <div class="flex justify-content-between total-row">
                         <div class="">Visa Fee</div>
-                        <div class="font-bold">${{ +submitedApplicationDetails?.visaFee + +submitedApplicationDetails?.serviceFee }}</div>
+                        <div class="font-bold">
+                          ${{
+                            +submitedApplicationDetails?.visaFee +
+                              +submitedApplicationDetails?.serviceFee
+                          }}
+                        </div>
                       </div>
                       <!-- <div class="flex justify-content-between total-row mt-2">
                         <div class="">Service Fee</div>
@@ -1134,7 +1139,12 @@
                       <p-divider />
                       <div class="flex justify-content-between total-row">
                         <div class="font-bold">Total</div>
-                        <div class="font-bold">${{ +submitedApplicationDetails?.visaFee + +submitedApplicationDetails?.serviceFee }}</div>
+                        <div class="font-bold">
+                          ${{
+                            +submitedApplicationDetails?.visaFee +
+                              +submitedApplicationDetails?.serviceFee
+                          }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1262,14 +1272,18 @@
   [modal]="true"
   header="Capture Picture"
   (onHide)="showWebCamModal = false"
+  styleClass="webcam-modal"
 >
   <div class="camera">
     <webcam
       *ngIf="showWebCamModal"
       [trigger]="triggerObservable"
       (imageCapture)="handleImage($event)"
+      class="webcam-feed"
     >
     </webcam>
+
+    <div class="camera-overlay"></div>
   </div>
 
   <div class="mt-3 my-4 flex justify-content-center">
@@ -1282,7 +1296,7 @@
 <p-dialog
   [(visible)]="showPassportFrontCaptureModal"
   [modal]="true"
-  header="Capture Picture"
+  header="Capture Passport Photo"
   (onHide)="showPassportFrontCaptureModal = false"
 >
   <div class="camera">

@@ -8,8 +8,8 @@
 
         <div class="blue-card">
           <form [formGroup]="userDetailsForm">
-            <div class="flex gap-3">
-              <div class="w-6">
+            <div class="subcontainer">
+              <div class="section">
                 <div class="field flex flex-column">
                   <label for="email" class="font-bold"
                     >Name<span class="text-red-400">*</span></label
@@ -68,7 +68,9 @@
                 </div>
               </div>
 
-              <div class="w-6 flex justify-content-center align-items-center">
+              <div
+                class="section flex justify-content-center align-items-center"
+              >
                 <div class="profile-container">
                   <img
                     [src]="profileImage || prefetchProfileImage"

@@ -56,6 +56,11 @@
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 1rem;
+
+  @media (max-width: 600px) {
+    left: 1rem;
+    right: auto;
+  }
 }
 
 .dropdown-content a {
@@ -91,5 +96,36 @@
 
   &:hover {
     border-bottom: 2px solid #4d7ed2;
+  }
+}
+
+.mobile-nav {
+  display: none;
+  padding: 1rem;
+
+  @media (max-width: 600px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.layout-sidebar-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  a {
+    color: #000;
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.topbar-profile {
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 }

@@ -87,4 +87,10 @@
       cursor: pointer;
     }
   }
+
+  @media (max-width: 600px) {
+    .application {
+      flex-direction: column;
+    }
+  }
 }

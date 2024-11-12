@@ -45,9 +45,9 @@
               class="dropbtn flex justify-content-center align-items-center p-0"
             >
               <img
-                [src]="userDetailsForm?.profile?.url"
+                [src]="userDetails?.profile?.url"
                 alt=""
-                *ngIf="userDetailsForm?.profile; else noprofile"
+                *ngIf="userDetails?.profile; else noprofile"
                 class="profile"
               />
               <ng-template #noprofile>
@@ -77,3 +77,72 @@
     </div>
   </div>
 </div>
+
+<div class="mobile-nav">
+  <a class="flex gap-2 align-items-center" href="/">
+    <img src="/assets/demo/images/flags/ru.svg" class="russian-flag" />
+    <div class="home-section-heading">Russian eVisa</div>
+  </a>
+
+  <a href="javascript:void(0);" class="icon text-2xl" (click)="toggleHeader()"
+    >&#9776;
+  </a>
+</div>
+
+<p-sidebar [(visible)]="showMobileNavBar" position="right">
+  <div class="layout-sidebar-mobile">
+    <a
+      [routerLink]="item.routerLink"
+      *ngFor="let item of tabs; let i = index"
+      (click)="toggleHeader()"
+    >
+      <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+      {{ item.label }}</a
+    >
+
+    <div class="topbar-profile">
+      <p-button
+        label="Apply Now"
+        (click)="handleApplyRedirection()"
+        [rounded]="true"
+      ></p-button>
+
+      <div class="new-user-profile" *ngIf="showUserIcon; else renderLoginbtn">
+        <div class="profile-container">
+          <div class="dropdown">
+            <button
+              class="dropbtn flex justify-content-center align-items-center p-0"
+            >
+              <img
+                [src]="userDetails?.profile?.url"
+                alt=""
+                *ngIf="userDetails?.profile; else noprofile"
+                class="profile"
+              />
+              <ng-template #noprofile>
+                <i class="pi pi-user text-xl" style="color: #708090"></i>
+              </ng-template>
+            </button>
+            <div class="dropdown-content">
+              <div class="option">
+                <a href="/user/profile"> Profile</a>
+              </div>
+              <div class="option">
+                <a href="/application/track-status"> Track Status</a>
+              </div>
+              <div class="option" (click)="handleLogOut()">
+                <a href="/"> Log out</a>
+              </div>
+            </div>
+          </div>
+          <!-- <img src="/assets/demo/images/icons/user.png" alt="" class="profile"> -->
+        </div>
+      </div>
+
+      <ng-template #renderLoginbtn>
+        <p-button label="Login" routerLink="/login" [rounded]="true">
+        </p-button>
+      </ng-template>
+    </div>
+  </div>
+</p-sidebar>

@@ -6,7 +6,31 @@
   gap: 2rem;
 
   .img-container {
-    width: 55%;
+    width: 52%;
+  }
+
+  .hero-subtitle {
+    font-size: 1.75rem;
+
+    @media (max-width: 1190px) {
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 1030px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+
+    .img-container {
+      width: 100%;
+    }
+
+    .d-break {
+      display: none;
+    }
   }
 }
 
@@ -88,6 +112,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .testimonial-card {
@@ -128,6 +156,10 @@
   right: 1rem;
   bottom: 1rem;
   z-index: 101;
+
+  @media (max-width: 600px) {
+    left: 1rem;
+  }
 
   .pop-up-card {
     // width: auto;
@@ -182,10 +214,37 @@
 }
 
 // .blue-card {
-  
+
 // }
 
 .card {
   margin-bottom: 0;
   width: 33%;
+}
+
+.why-container {
+  display: flex;
+  gap: 3rem;
+
+  .half-width-card {
+    width: 50%;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+
+    .half-width-card {
+      width: 100%;
+    }
+  }
+}
+
+.visa-types-container {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 }

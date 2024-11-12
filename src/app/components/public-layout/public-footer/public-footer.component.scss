@@ -12,8 +12,15 @@
 }
 
 .footer-subcontainer {
+  padding: 5rem;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 600px) {
+    padding: 3rem 2rem;
+    flex-direction: column;
+    gap: 4rem;
+  }
 }
 
 .mail-link {

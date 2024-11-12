@@ -3,20 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-public-topbar',
   standalone: true,
-  imports: [ButtonModule, CommonModule, RouterModule],
+  imports: [ButtonModule, CommonModule, RouterModule, SidebarModule],
   templateUrl: './public-topbar.component.html',
   styleUrl: './public-topbar.component.scss',
 })
 export class PublicTopbarComponent implements OnInit {
-  userDetailsForm: any | null = null;
+  userDetails: any | null = null;
   showUserIcon: boolean = false;
   private subscription!: Subscription;
+  showMobileNavBar: boolean = false;
 
   constructor(
     private router: Router,
@@ -54,8 +56,8 @@ export class PublicTopbarComponent implements OnInit {
       }
     );
 
-    const { userData } = this.userService.getUserDetails;
-    this.userDetailsForm = userData
+    const userDetailsFromStorage = this.userService.getUserDetails;
+    this.userDetails = userDetailsFromStorage?.userData;
   }
 
   ngOnDestroy(): void {
@@ -73,5 +75,9 @@ export class PublicTopbarComponent implements OnInit {
     } else {
       this.router.navigate(['/login']);
     }
+  }
+
+  toggleHeader() {
+    this.showMobileNavBar = !this.showMobileNavBar;
   }
 }

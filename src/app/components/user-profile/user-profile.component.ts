@@ -55,13 +55,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { userData } = this.userService.getUserDetails;
+    const userDetailsFromStorage = this.userService.getUserDetails;
     this.userDetailsForm.patchValue({
-      name: userData?.name || '',
-      email: userData?.email || '',
-      contact: userData?.mobile_number || '',
+      name: userDetailsFromStorage?.userData?.name || '',
+      email: userDetailsFromStorage?.userData?.email || '',
+      contact: userDetailsFromStorage?.userData?.mobile_number || '',
     });
 
-    this.prefetchProfileImage = userData?.profile?.url;
+    this.prefetchProfileImage = userDetailsFromStorage?.userData?.profile?.url;
   }
 }
