@@ -332,6 +332,50 @@
               {{ currentApplicationDetails?.submissionId }}
             </div>
           </div>
+
+          <div class="flex flex-column">
+            <small>Intented Date of Entry</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.intentedDateOfEntry }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Return Date</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.returnDate }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Purpose of the Trip</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.tripPurpose }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Do you have other nationality?</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.isOtherNationality ? 'Yes' : 'No' }}
+            </div>
+          </div>
+
+          <ng-container *ngIf="currentApplicationDetails?.isOtherNationality">
+            <div class="flex flex-column">
+              <small>Other Nationality</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.otherNationality }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Year Of Acquistion</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.yearOfAcquistion }}
+              </div>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -408,6 +452,415 @@
       </div> -->
     </div>
     <p-divider></p-divider>
+
+    <div>
+      <div class="mt-3 mb-3 font-semibold text-xl">Employment Details</div>
+
+      <div>
+        <div class="applicant-individual-details">
+          <div class="flex flex-column">
+            <small>Currently work or studying?</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.currentlyEmployedOrStudying }}
+            </div>
+          </div>
+
+          <ng-container
+            *ngIf="
+              currentApplicationDetails?.currentlyEmployedOrStudying === 'Work'
+            "
+          >
+            <div class="flex flex-column">
+              <small>Organization's Name</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.organizationName
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Organization's Address</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.workAddress
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Organization's Email</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails?.workEmail
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Work Position</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.workPosition
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Organization's Telephone</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.workTelephone
+                }}
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container
+            *ngIf="
+              currentApplicationDetails?.currentlyEmployedOrStudying === 'Study'
+            "
+          >
+            <div class="flex flex-column">
+              <small>Institute's Name</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.instituteName
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Institute's Address</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.instituteAddress
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Institute's Telephone</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.instituteTelephone
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Institute's Email</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.employmentOrStudyDetails
+                    ?.instituteEmail
+                }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div>
+      <div class="mt-3 mb-3 font-semibold text-xl">
+        Marital Status & Relatives Details
+      </div>
+
+      <div>
+        <div class="applicant-individual-details">
+          <div class="flex flex-column">
+            <small>Marital Status</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.maritalStatus }}
+            </div>
+          </div>
+
+          <ng-container
+            *ngIf="currentApplicationDetails?.maritalStatus !== 'Single'"
+          >
+            <div class="flex flex-column">
+              <small>Partner's Name</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.partnerDetails?.partnerName }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Partner's Surname</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.partnerDetails?.partnerSurname }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Partner's Date Of Birth</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.partnerDetails?.partnerSurname }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Partner's Place of Birth</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.partnerDetails?.partnerPlaceOfBirth
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Partner's Gender</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.partnerDetails?.partnerGender }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Partner's Nationality</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.partnerDetails?.partnerNationality
+                }}
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="flex flex-column">
+            <small>Do you have mother?</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.hasMother ? 'Yes' : 'No' }}
+            </div>
+          </div>
+
+          <ng-container *ngIf="currentApplicationDetails?.hasMother">
+            <div class="flex flex-column">
+              <small>Mother's Name</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.motherDetails?.motherName }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Mother's Surname </small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.motherDetails?.motherSurname }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Mother's Date of Birth</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.motherDetails?.motherDateOfBirth
+                }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Mother's Place of Birth</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.motherDetails?.motherPlaceOfBirth
+                }}
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="flex flex-column">
+            <small>Do you have father?</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.hasFather ? 'Yes' : 'No' }}
+            </div>
+          </div>
+
+          <ng-container *ngIf="currentApplicationDetails?.hasFather">
+            <div class="flex flex-column">
+              <small>Father's Name</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.fatherDetails?.fatherName }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Father's Surname</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.fatherDetails?.fatherSurname }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Father's Date of Birth</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.fatherDetails?.fatherDateOfBirth
+                }}
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <small>Father's Place of Birth</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.fatherDetails?.fatherPlaceOfBirth
+                }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div>
+      <div class="mt-3 mb-3 font-semibold text-xl">Additional Details</div>
+
+      <div>
+        <div class="applicant-individual-details">
+          <div class="flex flex-column">
+            <small>Home Address</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.homeAddress }}
+            </div>
+          </div>
+
+          <div class="flex flex-column">
+            <small>Type of Accommodation</small>
+            <div class="font-bold text-xl">
+              {{ currentApplicationDetails?.typeOfAccommodation }}
+            </div>
+          </div>
+
+          <ng-container
+            *ngIf="currentApplicationDetails?.typeOfAccommodation === 'Hotel'"
+          >
+            <div class="flex flex-column">
+              <small>Hotel's Name</small>
+              <div class="font-bold text-xl">
+                {{ currentApplicationDetails?.accommodationDetails?.hotelName }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Hotel's Address</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails?.hotelAddress
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Hotel's Telephone</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.hotelTelephone
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Hotel's Email</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails?.hotelEmail
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Hotel Booking Number</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.hotelBookingNumber
+                }}
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container
+            *ngIf="
+              currentApplicationDetails?.typeOfAccommodation === 'Individual'
+            "
+          >
+            <div class="flex flex-column">
+              <small>Individual's Name</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.individualName
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Individual's Address</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.individualAddress
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Individual's Telephone</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.individualTelephone
+                }}
+              </div>
+            </div>
+
+            <div class="flex flex-column">
+              <small>Individual's Email</small>
+              <div class="font-bold text-xl">
+                {{
+                  currentApplicationDetails?.accommodationDetails
+                    ?.individualEmail
+                }}
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="flex flex-column">
+            <small>Have you visited any countries in past 3 years?</small>
+            <div class="font-bold text-xl">
+              {{
+                currentApplicationDetails?.visitedCountriesRecently
+                  ? 'Yes'
+                  : 'No'
+              }}
+            </div>
+          </div>
+
+          <div
+            class="flex flex-column gap-1"
+            *ngIf="currentApplicationDetails?.visitedCountriesRecently"
+          >
+            <small>Visited Countries</small>
+            <div class="font-bold text-xl flex gap-2">
+              <div
+                *ngFor="
+                  let option of currentApplicationDetails?.visitedCountriesDetails
+                "
+              >
+                <p-chip [label]="option" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
     <div class="flex gap-3">
       <div class="w-6">
         <p-timeline [value]="selectedApplicationHistory">

@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { PassportDetailRequest } from '../model/passport-detail-request';
 import { FileUploadRequest } from '../model/files-upload-request';
+import { EmploymentDetailsRequest } from '../model/employment-details-request';
+import { RelativesDetailsRequest } from '../model/relatives-details-request';
+import { AdditionalDetailsRequest } from '../model/additional-details-request';
 
 @Injectable({
   providedIn: 'root',
@@ -64,6 +67,27 @@ export class ApplicationService {
     return this.http.post<any>(
       this.serverUrl + '/evisa_applications/upload_documents',
       files
+    );
+  }
+
+  submitEmploymentDetails(params: EmploymentDetailsRequest) {
+    return this.http.post<any>(
+      this.serverUrl + '/evisa_applications/update_employement_details',
+      params
+    );
+  }
+
+  submitRelativesDetails(params: RelativesDetailsRequest) {
+    return this.http.post<any>(
+      this.serverUrl + '/evisa_applications/update_relatives_details',
+      params
+    );
+  }
+
+  submitAdditionalDetails(params: AdditionalDetailsRequest) {
+    return this.http.post<any>(
+      this.serverUrl + '/evisa_applications/update_additional_details',
+      params
     );
   }
 

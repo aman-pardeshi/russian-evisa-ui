@@ -28,7 +28,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import {
-  getDateInDDMMYYY,
   getDateInFormat,
   getDateInYYYYMMDD,
 } from '../../Shared/utils';
@@ -68,11 +67,9 @@ export function asyncEmailValidator(
   selector: 'app-personal-details',
   standalone: true,
   imports: [
-    CardModule,
     CommonModule,
     ButtonModule,
     FormsModule,
-    HeaderComponent,
     ReactiveFormsModule,
     ToastModule,
     DropdownModule,
@@ -81,7 +78,6 @@ export function asyncEmailValidator(
     CheckboxModule,
     InputTextModule,
     StepperModule,
-    ToggleButtonModule,
     IconFieldModule,
     InputIconModule,
     FileUploadModule,
@@ -109,6 +105,31 @@ export class PersonalDetailsComponent implements OnInit {
   countries: City[] | undefined;
   nationalityList: any[] = [];
   genderList: any[] = [];
+  purposeOptions: any = [
+    { label: 'Guest Visa', value: 'Guest Visa' },
+    { label: 'Business Visa', value: 'Business Visa' },
+    { label: 'Tourism Visa', value: 'Tourism Visa' },
+    {
+      label: 'Participation in economic events',
+      value: 'Participation in economic events',
+    },
+    {
+      label: 'Participation in sports events',
+      value: 'Participation in sports events',
+    },
+    {
+      label: 'Participation in cultural events',
+      value: 'Participation in cultural events',
+    },
+    {
+      label: 'Participation in scientific events',
+      value: 'Participation in scientific events',
+    },
+    {
+      label: 'Participation in social & political events',
+      value: 'Participation in social &political events',
+    },
+  ];
   maxDate: Date;
   minDate: Date;
   secondMinDate: Date;
@@ -169,7 +190,6 @@ export class PersonalDetailsComponent implements OnInit {
   public handleImage(webcamImage: WebcamImage): void {
     this.capturedPhoto = webcamImage;
     this.showWebCamModal = false;
-
   }
 
   public handlePassportFrontImage(webcamImage: WebcamImage): void {
@@ -211,6 +231,8 @@ export class PersonalDetailsComponent implements OnInit {
       passportDateOfIssue: ['', Validators.required],
       passportPlaceOfIssue: ['', Validators.required],
       intentedDateOfEntry: ['', Validators.required],
+      returnDate: ['', Validators.required],
+      purposeOfTheTrip: ['', Validators.required],
       isOtherNationality: ['', Validators.required],
       otherNationality: ['', Validators.required],
       yearOfAcquisition: [undefined, Validators.required],
@@ -279,26 +301,34 @@ export class PersonalDetailsComponent implements OnInit {
     this.applicantPassportDetailsForm.patchValue({
       passportNumber: this.submitedApplicationDetails?.passportNumber,
       passportExpiryDate: this.submitedApplicationDetails?.passportExpiryDate
-        ? new Date(this.submitedApplicationDetails?.passportExpiryDate)
-        : null,
+      ? new Date(this.submitedApplicationDetails.passportExpiryDate)
+      : null,
       passportDateOfIssue: this.submitedApplicationDetails?.passportDateOfIssue
-        ? new Date(this.submitedApplicationDetails?.passportDateOfIssue)
-        : null,
+      ? new Date(this.submitedApplicationDetails?.passportDateOfIssue)
+      : null,
       passportPlaceOfIssue:
-        this.submitedApplicationDetails?.passportPlaceOfIssue,
+      this.submitedApplicationDetails?.passportPlaceOfIssue,
       intentedDateOfEntry: this.submitedApplicationDetails?.intentedDateOfEntry
-        ? new Date(this.submitedApplicationDetails?.intentedDateOfEntry)
-        : null,
+      ? new Date(this.submitedApplicationDetails?.intentedDateOfEntry)
+      : null,
+      returnDate: this.submitedApplicationDetails?.returnDate
+      ? new Date(this.submitedApplicationDetails?.returnDate)
+      : null,
+      purposeOfTheTrip: this.submitedApplicationDetails?.tripPurpose
+      ? this.purposeOptions?.filter(
+        (x) => x.label === this.submitedApplicationDetails?.tripPurpose
+      )[0]
+      : null,
       isOtherNationality: this.submitedApplicationDetails?.isOtherNationality,
       otherNationality: this.submitedApplicationDetails?.otherNationality
-        ? this.nationalityList.filter(
-            (x) => x.label === this.submitedApplicationDetails.otherNationality
-          )[0]
-        : null,
+      ? this.nationalityList.filter(
+        (x) => x.label === this.submitedApplicationDetails.otherNationality
+      )[0]
+      : null,
       yearOfAcquisition:
-        this.submitedApplicationDetails?.yearOfAcquistion || null,
+      this.submitedApplicationDetails?.yearOfAcquistion || null,
     });
-
+    
     if (this.submitedApplicationDetails?.photo?.url) {
       this.preFetchedPhoto = this.submitedApplicationDetails?.photo?.url;
     }
@@ -344,8 +374,6 @@ export class PersonalDetailsComponent implements OnInit {
         .get('countryCode')
         .patchValue(this.countries[0]);
     });
-
-
   }
 
   formatDate(date: string) {
@@ -426,6 +454,11 @@ export class PersonalDetailsComponent implements OnInit {
     this.passportDetailsRequest.intentedDateOfEntry = getDateInYYYYMMDD(
       this.applicantPassportDetailsForm.get('intentedDateOfEntry').value
     );
+    this.passportDetailsRequest.returnDate = getDateInYYYYMMDD(
+      this.applicantPassportDetailsForm.get('returnDate').value
+    );
+    this.passportDetailsRequest.purposeOfTheTrip =
+      this.applicantPassportDetailsForm.get('purposeOfTheTrip').value?.value;
     this.passportDetailsRequest.isOtherNationality =
       this.applicantPassportDetailsForm.get('isOtherNationality').value;
     this.passportDetailsRequest.otherNationality =
@@ -566,6 +599,10 @@ export class PersonalDetailsComponent implements OnInit {
             summary: 'Success',
             detail: 'Application Created Successfully',
           });
+          this.router.navigate([
+            '/application/addional-details/',
+            this.referenceId,
+          ]);
         }
       },
       (error) => {

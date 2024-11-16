@@ -1,0 +1,63 @@
+.wrapper {
+  width: 88%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.field-container {
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 750px) {
+    flex-direction: column;
+  }
+}
+
+.field {
+  width: 50%;
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
+}
+
+.content-container {
+  width: calc(100% - 20rem);
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
+}
+
+.form-container {
+  width: 88%;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  @media (max-width: 750px) {
+    width: 100%;
+
+    .card {
+      padding: 1rem 1rem 1rem 0;
+    }
+  }
+
+  .stepper-form {
+    width: 100%;
+  }
+}
+
+.p-stepper {
+  flex-basis: 100%;
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
+}
+
+.multiselect-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}

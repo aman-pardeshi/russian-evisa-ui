@@ -25,6 +25,7 @@ import { mapArrayFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
 import { DividerModule } from 'primeng/divider';
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-total-applications',
@@ -45,6 +46,7 @@ import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
     ButtonModule,
     DividerModule,
     TimelineModule,
+    ChipModule,
   ],
   templateUrl: './total-applications.component.html',
   styleUrl: './total-applications.component.scss',
@@ -207,12 +209,37 @@ export class TotalApplicationsComponent {
       referenceId: application?.referenceId,
       serviceFee: application?.serviceFee,
       visaFee: application?.visaFee,
+
+      intentedDateOfEntry: getDateInFormat(
+        new Date(application?.intentedDateOfEntry)
+      ),
+      returnDate: getDateInFormat(new Date(application?.returnDate)),
+      tripPurpose: application?.tripPurpose,
+      isOtherNationality: application?.isOtherNationality,
+      otherNationality: application?.otherNationality,
+      yearOfAcquistion: application?.yearOfAcquistion,
+
+      currentlyEmployedOrStudying: application?.currentlyEmployedOrStudying,
+      employmentOrStudyDetails: application?.employmentOrStudyDetails,
+
+      maritalStatus: application?.maritalStatus,
+      partnerDetails: application?.partnerDetails,
+      hasMother: application?.hasMother,
+      motherDetails: application?.motherDetails,
+      hasFather: application?.hasFather,
+      fatherDetails: application?.fatherDetails,
+
+      homeAddress: application?.homeAddress,
+      typeOfAccommodation: application?.typeOfAccommodation,
+      accommodationDetails: application?.accommodationDetails,
+      visitedCountriesRecently: application?.visitedCountriesRecently,
+      visitedCountriesDetails: application?.visitedCountriesDetails,
     };
     this.selectedApplicationHistory = application.applicationHistories;
   }
 
   downloadFile(url: string, fileType: string) {
-    const fileName = `${this.currentApplicationDetails?.firstName} ${this.currentApplicationDetails?.lastName} -  ${fileType}.png`;
+    const fileName = `${this.currentApplicationDetails?.firstName} ${this.currentApplicationDetails?.lastName} - ${fileType}.png`;
 
     fetch(url)
       .then((response) => {

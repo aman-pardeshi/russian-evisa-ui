@@ -1,0 +1,1140 @@
+<div class="container bg-blue">
+  <div class="flex gap-3 p-3">
+    <div class="content-container">
+      <p-toast />
+
+      <div class="form-container">
+        <div class="card flex justify-content-center form-subcontainer">
+          <p-stepper [(activeStep)]="active" orientation="vertical">
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClickPersonalDetails="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClickPersonalDetails.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-building text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Employment Details</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="content" let-nextCallback="nextCallback">
+                <form [formGroup]="employmentDetailsForm">
+                  <div class="px-5-custom">
+                    <div class="flex flex-column w-full">
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="firstName" class="font-bold"
+                            >Do you work or study in the present time?<span
+                              class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-dropdown
+                            id="currentlyEmployedOrStudying"
+                            formControlName="currentlyEmployedOrStudying"
+                            [style]="{ width: '100%' }"
+                            [options]="employmentOptions"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          employmentDetailsForm.get(
+                            'currentlyEmployedOrStudying'
+                          ).value === 'Work'
+                        "
+                      >
+                        <div class="field">
+                          <label for="organizationName" class="font-bold"
+                            >Full Name of organization<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="organizationName"
+                            formControlName="organizationName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="workPosition" class="font-bold"
+                            >Work Position<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="workPosition"
+                            formControlName="workPosition"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          employmentDetailsForm.get(
+                            'currentlyEmployedOrStudying'
+                          ).value === 'Work'
+                        "
+                      >
+                        <div class="field">
+                          <label for="workAddress" class="font-bold"
+                            >Employer Address<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="workAddress"
+                            formControlName="workAddress"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="workTelephone" class="font-bold"
+                            >Work Telephone<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-inputNumber
+                            mode="decimal"
+                            inputId="withoutgrouping"
+                            [useGrouping]="false"
+                            class="w-full outline-none"
+                            id="workTelephone"
+                            formControlName="workTelephone"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          employmentDetailsForm.get(
+                            'currentlyEmployedOrStudying'
+                          ).value === 'Work'
+                        "
+                      >
+                        <div class="field">
+                          <label for="workEmail" class="font-bold"
+                            >Work Email<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="workEmail"
+                            formControlName="workEmail"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          employmentDetailsForm.get(
+                            'currentlyEmployedOrStudying'
+                          ).value === 'Study'
+                        "
+                      >
+                        <div class="field">
+                          <label for="instituteName" class="font-bold"
+                            >Name of the educational organization<span
+                              class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="instituteName"
+                            formControlName="instituteName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="instituteAddress" class="font-bold"
+                            >Address<span class="text-red-400">*</span></label
+                          >
+
+                          <input
+                            pInputText
+                            id="instituteAddress"
+                            formControlName="instituteAddress"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          employmentDetailsForm.get(
+                            'currentlyEmployedOrStudying'
+                          ).value === 'Study'
+                        "
+                      >
+                        <div class="field">
+                          <label for="instituteTelephone" class="font-bold"
+                            >Institute Telephone<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-inputNumber
+                            id="instituteTelephone"
+                            mode="decimal"
+                            inputId="withoutgrouping"
+                            [useGrouping]="false"
+                            class="w-full outline-none"
+                            formControlName="instituteTelephone"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="instituteEmail" class="font-bold"
+                            >Institute Email<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="instituteEmail"
+                            formControlName="instituteEmail"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="flex pt-4 justify-content-end">
+                  <p-button
+                    (onClick)="handleEmploymentDetailsSubmit(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    [disabled]="checkEmploymentSectionNextValidation()"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-users text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Marital Status & Relatives</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <div class="flex flex-column gap-2 mx-auto pl-5">
+                  <form [formGroup]="relativesDetailsForm">
+                    <div class="flex flex-column w-full">
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="maritalStatus" class="font-bold"
+                            >Do you work or study in the present time?<span
+                              class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-dropdown
+                            id="maritalStatus"
+                            formControlName="maritalStatus"
+                            [style]="{ width: '100%' }"
+                            [options]="maritalStatusOptions"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          relativesDetailsForm.get('maritalStatus').value &&
+                          relativesDetailsForm.get('maritalStatus').value !==
+                            'Single'
+                        "
+                      >
+                        <div class="field">
+                          <label for="partnerSurname" class="font-bold"
+                            >Partner's Surname<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="partnerSurname"
+                            formControlName="partnerSurname"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="partnerName" class="font-bold"
+                            >Partner's Name<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="partnerName"
+                            formControlName="partnerName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          relativesDetailsForm.get('maritalStatus').value &&
+                          relativesDetailsForm.get('maritalStatus').value !==
+                            'Single'
+                        "
+                      >
+                        <div class="field">
+                          <label for="partnerDateOfBirth" class="font-bold"
+                            >Partner's Date Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-calendar
+                            id="partnerDateOfBirth"
+                            formControlName="partnerDateOfBirth"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            dateFormat="dd/mm/yy"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [maxDate]="maxDate"
+                          ></p-calendar>
+                        </div>
+
+                        <div class="field">
+                          <label for="partnerPlaceOfBirth" class="font-bold"
+                            >Partner's Place Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="partnerPlaceOfBirth"
+                            formControlName="partnerPlaceOfBirth"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          relativesDetailsForm.get('maritalStatus').value &&
+                          relativesDetailsForm.get('maritalStatus').value !==
+                            'Single'
+                        "
+                      >
+                        <div class="field">
+                          <label for="partnerGender" class="font-bold"
+                            >Partner's Gender<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-dropdown
+                            id="gender"
+                            [options]="genderList"
+                            formControlName="partnerGender"
+                            optionLabel="label"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="partnerNationality" class="font-bold"
+                            >Partner's Nationality<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <div class="mobile-number-container p-filled">
+                            <p-dropdown
+                              [options]="nationalityList"
+                              formControlName="partnerNationality"
+                              optionLabel="name"
+                              [filter]="true"
+                              filterBy="label"
+                              class="outline-none w-full"
+                              [style]="{ width: '100%' }"
+                            >
+                              <ng-template
+                                pTemplate="selectedItem"
+                                let-selectedOption
+                              >
+                                <div class="flex align-items-center gap-2 pr-0">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' +
+                                      relativesDetailsForm
+                                        .get('partnerNationality')
+                                        ?.value.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>
+                                    {{
+                                      relativesDetailsForm.get(
+                                        'partnerNationality'
+                                      )?.value.label
+                                    }}
+                                  </div>
+                                </div>
+                              </ng-template>
+                              <ng-template let-country pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <img
+                                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                    [class]="
+                                      'flag flag-' + country.code.toLowerCase()
+                                    "
+                                    style="width: 20px"
+                                  />
+                                  <div>{{ country.label }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p-divider />
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="hasMother" class="font-bold"
+                            >Do you have a mother?
+                            <span class="text-red-400">*</span></label
+                          >
+                          <p-selectButton
+                            [options]="yesNoOptions"
+                            formControlName="hasMother"
+                            optionLabel="label"
+                            optionValue="value"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="relativesDetailsForm.get('hasMother').value"
+                      >
+                        <div class="field">
+                          <label for="motherSurname" class="font-bold"
+                            >Mother's Surname<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="motherSurname"
+                            formControlName="motherSurname"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="motherName" class="font-bold"
+                            >Mother's Name<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="motherName"
+                            formControlName="motherName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="relativesDetailsForm.get('hasMother').value"
+                      >
+                        <div class="field">
+                          <label for="motherDateOfBirth" class="font-bold"
+                            >Mother's Date Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-calendar
+                            id="motherDateOfBirth"
+                            formControlName="motherDateOfBirth"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            placeholder="dd/mm/yyyy"
+                            dateFormat="dd/mm/yy"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [maxDate]="maxDate"
+                            [style]="{ width: '100%' }"
+                          ></p-calendar>
+                        </div>
+
+                        <div class="field">
+                          <label for="motherPlaceOfBirth" class="font-bold"
+                            >Mother's Place Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="motherPlaceOfBirth"
+                            formControlName="motherPlaceOfBirth"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <p-divider />
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="hasFather" class="font-bold"
+                            >Do you have a father?
+                            <span class="text-red-400">*</span></label
+                          >
+                          <p-selectButton
+                            [options]="yesNoOptions"
+                            formControlName="hasFather"
+                            optionLabel="label"
+                            optionValue="value"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="relativesDetailsForm.get('hasFather').value"
+                      >
+                        <div class="field">
+                          <label for="fatherSurname" class="font-bold"
+                            >Father's Surname<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="fatherSurname"
+                            formControlName="fatherSurname"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="fatherName" class="font-bold"
+                            >Father's Name<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="fatherName"
+                            formControlName="fatherName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="relativesDetailsForm.get('hasFather').value"
+                      >
+                        <div class="field">
+                          <label for="fatherDateOfBirth" class="font-bold"
+                            >Father's Date Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <p-calendar
+                            id="fatherDateOfBirth"
+                            formControlName="fatherDateOfBirth"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            placeholder="dd/mm/yyyy"
+                            dateFormat="dd/mm/yy"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [maxDate]="maxDate"
+                            [style]="{ width: '100%' }"
+                          ></p-calendar>
+                        </div>
+
+                        <div class="field">
+                          <label for="fatherPlaceOfBirth" class="font-bold"
+                            >Father's Place Of Birth<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+
+                          <input
+                            pInputText
+                            id="fatherPlaceOfBirth"
+                            formControlName="fatherPlaceOfBirth"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="flex pt-4 justify-content-between pl-5">
+                  <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  />
+                  <p-button
+                    (onClick)="handleRelativesDetailsSubmit(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    [disabled]="checkRelationSectionNextValidation()"
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-cloud-upload text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Additional Details</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <form [formGroup]="additionalDetailsForm">
+                  <div class="px-5-custom">
+                    <div class="flex flex-column w-full">
+                      <div class="mt-2 field-container">
+                        <div class="field w-full">
+                          <label for="homeAddress" class="font-bold"
+                            >Home Address<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="homeAddress"
+                            formControlName="homeAddress"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="typeOfAccommodation" class="font-bold"
+                            >Type of Accommodation<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-dropdown
+                            id="typeOfAccommodation"
+                            formControlName="typeOfAccommodation"
+                            [options]="accommodationList"
+                            optionLabel="label"
+                            [style]="{ width: '100%' }"
+                          ></p-dropdown>
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('typeOfAccommodation').value
+                            ?.value === 'Hotel'
+                        "
+                      >
+                        <div class="field">
+                          <label for="hotelName" class="font-bold"
+                            >Name of the hotel<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="hotelName"
+                            formControlName="hotelName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="hotelAddress" class="font-bold"
+                            >Hotel Address<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="hotelAddress"
+                            formControlName="hotelAddress"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('typeOfAccommodation').value
+                            ?.value === 'Hotel'
+                        "
+                      >
+                        <div class="field">
+                          <label for="hotelTelephone" class="font-bold"
+                            >Hotel Telephone<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-inputNumber
+                            id="hotelTelephone"
+                            formControlName="hotelTelephone"
+                            mode="decimal"
+                            inputId="withoutgrouping"
+                            [useGrouping]="false"
+                            class="w-full outline-none"
+                            [style]="{
+                              width: '100%',
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="hotelEmail" class="font-bold"
+                            >Hotel Email<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="hotelEmail"
+                            formControlName="hotelEmail"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('typeOfAccommodation').value
+                            ?.value === 'Hotel'
+                        "
+                      >
+                        <div class="field">
+                          <label for="hotelBookingNumber" class="font-bold"
+                            >Hotel Booking Number<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="hotelBookingNumber"
+                            formControlName="hotelBookingNumber"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('typeOfAccommodation').value
+                            ?.value === 'Individual'
+                        "
+                      >
+                        <div class="field">
+                          <label for="individualName" class="font-bold"
+                            >Individual's Name<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="individualName"
+                            formControlName="individualName"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="individualAddress" class="font-bold"
+                            >Individual's Adddress<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="individualAddress"
+                            formControlName="individualAddress"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('typeOfAccommodation').value
+                            ?.value === 'Individual'
+                        "
+                      >
+                        <div class="field">
+                          <label for="individualTelephone" class="font-bold"
+                            >Individual's Telephone<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-inputNumber
+                            id="individualTelephone"
+                            formControlName="individualTelephone"
+                            mode="decimal"
+                            inputId="withoutgrouping"
+                            [useGrouping]="false"
+                            class="w-full outline-none"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
+
+                        <div class="field">
+                          <label for="individualEmail" class="font-bold"
+                            >Individual's Email<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            pInputText
+                            id="individualEmail"
+                            formControlName="individualEmail"
+                            [style]="{
+                              width: '100%',
+                              textTransform: 'uppercase'
+                            }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="individualEmail" class="font-bold"
+                            >Have You visited any countries in the last 3
+                            years?<span class="text-red-400">*</span></label
+                          >
+                          <p-selectButton
+                            [options]="yesNoOptions"
+                            formControlName="vistedCountriesRecently"
+                            optionLabel="label"
+                            optionValue="value"
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        class="mt-2 field-container"
+                        *ngIf="
+                          additionalDetailsForm.get('vistedCountriesRecently')
+                            .value
+                        "
+                      >
+                        <div class="field w-full">
+                          <label for="individualEmail" class="font-bold"
+                            >Name of the countries visited?<span
+                              class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-multiSelect
+                            [options]="nationalityList"
+                            formControlName="visitedCountriesDetails"
+                            placeholder="Select Countries"
+                            optionLabel="label"
+                            display="chip"
+                            [showClear]="true"
+                            [style]="{
+                              width: '100%',
+                              height: 'fit-content'
+                            }"
+                          >
+                            <ng-template let-value pTemplate="selectedItems">
+                              <div class="multiselect-container">
+                                <div
+                                  class="inline-flex align-items-center"
+                                  *ngFor="let option of value"
+                                >
+                                  <p-chip [label]="option.label" />
+                                </div>
+
+                                <div *ngIf="!value || value.length === 0">
+                                  Select Countries
+                                </div>
+                              </div>
+                            </ng-template>
+                          </p-multiSelect>
+                        </div>
+                      </div>
+
+                      <div class="flex pt-4 justify-content-between pl-5">
+                        <p-button
+                          (onClick)="prevCallback.emit()"
+                          label="Back"
+                          severity="secondary"
+                          icon="pi pi-arrow-left"
+                        />
+                        <p-button
+                          (onClick)="
+                            handleAdditionalDetailsSubmit(nextCallback)
+                          "
+                          label="Submit"
+                          icon="pi pi-arrow-right"
+                          iconPos="right"
+                          [disabled]="checkAdditionalSectionNextValidation()"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-stepperPanel>
+          </p-stepper>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-fussion"
+  [fullScreen]="true"
+>
+  <app-loader></app-loader>
+</ngx-spinner>
+
+<p-dialog [(visible)]="showConfirmationModal" [modal]="true">
+  <ng-template pTemplate="headless">
+    <div
+      class="flex flex-column px-8 py-5 gap-3 bg-white"
+      style="border-radius: 14px"
+    >
+      <div class="flex justify-content-center">
+        <img
+          src="assets/demo/images/check-mark.png"
+          width="200"
+          class="mx-auto"
+          alt=""
+          class="mr-1"
+        />
+      </div>
+      <div>
+        <div
+          class="text-2xl text-center mt-2 flex justify-content-center align-items-center gap-2"
+        >
+          You appointment has been confirmed.
+        </div>
+        <div
+          class="text-2xl text-center mt-2 flex justify-content-center align-items-center gap-2"
+        >
+          Application ID: {{ submitedApplicationDetails?.applicationId }}
+        </div>
+
+        <div class="flex justify-content-center mt-3">
+          <p-button
+            [label]="'Okay'"
+            [routerLink]="'/application/track-status'"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

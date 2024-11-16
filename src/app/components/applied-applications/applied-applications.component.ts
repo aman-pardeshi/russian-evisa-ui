@@ -28,6 +28,7 @@ import {
 import { TimelineModule } from 'primeng/timeline';
 import { getDateInDDMMYYY, getDateInFormat } from '../Shared/utils';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-applied-applications',
@@ -49,6 +50,7 @@ import { FileUpload, FileUploadModule } from 'primeng/fileupload';
     DividerModule,
     TimelineModule,
     FileUploadModule,
+    ChipModule,
   ],
   templateUrl: './applied-applications.component.html',
   styleUrl: './applied-applications.component.scss',
@@ -220,6 +222,31 @@ export class AppliedApplicationsComponent {
       referenceId: application?.referenceId,
       serviceFee: application?.serviceFee,
       visaFee: application?.visaFee,
+
+      intentedDateOfEntry: getDateInFormat(
+        new Date(application?.intentedDateOfEntry)
+      ),
+      returnDate: getDateInFormat(new Date(application?.returnDate)),
+      tripPurpose: application?.tripPurpose,
+      isOtherNationality: application?.isOtherNationality,
+      otherNationality: application?.otherNationality,
+      yearOfAcquistion: application?.yearOfAcquistion,
+
+      currentlyEmployedOrStudying: application?.currentlyEmployedOrStudying,
+      employmentOrStudyDetails: application?.employmentOrStudyDetails,
+
+      maritalStatus: application?.maritalStatus,
+      partnerDetails: application?.partnerDetails,
+      hasMother: application?.hasMother,
+      motherDetails: application?.motherDetails,
+      hasFather: application?.hasFather,
+      fatherDetails: application?.fatherDetails,
+
+      homeAddress: application?.homeAddress,
+      typeOfAccommodation: application?.typeOfAccommodation,
+      accommodationDetails: application?.accommodationDetails,
+      visitedCountriesRecently: application?.visitedCountriesRecently,
+      visitedCountriesDetails: application?.visitedCountriesDetails,
     };
 
     this.selectedApplicationHistory = application.applicationHistories;

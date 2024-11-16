@@ -468,9 +468,48 @@
                             formControlName="intentedDateOfEntry"
                           ></p-calendar>
                         </div>
+
+                        <div
+                          class="field flex flex-column justify-content-center"
+                        >
+                          <label for="returnDate" class="font-bold"
+                            >Return Date<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-calendar
+                            appendTo="body"
+                            id="returnDate"
+                            dateFormat="dd/mm/yy"
+                            [overwriteOnInsert]="true"
+                            [monthNavigator]="true"
+                            [yearNavigator]="true"
+                            yearRange="1930:2050"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [style]="{ width: '100%' }"
+                            placeholder="dd/mm/yyyy"
+                            [minDate]="secondMinDate"
+                            formControlName="returnDate"
+                          ></p-calendar>
+                        </div>
                       </div>
 
                       <div class="mt-2 field-container">
+                        <div class="field">
+                          <label for="purposeOfTheTrip" class="font-bold"
+                            >Purpose of the trip<span class="text-red-400"
+                              >*</span
+                            ></label
+                          >
+                          <p-dropdown
+                            id="purposeOfTheTrip"
+                            [options]="purposeOptions"
+                            formControlName="purposeOfTheTrip"
+                            optionLabel="label"
+                            [style]="{ width: '100%' }"
+                          />
+                        </div>
                         <div class="field">
                           <label for="isOtherNationality" class="font-bold"
                             >Do you have any other Nationality?
@@ -593,6 +632,11 @@
                         ].valid &&
                         applicantPassportDetailsForm.controls[
                           'intentedDateOfEntry'
+                        ].valid &&
+                        applicantPassportDetailsForm.controls['returnDate']
+                          .valid &&
+                        applicantPassportDetailsForm.controls[
+                          'purposeOfTheTrip'
                         ].valid &&
                         applicantPassportDetailsForm.controls[
                           'isOtherNationality'

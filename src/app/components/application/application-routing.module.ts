@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { PersonalDetailsComponent } from './personal-details/personal-details.component';
 import { ApplicationComponent } from './application.component';
 import { TrackStatusComponent } from '../track-status/track-status.component';
+import { AddionalDetailsComponent } from './addional-details/addional-details.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,10 @@ import { TrackStatusComponent } from '../track-status/track-status.component';
       {
         path: 'apply/:id',
         component: PersonalDetailsComponent,
+      },
+      {
+        path: 'addional-details/:id',
+        component: AddionalDetailsComponent,
       },
       {
         path: 'track-status',
