@@ -2,10 +2,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "types": ["node"],
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types"],
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

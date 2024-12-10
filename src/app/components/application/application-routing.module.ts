@@ -17,7 +17,7 @@ import { AddionalDetailsComponent } from './addional-details/addional-details.co
         component: PersonalDetailsComponent,
       },
       {
-        path: 'addional-details/:id',
+        path: 'additional-details/:id',
         component: AddionalDetailsComponent,
       },
       {

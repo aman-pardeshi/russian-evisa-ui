@@ -9,6 +9,150 @@
             <p-stepperPanel>
               <ng-template
                 pTemplate="header"
+                let-onClick="onClick"
+                let-index="index"
+              >
+                <div
+                  class="flex justify-content-center align-items-center gap-3"
+                >
+                  <button
+                    class="bg-transparent border-none inline-flex flex-column gap-2"
+                    (click)="onClick.emit()"
+                  >
+                    <span
+                      class="border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                      [ngClass]="{
+                        'bg-primary border-primary': index <= active,
+                        'surface-border': index > active
+                      }"
+                      style="border-radius: 10rem"
+                    >
+                      <i class="pi pi-cloud-upload text-xl"></i>
+                    </span>
+                  </button>
+
+                  <span>
+                    <h5 class="mb-0">Upload Documents</h5>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template
+                pTemplate="content"
+                let-prevCallback="prevCallback"
+                let-nextCallback="nextCallback"
+              >
+                <div class="px-5-custom">
+                  <div class="doc-container">
+                    <div class="w-9rem">Photo</div>
+
+                    <div class="flex flex-column gap-3 align-items-center">
+                      <div class="w-16rem">
+                        <img
+                          [src]="
+                            photoFile?.objectURL ||
+                            capturedPhoto?.imageAsDataUrl ||
+                            preFetchedPhoto
+                          "
+                          *ngIf="photoFile || capturedPhoto || preFetchedPhoto"
+                          width="100%"
+                          class="passport-img"
+                        />
+                      </div>
+
+                      <div class="flex gap-3">
+                        <p-fileUpload
+                          name="photo"
+                          mode="basic"
+                          chooseIcon="pi pi-upload"
+                          accept="image/*"
+                          maxFileSize="5000000"
+                          (onSelect)="onFileSelect($event, 'photo')"
+                          [auto]="false"
+                          chooseLabel="Upload"
+                          styleClass="w-full"
+                        >
+                        </p-fileUpload>
+
+                        <p-button
+                          (click)="showWebCamModal = true"
+                          label="Capture"
+                          icon="pi pi-camera"
+                          iconPos="left"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="doc-container">
+                    <div class="w-9rem">Passport</div>
+                    <div class="flex flex-column gap-3 align-items-center">
+                      <div class="w-16rem">
+                        <img
+                          [src]="
+                            passportFrontFile?.objectURL ||
+                            capturedPassportFront?.imageAsDataUrl ||
+                            preFetchedPassportFront
+                          "
+                          *ngIf="
+                            passportFrontFile ||
+                            capturedPassportFront ||
+                            preFetchedPassportFront
+                          "
+                          width="100%"
+                          class="passport-img"
+                        />
+                      </div>
+
+                      <div class="flex gap-3">
+                        <p-fileUpload
+                          name="passport"
+                          mode="basic"
+                          chooseIcon="pi pi-upload"
+                          accept="image/*"
+                          maxFileSize="5000000"
+                          (onSelect)="onFileSelect($event, 'passportFront')"
+                          [auto]="false"
+                          chooseLabel="Upload"
+                          styleClass="w-full"
+                        >
+                        </p-fileUpload>
+
+                        <p-button
+                          (click)="showPassportFrontCaptureModal = true"
+                          label="Capture"
+                          icon="pi pi-camera"
+                          iconPos="left"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex pt-4 justify-content-between pl-5">
+                  <p-button
+                    (onClick)="prevCallback.emit()"
+                    label="Back"
+                    severity="secondary"
+                    icon="pi pi-arrow-left"
+                  />
+                  <p-button
+                    (onClick)="handleFileUpload(nextCallback)"
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    [disabled]="
+                      !(
+                        (photoFile || capturedPhoto) &&
+                        (passportFrontFile || capturedPassportFront)
+                      )
+                    "
+                  />
+                </div>
+              </ng-template>
+            </p-stepperPanel>
+
+            <p-stepperPanel>
+              <ng-template
+                pTemplate="header"
                 let-onClickPersonalDetails="onClick"
                 let-index="index"
               >
@@ -42,7 +186,7 @@
                     <div class="flex flex-column w-full">
                       <div class="mt-2 field-container">
                         <div class="field">
-                          <label for="firstName" class="font-bold"
+                          <label for="currentlyEmployedOrStudying" class="font-bold"
                             >Do you work or study in the present time?<span
                               class="text-red-400"
                               >*</span
@@ -319,7 +463,7 @@
                       <div class="mt-2 field-container">
                         <div class="field">
                           <label for="maritalStatus" class="font-bold"
-                            >Do you work or study in the present time?<span
+                            >Marital Status<span
                               class="text-red-400"
                               >*</span
                             ></label
@@ -734,6 +878,7 @@
                 </div>
               </ng-template>
             </p-stepperPanel>
+
             <p-stepperPanel>
               <ng-template
                 pTemplate="header"
@@ -1071,7 +1216,7 @@
                         />
                         <p-button
                           (onClick)="
-                            handleAdditionalDetailsSubmit(nextCallback)
+                            handleAdditionalDetailsSubmit()
                           "
                           label="Submit"
                           icon="pi pi-arrow-right"
@@ -1125,7 +1270,7 @@
         <div
           class="text-2xl text-center mt-2 flex justify-content-center align-items-center gap-2"
         >
-          Application ID: {{ submitedApplicationDetails?.applicationId }}
+          Application ID: {{ submitedApplicationDetails?.submissionId }}
         </div>
 
         <div class="flex justify-content-center mt-3">
@@ -1137,4 +1282,52 @@
       </div>
     </div>
   </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showWebCamModal"
+  [modal]="true"
+  header="Capture Picture"
+  (onHide)="showWebCamModal = false"
+  styleClass="webcam-modal"
+>
+  <div class="camera">
+    <webcam
+      *ngIf="showWebCamModal"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      class="webcam-feed"
+    >
+    </webcam>
+
+    <div class="camera-overlay"></div>
+  </div>
+
+  <div class="mt-3 my-4 flex justify-content-center">
+    <p-button (click)="triggerSnapshot()" label="Capture"
+      ></p-button
+    >
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showPassportFrontCaptureModal"
+  [modal]="true"
+  header="Capture Passport Photo"
+  (onHide)="showPassportFrontCaptureModal = false"
+>
+  <div class="camera">
+    <webcam
+      *ngIf="showPassportFrontCaptureModal"
+      [trigger]="triggerObservable"
+      (imageCapture)="handlePassportFrontImage($event)"
+    >
+    </webcam>
+  </div>
+
+  <div class="mt-3 my-4 flex justify-content-center">
+    <p-button (click)="triggerSnapshot()" label="Capture"
+      ></p-button
+    >
+  </div>
 </p-dialog>

@@ -15,6 +15,10 @@ import { FaqComponent } from './components/faq/faq.component';
 import { EligibleCountriesComponent } from './components/eligible-countries/eligible-countries.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { RefundPolicyComponent } from './components/refund-policy/refund-policy.component';
+import { CookiePolicyComponent } from './components/cookie-policy/cookie-policy.component';
+import { TermsConditionComponent } from './components/terms-condition/terms-condition.component';
 
 const routes: Routes = [
   {
@@ -59,6 +63,22 @@ const routes: Routes = [
       {
         path: 'eligible-countries',
         component: EligibleCountriesComponent,
+      },
+      {
+        path: 'privacy-policy',
+        component: PrivacyPolicyComponent,
+      },
+      {
+        path: 'refund-policy',
+        component: RefundPolicyComponent,
+      },
+      {
+        path: 'cookie-policy',
+        component: CookiePolicyComponent,
+      },
+      {
+        path: 'terms-and-conditions',
+        component: TermsConditionComponent,
       },
     ],
   },

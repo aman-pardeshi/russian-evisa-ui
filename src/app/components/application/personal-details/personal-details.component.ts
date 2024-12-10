@@ -1,3 +1,4 @@
+declare var Buffer;
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -11,7 +12,6 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { HeaderComponent } from '../../Shared/header/header.component';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
@@ -19,18 +19,13 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
-import { CardModule } from 'primeng/card';
 import { StepperModule } from 'primeng/stepper';
-import { ToggleButtonModule } from 'primeng/togglebutton';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
-import {
-  getDateInFormat,
-  getDateInYYYYMMDD,
-} from '../../Shared/utils';
+import { getDateInFormat, getDateInYYYYMMDD } from '../../Shared/utils';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { LoaderComponent } from '../../Shared/loader/loader.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -43,7 +38,7 @@ import { FileUploadRequest } from 'src/app/model/files-upload-request';
 import { map, Observable, of, Subject } from 'rxjs';
 import { WebcamImage, WebcamModule } from 'ngx-webcam';
 import { DialogModule } from 'primeng/dialog';
-// import * as Tesseract from 'tesseract.js';
+import * as Tesseract from 'tesseract.js';
 
 interface City {
   name: string;
@@ -291,7 +286,7 @@ export class PersonalDetailsComponent implements OnInit {
             (x) =>
               x.countryCode === this.submitedApplicationDetails?.countryCode
           )[0]
-        : this.countries[0],
+        : undefined,
       contactNo: this.submitedApplicationDetails.mobile,
       email:
         this.submitedApplicationDetails.email ||
@@ -301,34 +296,34 @@ export class PersonalDetailsComponent implements OnInit {
     this.applicantPassportDetailsForm.patchValue({
       passportNumber: this.submitedApplicationDetails?.passportNumber,
       passportExpiryDate: this.submitedApplicationDetails?.passportExpiryDate
-      ? new Date(this.submitedApplicationDetails.passportExpiryDate)
-      : null,
+        ? new Date(this.submitedApplicationDetails.passportExpiryDate)
+        : null,
       passportDateOfIssue: this.submitedApplicationDetails?.passportDateOfIssue
-      ? new Date(this.submitedApplicationDetails?.passportDateOfIssue)
-      : null,
+        ? new Date(this.submitedApplicationDetails?.passportDateOfIssue)
+        : null,
       passportPlaceOfIssue:
-      this.submitedApplicationDetails?.passportPlaceOfIssue,
+        this.submitedApplicationDetails?.passportPlaceOfIssue,
       intentedDateOfEntry: this.submitedApplicationDetails?.intentedDateOfEntry
-      ? new Date(this.submitedApplicationDetails?.intentedDateOfEntry)
-      : null,
+        ? new Date(this.submitedApplicationDetails?.intentedDateOfEntry)
+        : null,
       returnDate: this.submitedApplicationDetails?.returnDate
-      ? new Date(this.submitedApplicationDetails?.returnDate)
-      : null,
+        ? new Date(this.submitedApplicationDetails?.returnDate)
+        : null,
       purposeOfTheTrip: this.submitedApplicationDetails?.tripPurpose
-      ? this.purposeOptions?.filter(
-        (x) => x.label === this.submitedApplicationDetails?.tripPurpose
-      )[0]
-      : null,
+        ? this.purposeOptions?.filter(
+            (x) => x.label === this.submitedApplicationDetails?.tripPurpose
+          )[0]
+        : null,
       isOtherNationality: this.submitedApplicationDetails?.isOtherNationality,
       otherNationality: this.submitedApplicationDetails?.otherNationality
-      ? this.nationalityList.filter(
-        (x) => x.label === this.submitedApplicationDetails.otherNationality
-      )[0]
-      : null,
+        ? this.nationalityList.filter(
+            (x) => x.label === this.submitedApplicationDetails.otherNationality
+          )[0]
+        : null,
       yearOfAcquisition:
-      this.submitedApplicationDetails?.yearOfAcquistion || null,
+        this.submitedApplicationDetails?.yearOfAcquistion || null,
     });
-    
+
     if (this.submitedApplicationDetails?.photo?.url) {
       this.preFetchedPhoto = this.submitedApplicationDetails?.photo?.url;
     }
@@ -363,16 +358,10 @@ export class PersonalDetailsComponent implements OnInit {
 
     this.applicationService.getCountryList().subscribe((response) => {
       this.countries = response;
-      this.applicantDetailsForm
-        .get('countryCode')
-        .patchValue(this.countries[0]);
     });
 
     this.applicationService.getNationalityList().subscribe((response) => {
       this.nationalityList = response;
-      this.applicantDetailsForm
-        .get('countryCode')
-        .patchValue(this.countries[0]);
     });
   }
 
@@ -511,12 +500,38 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   extractTextFromImage(file: File) {
-    // Tesseract.recognize(file, 'eng', {
-    //   logger: (info) => console.log(info), // Optional: log progress
-    // }).then(({ data: { text } }) => {
-    //   console.log('extracted-text', text);
-    //   // this.fillFormWithExtractedData(text);
-    // });
+    Tesseract.recognize(file, 'eng', {
+      // logger: (info) => console.log(info), // Optional: log progress
+    }).then(({ data: { text } }) => {
+      console.log('extracted-text', text);
+      this.fillFormWithExtractedData(text);
+    });
+  }
+
+  fillFormWithExtractedData(text: string) {
+    const details: any = {};
+
+    const passportNoRegex = /Passport No\.?\s*([A-Z]\d{7})/i;
+    const surnameRegex = /Surname:?\s*([\w\s]+)/i;
+    const givenNameRegex = /Given Name:?\s*([\w\s]+)/i;
+    const dobRegex = /Date of Birth:?\s*(\d{2}\/\d{2}\/\d{4})/i;
+    const placeOfBirthRegex = /Place of Birth:?\s*([\w\s]+)/i;
+    const placeOfIssueRegex = /Place of Issue:?\s*([\w\s]+)/i;
+    const doiRegex = /Date of Issue:?\s*(\d{2}\/\d{2}\/\d{4})/i;
+    const doeRegex = /Date of Expiry:?\s*(\d{2}\/\d{2}\/\d{4})/i;
+
+    details.passportNo = text.match(passportNoRegex)?.[1] || 'Not Found';
+    details.surname = text.match(surnameRegex)?.[1]?.trim() || 'Not Found';
+    details.givenName = text.match(givenNameRegex)?.[1]?.trim() || 'Not Found';
+    details.dob = text.match(dobRegex)?.[1] || 'Not Found';
+    details.placeOfBirth =
+      text.match(placeOfBirthRegex)?.[1]?.trim() || 'Not Found';
+    details.placeOfIssue =
+      text.match(placeOfIssueRegex)?.[1]?.trim() || 'Not Found';
+    details.dateOfIssue = text.match(doiRegex)?.[1] || 'Not Found';
+    details.dateOfExpiry = text.match(doeRegex)?.[1] || 'Not Found';
+
+    console.log('data', details);
   }
 
   handleFileUpload(nextFunction: any) {
@@ -600,7 +615,7 @@ export class PersonalDetailsComponent implements OnInit {
             detail: 'Application Created Successfully',
           });
           this.router.navigate([
-            '/application/addional-details/',
+            '/application/additional-details/',
             this.referenceId,
           ]);
         }

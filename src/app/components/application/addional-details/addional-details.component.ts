@@ -30,6 +30,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
 import { mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
+import { FileUploadModule } from 'primeng/fileupload';
+import { WebcamImage, WebcamModule } from 'ngx-webcam';
+import { FileUploadRequest } from 'src/app/model/files-upload-request';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-addional-details',
@@ -53,14 +57,21 @@ import { mapObjectFromSnakeToCamel } from 'src/app/utils/switchObjectCase';
     ChipModule,
     DialogModule,
     RouterModule,
+    FileUploadModule,
+    WebcamModule,
   ],
   templateUrl: './addional-details.component.html',
   styleUrl: './addional-details.component.scss',
   providers: [MessageService],
 })
 export class AddionalDetailsComponent implements OnInit {
+  public webcamImage: WebcamImage | null = null;
+  public trigger: Subject<void> = new Subject<void>();
+  showWebCamModal: boolean = false;
+  showPassportFrontCaptureModal: boolean = false;
+
   referenceId: string;
-  active: number = 2;
+  active: number = 0;
   nationalityList: any[] = [];
   maxDate: Date;
 
@@ -73,6 +84,16 @@ export class AddionalDetailsComponent implements OnInit {
   additionalDetailsRequest: AdditionalDetailsRequest;
   showConfirmationModal: boolean = false;
   submitedApplicationDetails: any;
+
+  preFetchedPhoto: string | null = null;
+  preFetchedPassportFront: string | null = null;
+
+  capturedPhoto: WebcamImage | null = null;
+  capturedPassportFront: WebcamImage | null = null;
+
+  photoFile: File | null = null;
+  passportFrontFile: File | null = null;
+  fileUploadRequest: FileUploadRequest;
 
   employmentOptions: any[] = [
     { label: 'Work', value: 'Work' },
@@ -127,6 +148,36 @@ export class AddionalDetailsComponent implements OnInit {
     });
   }
 
+  public triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  public handleImage(webcamImage: WebcamImage): void {
+    this.capturedPhoto = webcamImage;
+    this.showWebCamModal = false;
+  }
+
+  public handlePassportFrontImage(webcamImage: WebcamImage): void {
+    this.capturedPassportFront = webcamImage;
+    this.showPassportFrontCaptureModal = false;
+  }
+
+  public get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
+
+  onFileSelect(event: any, type: string) {
+    const file = event.files[0];
+    if (type === 'photo') {
+      this.photoFile = file;
+    } else if (type === 'passportFront') {
+      this.passportFrontFile = file;
+      // this.extractTextFromImage(this.passportFrontFile);
+    } else if (type === 'passportBack') {
+      // this.passportBackFile = file;
+    }
+  }
+
   initForm() {
     this.employmentDetailsForm = this.formsBuilder.group({
       currentlyEmployedOrStudying: ['', Validators.required],
@@ -176,6 +227,66 @@ export class AddionalDetailsComponent implements OnInit {
       vistedCountriesRecently: ['', Validators.required],
       visitedCountriesDetails: ['', Validators.required],
     });
+  }
+
+  handleFileUpload(nextFunction: any) {
+    this.spinner.show();
+
+    const formData = new FormData();
+
+    formData.append('referenceId', this.referenceId);
+
+    if (this.photoFile) {
+      formData.append('photo', this.photoFile); // Correct file input
+    }
+    if (this.capturedPhoto) {
+      const blob = this.base64ToBlob(this.capturedPhoto.imageAsBase64);
+      formData.append('photo', blob, 'photo.jpg');
+    }
+    if (this.passportFrontFile) {
+      formData.append('passportFront', this.passportFrontFile); // Correct file input
+    }
+    if (this.capturedPassportFront) {
+      const blob = this.base64ToBlob(this.capturedPassportFront.imageAsBase64);
+      formData.append('passportFront', blob, 'passport-front.jpg');
+    }
+
+    // if (this.passportBackFile) {
+    //   formData.append('passportBack', this.passportBackFile); // Correct file input
+    // }
+
+    // if (this.capturedPassportBack) {
+    //   const blob = this.base64ToBlob(this.capturedPassportBack.imageAsBase64);
+    //   formData.append('passportBack', blob, 'passport-back.jpg');
+    // }
+
+    this.applicationService.uploadDocuments(formData).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          this.spinner.hide();
+          this.submitedApplicationDetails = mapObjectFromSnakeToCamel(
+            response.data,
+            {}
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Document Uploaded Successfully',
+          });
+          nextFunction.emit();
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error?.error?.message,
+        });
+
+        this.spinner.hide();
+      }
+    );
   }
 
   handleEmploymentDetailsSubmit(nextFunction: any) {
@@ -352,7 +463,8 @@ export class AddionalDetailsComponent implements OnInit {
       );
   }
 
-  handleAdditionalDetailsSubmit(nextFunction: any) {
+  handleAdditionalDetailsSubmit() {
+    this.spinner.show()
     this.additionalDetailsRequest = new AdditionalDetailsRequest();
 
     const formValues = this.additionalDetailsForm;
@@ -388,7 +500,7 @@ export class AddionalDetailsComponent implements OnInit {
           .value?.toUpperCase(),
         individualTelephone: formValues
           .get('individualTelephone')
-          .value?.toUpperCase(),
+          .value,
         individualEmail: formValues.get('individualEmail').value?.toUpperCase(),
       };
     }
@@ -412,9 +524,6 @@ export class AddionalDetailsComponent implements OnInit {
             response.data,
             {}
           );
-          // setTimeout(() => {
-          //   this.route.navigate('/')
-          // }, 5000)
           this.spinner.hide();
         }
       },
@@ -540,5 +649,14 @@ export class AddionalDetailsComponent implements OnInit {
       validateAccommodationDetails ||
       validateRecentTravel
     );
+  }
+
+  private base64ToBlob(base64: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = Array.from(byteCharacters, (char) =>
+      char.charCodeAt(0)
+    );
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'image/jpeg' });
   }
 }

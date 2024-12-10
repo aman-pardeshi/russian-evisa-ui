@@ -247,9 +247,9 @@ export class ProcessApplicationsComponent {
       visaFee: application?.visaFee,
 
       intentedDateOfEntry: getDateInFormat(
-        new Date(application?.intentedDateOfEntry)),
-      returnDate: getDateInFormat(
-        new Date(application?.returnDate)),
+        new Date(application?.intentedDateOfEntry)
+      ),
+      returnDate: getDateInFormat(new Date(application?.returnDate)),
       tripPurpose: application?.tripPurpose,
       isOtherNationality: application?.isOtherNationality,
       otherNationality: application?.otherNationality,
@@ -337,6 +337,7 @@ export class ProcessApplicationsComponent {
   }
 
   downloadFile(url: string, fileType: string) {
+    this.spinner.show();
     const fileName = `${this.currentApplicationDetails?.firstName} ${this.currentApplicationDetails?.lastName} -  ${fileType}.png`;
 
     fetch(url)
@@ -356,7 +357,11 @@ export class ProcessApplicationsComponent {
 
         window.URL.revokeObjectURL(url);
         anchor.remove();
+        this.spinner.hide();
       })
-      .catch((error) => console.error('Error downloading the file:', error));
+      .catch((error) => {
+        console.error('Error downloading the file:', error);
+        this.spinner.hide();
+      });
   }
 }

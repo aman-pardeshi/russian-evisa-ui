@@ -61,3 +61,63 @@
   align-items: center;
   flex-wrap: wrap;
 }
+
+.camera {
+  margin: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+
+  .camera-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 253, 253, 0.5);
+    z-index: 100;
+    pointer-events: none;
+    mask: radial-gradient(circle, transparent 200px, rgba(0, 0, 0, 1) 200px);
+    -webkit-mask: radial-gradient(
+      circle,
+      transparent 200px,
+      rgba(0, 0, 0, 1) 200px
+    );
+  }
+
+  .webcam-feed {
+    position: relative;
+    z-index: 0;
+  }
+
+  @media (max-width: 600px) {
+    .camera-overlay::before {
+      mask: radial-gradient(circle, transparent 100px, rgba(0, 0, 0, 1) 100px);
+      -webkit-mask: radial-gradient(
+        circle,
+        transparent 100px,
+        rgba(0, 0, 0, 1) 100px
+      );
+    }
+  }
+}
+
+.doc-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.webcam-modal {
+  width: 100% !important;
+  @media (max-width: 600px) {
+    width: 100% !important;
+  }
+}
